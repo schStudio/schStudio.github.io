@@ -1,79 +1,97 @@
 ---
 layout: default
-title: "首页：Home"
 ---
-<!-- 
-<h1 class="page-header">
-  <small>
-    {{ site.description }}
-  </small>
-</h1>
--->
-<!-- Loop output paged posts -->
 <div id="index" class="row">
+  <div class="col-sm-9">
     <div class="post-area">
-     	 <div class="post-list-body">
-        <div post-cate="All">
-        <ul class="posts">
-	{% for post in paginator.posts %}
-	<li>	
-	<h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
-	<span class="date">{{ post.date | date_to_string }}</span>
-	
-	<hr>
-	<p>{% if post.excerpt.size > 32 %}{{ post.excerpt }}{% else %}{{ post.content | strip_html | strip_newlines | truncate: 160 }}{% endif %}</p>
-		<p> <a href="{{ post.url }}"><span >阅读全文 &raquo; </span></a></p>
-	<hr>
-	</li>
-	{% endfor %}
-	</ul>
-	<!-- Pager indicator -->
-	<ul class="pager">
-	  {% if paginator.previous_page %} {% if paginator.previous_page == 1 %}
-	  <li class="previous">
-	    <a href="{{ site.url }}/">
-	      &larr; Older
-	    </a>
-	  </li>
-	  {% else %}
-	  <li class="previous">
-	    <a href="{{ site.url }}/page{{ paginator.previous_page }}">
-	      &larr; Older
-	    </a>
-	  </li>
-	  {% endif %} {% endif %} {% if paginator.next_page %}
-	  <li class="next">
-	    <a href="{{ site.url }}/page{{ paginator.next_page }}">
-	      Newer &rarr;
-	    </a>
-	  </li>
-	  {% endif %}
-	</ul>
-	</div>
-	
+      <!-- small button -->
+     <!--  <p class="pull-right visible-xs">
+       <button>toggle</button>
+     </p> -->
+      <div class="post-list-header">
+        学海无涯 T_T 慢慢思考
+      </div>
+      <div class="post-list-body">
+        
+        <div class="all-posts" post-cate="All">
+          {% for post in paginator.posts %}
+            <a class="post-list-item" href="{{ post.url | prepend: site.baseurl }}">
+              <h2>
+              {{ post.title }}
+              </h2>
+              <span class="">{{ post.date | date: "%b %-d, %Y" }}</span>
+            </a>
 
-	 
-       {% for category in site.categories %}
-	<div post-cate="{{category | first}}">
 
-          <ul class="posts">
+
+          {% endfor %}
+          <!-- 分页 -->
+      <div class="paginator">
+              {% if paginator.total_pages > 1 %}
+              <!-- 分页代码 -->
+              {% if paginator.previous_page %}
+            <a href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}">上一页</a>
+        {% endif %}
+
+        {% for page in (1..paginator.total_pages) %}
+            {% if page == paginator.page %}
+              <span class="active">{{ page }}</span>
+            {% elsif page == 1 %}
+              <a href="{{ '/index.html' | prepend: site.baseurl | replace: '//', '/' }}">{{ page }}</a>
+            {% else %}
+              <a href="/{{ site.paginate_path | prepend: site.url | replace: '//', '/' | replace: ':num', page }}">{{ page }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if paginator.next_page %}
+            <a href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}">下一页</a>
+        {% endif %}
+              {% endif %}
+      </div>
+      
+
+
+        </div>
+        <!-- <div class="posts-in-categories"> -->
+        {% for category in site.categories %}
+          <div post-cate="{{category | first}}">
             {% for posts in category  %}
               {% for post in posts %}
                 {% if post.url %}
-		<li>
-                  <a href="{{ post.url }}" class="post-list-item">
-                    <h2>{{ post.title }}</h2>
-                    <span class="date">{{ post.date | date: "%b %-d, %Y" }}</span>
+                  <a href="{{ post.url | prepend: site.baseurl }}" class="post-list-item">
+                    <h2>
+                    {{ post.title }}
+                    </h2>
+                    <span class="">{{ post.date | date: "%b %-d, %Y" }}</span>
                   </a>
-		</li>
                 {% endif %}
               {% endfor %}
             {% endfor %}
-          </ul>
-	</div>
+          </div>
         {% endfor %}
-	
-	 </div>
+        
+        <!-- </div> -->
+      </div>
+      
 
+     
+    </div>
+  </div>
+  <div class="col-sm-3">
+    <div class="shadow-corner-curl hidden-xs">
+      <div class="categories-list-header">
+        Categories
+      </div>
+      
+      <a href="{{'/index.html' | prepend: site.baseurl}}" class="categories-list-item" cate="All">
+        All<span class="my-badge"> {{site.posts | size}}</span>
+      </a>
+      {% for category in site.categories order:ascending %}
+        <a href="javascript:;" class="categories-list-item" cate="{{ category | first }}">
+          {{ category | first }} <span class="my-badge">{{ category | last | size }}</span>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
 </div>
-</div>
+
