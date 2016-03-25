@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+ 
+ <title>sch -- thinker</title>
+ <link href="http:///atom.xml" rel="self"/>
+ <link href="http://"/>
+ <updated>2016-03-25T18:20:54+08:00</updated>
+ <author>
+   <name>sch</name>
+   <email>mrsucanhao@gmail.com</email>
+ </author>
+
+ 
+ 
+</feed>
