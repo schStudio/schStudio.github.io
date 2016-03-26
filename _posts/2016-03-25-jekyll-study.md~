@@ -1,0 +1,120 @@
+---
+layout: post
+title:  "Jekyll学习笔记"
+date:   2016-03-25 00:56:00
+categories: jekyll
+---
+
+## 目录大纲
+* [什么是Jekyll](#what)
+* [基本用法](#basic)
+	* 编译: build
+	* 运行: serve
+* [目录结构](#structure)
+* [配置](#setting)
+	* 全局配置
+	* 编译选项
+	* 服务选项
+	* 默认配置
+* [头信息](#headInfo)
+	* 结构
+	* 预定义的全局变量
+	* 自定义变量
+	* 文章中预定义变量
+* [写文章](#article)
+	* 文章文件夹
+	* 引用图片和其他资源
+	* 文章目录
+	* 文章摘要
+	* 代码片段高亮
+	* 显示行数
+* [写草稿](#draft)
+* [创建页面](#page)
+	* 主页
+	* 其他页
+* [常用变量](#variable)
+	* 全局变量
+	* 全站变量
+	* 页面变量
+	* 分页器
+* [模板](#template)
+	* 过滤器
+	* 标签
+* [永久链接](#permalink)
+* [分页](#pagination)
+* [插件](#plugin)
+
+
+### <span id="what">什么是Jekyll</span>
+**官方定义**: Jekyll 是一个简单的博客形态的静态站点生产机器。它有一个模版目录，其中包含原始文本格式的文档，通过 Markdown （或者 Textile） 以及 Liquid 转化成一个完整的可发布的静态网站，你可以发布在任何你喜爱的服务器上。Jekyll 也可以运行在 GitHub Page 上，也就是说，你可以使用 GitHub 的服务来搭建你的项目页面、博客或者网站，而且是完全免费的。
+
+---
+
+### <span id="basic">基本用法</span>
+* <span id="build">build(编译)</span>
+{% highlight ruby %}
+	$ jekyll build
+	# => 当前文件夹中的内容将会生成到 ./site 文件夹中。
+
+	$ jekyll build --destination <destination>
+	# => 当前文件夹中的内容将会生成到目标文件夹<destination>中。
+
+	$ jekyll build --source <source> --destination <destination>
+	# => 指定源文件夹<source>中的内容将会生成到目标文件夹<destination>中。
+
+	$ jekyll build --watch
+	# => 当前文件夹中的内容将会生成到 ./site 文件夹中，查看改变，并且自动再生成。
+{% endhighlight %}
+* <span id="serve">serve(运行)</span>
+{% highlight ruby %}
+	$ jekyll serve
+	# => 一个开发服务器将会运行在 http://localhost:4000/
+	
+	$ jekyll serve --detach
+	# => 功能和`jekyll serve`命令相同，但是会脱离终端在后台运行。
+	#	如果你想关闭服务器，可以使用`kill -9 1234`命令，"1234" 是进程号（PID）。
+	#	如果你找不到进程号，那么就用`ps aux | grep jekyll`命令来查看，然后关闭服务器
+	$ jekyll serve --watch
+	# => 和`jekyll serve`相同，但是会查看变更并且自动再生成。
+{% endhighlight %}
+
+---
+
+### <span id="structure">目录结构</span>
+---
+
+### <span id="setting">配置</span>
+---
+
+### <span id="headInfo">头信息</span>
+---
+
+### <span id="article">写文章</span>
+---
+
+### <span id="draft">写草稿</span>
+---
+
+### <span id="page">创建页面</span>
+---
+
+### <span id="variable">常用变量</span>
+---
+
+### <span id="template">模板</span>
+---
+
+### <span id="permalink">永久链接</span>
+---
+
+### <span id="pagination">分页</span>
+---
+
+### <span id="plugin">插件</span>
+---
+
+Check out the [Jekyll docs][jekyll] for more info on how to get the most out of Jekyll. File all bugs/feature requests at [Jekyll’s GitHub repo][jekyll-gh]. If you have questions, you can ask them on [Jekyll’s dedicated Help repository][jekyll-help].
+
+[jekyll]:	  http://jekyllrb.com
+[jekyll-gh]:   https://github.com/jekyll/jekyll
+[jekyll-help]: https://github.com/jekyll/jekyll-help
