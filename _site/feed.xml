@@ -5,8 +5,8 @@
     <description>苏灿灏的博客 大数据爱好者</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 27 Mar 2016 16:52:07 +0800</pubDate>
-    <lastBuildDate>Sun, 27 Mar 2016 16:52:07 +0800</lastBuildDate>
+    <pubDate>Sun, 27 Mar 2016 21:42:44 +0800</pubDate>
+    <lastBuildDate>Sun, 27 Mar 2016 21:42:44 +0800</lastBuildDate>
     <generator>Jekyll v3.1.2</generator>
     
       <item>
@@ -180,6 +180,143 @@
         
         
         <category>计算机网络</category>
+        
+      </item>
+    
+      <item>
+        <title>回溯法原理学习笔记</title>
+        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#section&quot; id=&quot;markdown-toc-section&quot;&gt;回溯法定义&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#section-1&quot; id=&quot;markdown-toc-section-1&quot;&gt;回溯法原理&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#section-2&quot; id=&quot;markdown-toc-section-2&quot;&gt;回溯法算法框架&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-3&quot; id=&quot;markdown-toc-section-3&quot;&gt;递归回溯&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-4&quot; id=&quot;markdown-toc-section-4&quot;&gt;迭代回溯&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-5&quot; id=&quot;markdown-toc-section-5&quot;&gt;子集树&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-6&quot; id=&quot;markdown-toc-section-6&quot;&gt;排列树&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;回溯法定义&lt;/h3&gt;
+
+&lt;p&gt;回溯法是一种&lt;code class=&quot;highlighter-rouge&quot;&gt;搜索算法&lt;/code&gt;, 可以系统地搜索一个问题的&lt;code class=&quot;highlighter-rouge&quot;&gt;所有解&lt;/code&gt;或&lt;code class=&quot;highlighter-rouge&quot;&gt;任一解&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;回溯法原理&lt;/h3&gt;
+
+&lt;p&gt;回溯法的搜索原理是&lt;code class=&quot;highlighter-rouge&quot;&gt;深度优先搜索策略&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;原理: &lt;strong&gt;首先定义问题的解空间&lt;/strong&gt;, 举个&lt;code class=&quot;highlighter-rouge&quot;&gt;0-1背包&lt;/code&gt;的例子, 假设只有两个东西, 那么解空间可以这样表示{(00),(01),(10),(11)}; &lt;strong&gt;其次组织解空间, 一般组织为树或者图&lt;/strong&gt;, 所以&lt;code class=&quot;highlighter-rouge&quot;&gt;0-1背包&lt;/code&gt;的解空间就变成了一棵完全二叉树; &lt;strong&gt;最后是开始搜索&lt;/strong&gt;, 过程是这样的: 从根节点出发, 以深搜方式搜索整个解空间. 根节点首先成为&lt;code class=&quot;highlighter-rouge&quot;&gt;活节点&lt;/code&gt;, 并且纵向移至下一个新节点, 新节点就成为了&lt;code class=&quot;highlighter-rouge&quot;&gt;活结点&lt;/code&gt;, 如果&lt;code class=&quot;highlighter-rouge&quot;&gt;活结点&lt;/code&gt;无法再纵向移动, 那么就成为了&lt;code class=&quot;highlighter-rouge&quot;&gt;死节点&lt;/code&gt;, 此时就应该回溯到最近一个&lt;code class=&quot;highlighter-rouge&quot;&gt;活结点&lt;/code&gt;处, 继续用以上的方式进入下一个扩展.&lt;/p&gt;
+
+&lt;p&gt;回溯法以这种方式在解空间中搜索, 直到找到所要求的解活解空间中已经没有&lt;code class=&quot;highlighter-rouge&quot;&gt;活结点&lt;/code&gt;为止&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;算法的步骤如下:&lt;/p&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;针对所给问题, 定义问题的解空间&lt;/li&gt;
+    &lt;li&gt;确定易于搜索的解空间结构&lt;/li&gt;
+    &lt;li&gt;以深搜方式搜索解空间, 并在搜索过程中使用剪枝函数避免无效搜索&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;section-2&quot;&gt;回溯法算法框架&lt;/h3&gt;
+
+&lt;h4 id=&quot;section-3&quot;&gt;递归回溯&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;void backTrack( int t ) {
+    if( t &amp;gt; n ) {
+        Output( x );
+    } else {
+        for( int i = f( n, t ); i &amp;lt;= g( n, t ); ++i ) {
+            x[ t ] = h( i );
+            if( constraint( t ) &amp;amp;&amp;amp; bound( t ) )
+                backTrack( t+1 );
+        }
+    }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;说明:&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;t 表示递归深度&lt;/li&gt;
+    &lt;li&gt;n 表示解空间树的总深度&lt;/li&gt;
+    &lt;li&gt;x 表示可行解&lt;/li&gt;
+    &lt;li&gt;f(n,t) 表示当前&lt;code class=&quot;highlighter-rouge&quot;&gt;活结点&lt;/code&gt;未搜索过的子树起始编号&lt;/li&gt;
+    &lt;li&gt;g(n,t) 表示当前&lt;code class=&quot;highlighter-rouge&quot;&gt;活结点&lt;/code&gt;未搜索过的子树终止编号&lt;/li&gt;
+    &lt;li&gt;constraint(t) 表示约束函数, 用于确认x[1…t]是否满足约束条件, 不满足条件可以剪枝&lt;/li&gt;
+    &lt;li&gt;bound(t) 表示限界函数, 用于确认x[1…t]是否使目标函数越界, 使目标函数越界可以剪枝&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;section-4&quot;&gt;迭代回溯&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;void iterativeBackTrack( void ) {
+    int t = 1;
+    while( t &amp;gt; 0 ) {
+        for( int i = f( n, t ); i &amp;lt;= g( n, t ); ++i ) {
+            x[ t ] = h( i );
+            if( constraint( t ) &amp;amp;&amp;amp; bound( t ) ) {
+                if( solution( t ) )	//表示有可行解
+                    Output( x );
+                else
+                    ++t;
+            } else {
+                --t;
+            }
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;section-5&quot;&gt;子集树&lt;/h4&gt;
+
+&lt;p&gt;子集树定义:当所给的问题是从n个元素的集合中找出满足某种性质的子集时, 相应的解空间树称为子集树, 其解空间大小为O(2^n)&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;void backTrack( int t ) {
+    if( t &amp;gt; n ) {
+        Output( x );
+    } else {
+        for( int i = f( n, t ); i &amp;lt;= g( n, t ); ++i ) {
+            x[ t ] = h( i );
+            if( constraint( t ) &amp;amp;&amp;amp; bound( t ) )
+                backTrack( t+1 );
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;section-6&quot;&gt;排列树&lt;/h4&gt;
+
+&lt;p&gt;排列树定义:当所给的问题是从n个元素的集合中找出满足某种性质的排列时, 相应的解空间树称为排列树, 其解空间大小为O(n!)&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;void backTrack( int t ) {
+    if( t &amp;gt; n ) {
+        Output( x );
+    } else {
+        for( int i = f( n, t ); i &amp;lt;= g( n, t ); ++i ) {
+            // swap表示交换元素
+            swap( x[t], x[i] );
+            if( constraint( t ) &amp;amp;&amp;amp; bound( t ) )
+                backTrack( t+1 );
+            swap( x[t], x[i] );
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sun, 27 Mar 2016 00:00:00 +0800</pubDate>
+        <link>/2016/03/27/algorithm-backtracking/</link>
+        <guid isPermaLink="true">/2016/03/27/algorithm-backtracking/</guid>
+        
+        
+        <category>算法</category>
         
       </item>
     
