@@ -54,20 +54,22 @@ category: 算法
 
 #### 迭代回溯
 
-	void iterativeBackTrack( void ) {
+	void iterativeBackTrack() {
 	    int t = 1;
 	    while( t > 0 ) {
-	        for( int i = f( n, t ); i <= g( n, t ); ++i ) {
-	            x[ t ] = h( i );
-	            if( constraint( t ) && bound( t ) ) {
-	                if( solution( t ) )	//表示有可行解
-	                    Output( x );
-	                else
-	                    ++t;
-	            } else {
-	                --t;
+	        if( f( n, t ) <= g( n, t ) ) {
+	            for( int i = f( n, t ); i <= g( n, t ); ++i ) {
+	                x[ t ] = h( i );
+	                if( constraint( t ) && bound( t ) ) {
+	                    if( solution( t ) )	//表示有可行解
+	                        Output( x );
+	                    else
+	                        ++t;
+	                }
 	            }
-	        }
+            else {
+                --t;
+            }
 	    }
 	}
 
