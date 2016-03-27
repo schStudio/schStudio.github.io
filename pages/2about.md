@@ -7,11 +7,8 @@ icon: glyphicon-heart
 
 ### 关于我
 
-* 我是一个人
-* 我想追求自己的生活
-* 我正在努力变成一名独立思考者
-* 我会追求自己的生活
-* 我还是一个人
+* A programmer
+* A man to be a thinker
 
 ---
 
