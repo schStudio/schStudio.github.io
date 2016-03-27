@@ -5,9 +5,183 @@
     <description>苏灿灏的博客 大数据爱好者</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 27 Mar 2016 11:58:12 +0800</pubDate>
-    <lastBuildDate>Sun, 27 Mar 2016 11:58:12 +0800</lastBuildDate>
+    <pubDate>Sun, 27 Mar 2016 15:27:22 +0800</pubDate>
+    <lastBuildDate>Sun, 27 Mar 2016 15:27:22 +0800</lastBuildDate>
     <generator>Jekyll v3.1.2</generator>
+    
+      <item>
+        <title>IP原理学习笔记</title>
+        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#ip&quot; id=&quot;markdown-toc-ip&quot;&gt;IP地址分类&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#ip-1&quot; id=&quot;markdown-toc-ip-1&quot;&gt;IP地址编址历史&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#ip-2&quot; id=&quot;markdown-toc-ip-2&quot;&gt;IP地址分类&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#ip-3&quot; id=&quot;markdown-toc-ip-3&quot;&gt;IP常用地址&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#ip-4&quot; id=&quot;markdown-toc-ip-4&quot;&gt;特殊IP地址&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#ip-5&quot; id=&quot;markdown-toc-ip-5&quot;&gt;IP地址与硬件地址&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#ip-6&quot; id=&quot;markdown-toc-ip-6&quot;&gt;IP地址与硬件地址的原理区别&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#arp&quot; id=&quot;markdown-toc-arp&quot;&gt;ARP协议&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#ip-7&quot; id=&quot;markdown-toc-ip-7&quot;&gt;IP数据报格式&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#ip-8&quot; id=&quot;markdown-toc-ip-8&quot;&gt;IP首部格式&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#section&quot; id=&quot;markdown-toc-section&quot;&gt;报文段切割&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#ip-9&quot; id=&quot;markdown-toc-ip-9&quot;&gt;IP层转发分组&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;ip&quot;&gt;IP地址分类&lt;/h3&gt;
+
+&lt;p&gt;IP地址唯一标识网络中某一个设备, 其定义如下:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;IP ::= { 网络号 : 主机号 }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;ip-1&quot;&gt;IP地址编址历史&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;分类编址: IP地址可以划分为ABCDE五类, 可以参考下图&lt;/li&gt;
+  &lt;li&gt;划分子网: 在分类编址的基础上定义了子网的概念和划分原理&lt;/li&gt;
+  &lt;li&gt;无分类编址: 抛弃分类编址的方式, 重新定义编址方式&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;ip-2&quot;&gt;IP地址分类&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/computer-network/ip-classification.jpg&quot; alt=&quot;IP分类编址&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;ip-3&quot;&gt;IP常用地址&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/computer-network/ip-use-usually-classification.gif&quot; alt=&quot;IP常用地址&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;说明:&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;A类地址中减去2表示排除了网络号全0(表示&lt;code class=&quot;highlighter-rouge&quot;&gt;本网络&lt;/code&gt;)和网络号127(表示&lt;code class=&quot;highlighter-rouge&quot;&gt;环回地址&lt;/code&gt;)&lt;/li&gt;
+    &lt;li&gt;B类地址中减去1表示排除了128.0(保留)网络&lt;/li&gt;
+    &lt;li&gt;C类地址中减去1表示排除了192.0.0(保留)网络&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;ip-4&quot;&gt;特殊IP地址&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/computer-network/ip-use-rarely.jpg&quot; alt=&quot;特殊IP地址&quot; /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;ip-5&quot;&gt;IP地址与硬件地址&lt;/h3&gt;
+
+&lt;p&gt;IP地址唯一表示网络中的某一个设备, 硬件地址也是唯一表示某一个设备, 那么为什么需要两种地址呢?&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;这是因为全世界有着各种各样的网络, 不同的网络使用不同的硬件地址, 为了使得这些异构网络之间能够通信, 就需要一个统一的规则来表示每个设备, 也就是IP地址了&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;ip-6&quot;&gt;IP地址与硬件地址的原理区别&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/computer-network/ip-ipAddress-and-macAddress.jpg&quot; alt=&quot;IP地址与硬件地址的原理区别&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;arp&quot;&gt;ARP协议&lt;/h4&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ARP协议&lt;/code&gt;是用来找出IP地址对应的硬件地址, 还有一个协议是&lt;code class=&quot;highlighter-rouge&quot;&gt;RARP协议&lt;/code&gt;, 是用来找出硬件地址对应的IP地址, 这两个协议都是处于网络层中&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ARP协议&lt;/code&gt;的工作原理如下图所示:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/computer-network/ip-arp.jpg&quot; alt=&quot;ARP协议的工作原理&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;ARP工作原理解释如下:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;主机A在局域网中广播ARP请求分组&lt;/li&gt;
+  &lt;li&gt;所有主机都受到ARP请求分组, 但是只有主机B响应分组&lt;/li&gt;
+  &lt;li&gt;主机A收到主机B的响应分组, 在ARP高速缓存中记录主机B&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;注意:&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;主机A发送出ARP请求分组, 主机B会在ARP高速缓存中记录主机A, 这样可以避免主机B要找主机A的时候也要发出一个ARP请求分组, 减少了网络开销&lt;/li&gt;
+    &lt;li&gt;ARP高速缓存中的记录是有生存时间的, 过了生存时间的记录就会自动删除, 这是基于网络中的硬件地址是动态变更这种情况考虑的, 例如主机B换了一个网络适配器, 其先前的地址也就无效了&lt;/li&gt;
+    &lt;li&gt;ARP协议是解决同一个局域网内的主机中IP地址与硬件地址的映射问题&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;ip-7&quot;&gt;IP数据报格式&lt;/h3&gt;
+
+&lt;h4 id=&quot;ip-8&quot;&gt;IP首部格式&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/computer-network/ip-header.jpg&quot; alt=&quot;IP数据报格式&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;版本: IP协议版本(IPv4, IPv6等)&lt;/li&gt;
+  &lt;li&gt;首部长度: IP首部的字节长度, 范围为20~60&lt;/li&gt;
+  &lt;li&gt;区分服务: 更多服务&lt;/li&gt;
+  &lt;li&gt;总长度: IP数据报的长度, 范围为20~65535字节, 一般以太网使用的MTU(Maximum Transfer Unit)为1500, MTU表示IP数据报中数据部分的最大长度&lt;/li&gt;
+  &lt;li&gt;标识: 报文段发生分片的时候使用, 接收端通过标识可以合并同一个标识的IP数据报&lt;/li&gt;
+  &lt;li&gt;标志: 目前使用DF(Don’t Fragment)和MF(More Fragment)&lt;/li&gt;
+  &lt;li&gt;片偏移: IP数据报合并时, 用来确认每一个IP数据报在原始报文段中的位置, 8个字节为单位&lt;/li&gt;
+  &lt;li&gt;生存时间: IP数据报的生存时间, 目前一般表示跳数&lt;/li&gt;
+  &lt;li&gt;协议: 表示IP数据报使用的协议, 例如: TCP, UDP, OSPF&lt;/li&gt;
+  &lt;li&gt;首部检验和: 检验IP首部, 每一次路由转发后, 都会检验首部的正确性&lt;/li&gt;
+  &lt;li&gt;源地址: 发送方IP地址&lt;/li&gt;
+  &lt;li&gt;目的地址: 接收方IP地址&lt;/li&gt;
+  &lt;li&gt;可选字段(长度可变)&lt;/li&gt;
+  &lt;li&gt;填充: IP首部填充0, 知道满足以4个字节为单位&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;section&quot;&gt;报文段切割&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/computer-network/ip-data-split.png&quot; alt=&quot;IP数据报分片举例&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;解释如下:
+原始题目中规定IP数据报的&lt;code class=&quot;highlighter-rouge&quot;&gt;MTU&lt;/code&gt;为1400, 由于&lt;code class=&quot;highlighter-rouge&quot;&gt;片偏移&lt;/code&gt;是以8个字节为单位, 我们发现8能够整除1400, 所以我们可以直接以1400个字节为切割单位, 分别切割出1400/1400/1000这样的3个数据, 然后分别计算&lt;code class=&quot;highlighter-rouge&quot;&gt;片偏移&lt;/code&gt;, 得到0/175/350, 这样把这些数据写到各自的首部中, 另外还需要给这3个数据一个共同的&lt;code class=&quot;highlighter-rouge&quot;&gt;标识&lt;/code&gt;(例如:12345).&lt;/p&gt;
+
+  &lt;p&gt;这样切割之后, 接收端就可以根据&lt;code class=&quot;highlighter-rouge&quot;&gt;标识&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;片偏移&lt;/code&gt;来组合IP数据报, 得到原始的报文段&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;ip-9&quot;&gt;IP层转发分组&lt;/h3&gt;
+
+&lt;p&gt;转发分组涉及两个概念: &lt;code class=&quot;highlighter-rouge&quot;&gt;路由&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;路由表&lt;/code&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;路由 ::= ( 目的网络地址, 下一跳地址 )
+路由表 ::= 包含路由信息的表格
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;每一个IP数据报的转发都需要查询&lt;code class=&quot;highlighter-rouge&quot;&gt;路由表&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;路由表&lt;/code&gt;如下图所示:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/computer-network/ip-transfer-algorithm.jpg&quot; alt=&quot;IP层转发分组&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;分组转发算法流程如下:&lt;/p&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;从IP数据报首部中提取目的IP地址D, 并计算得到网络地址N&lt;/li&gt;
+    &lt;li&gt;如果N就是与路由器直接相连的网络, 那么直接交付到目的主机, 否则执行(3)&lt;/li&gt;
+    &lt;li&gt;如果路由表中有目的地址D的特定主机路由, 那么交付特定路由器, 否则执行(4)&lt;/li&gt;
+    &lt;li&gt;如果路由表中有目的网络N的转发地址, 那么交付对应的路由器, 否则执行(5)&lt;/li&gt;
+    &lt;li&gt;如果路由表中有默认路由, 那么交付默认路由器, 否则执行(6)&lt;/li&gt;
+    &lt;li&gt;报告转发分组出错&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/blockquote&gt;
+</description>
+        <pubDate>Sun, 27 Mar 2016 00:00:00 +0800</pubDate>
+        <link>/2016/03/27/computer-network-ip/</link>
+        <guid isPermaLink="true">/2016/03/27/computer-network-ip/</guid>
+        
+        
+        <category>机网络</category>
+        
+      </item>
     
       <item>
         <title>TCP原理学习笔记</title>
