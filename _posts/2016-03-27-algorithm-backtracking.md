@@ -67,7 +67,7 @@ category: 算法
 	                        ++t;
 	                }
 	            }
-            else {
+            } else {
                 --t;
             }
 	    }
