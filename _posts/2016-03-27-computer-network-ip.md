@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "IP原理学习笔记"
-categories: 机网络
+categories: 计算机网络
 ---
 
 * content
