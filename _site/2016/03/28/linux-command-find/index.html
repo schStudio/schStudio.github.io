@@ -5,10 +5,10 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>IP原理学习笔记</title>
-	<meta name="description" content="  IP地址分类          IP地址编址历史      IP地址分类      IP常用地址      特殊IP地址        IP地址与硬件地址          IP地址与硬件地址的原理区别      ARP协议        IP数据报格式          IP首部格式      报文段切割 ...">
+	<title>find指令学习笔记</title>
+	<meta name="description" content="">
 	
-	<link rel="canonical" href="/2016/03/27/computer-network-ip/">
+	<link rel="canonical" href="/2016/03/28/linux-command-find/">
 	<link rel="alternate" type="application/rss+xml" title="SCH" href="/feed.xml" />
 	
 	<!-- <link rel="stylesheet" href="/css/main.css"> -->
@@ -108,181 +108,140 @@
   <div id="myArticle" class="col-sm-9">
     <div class="post-area post">
       <header>
-        <h1>IP原理学习笔记</h1>
-        <p>Mar 27, 2016</p>
+        <h1>find指令学习笔记</h1>
+        <p>Mar 28, 2016</p>
       </header>
       <hr>
       <article>
         <ul id="markdown-toc">
-  <li><a href="#ip" id="markdown-toc-ip">IP地址分类</a>    <ul>
-      <li><a href="#ip-1" id="markdown-toc-ip-1">IP地址编址历史</a></li>
-      <li><a href="#ip-2" id="markdown-toc-ip-2">IP地址分类</a></li>
-      <li><a href="#ip-3" id="markdown-toc-ip-3">IP常用地址</a></li>
-      <li><a href="#ip-4" id="markdown-toc-ip-4">特殊IP地址</a></li>
+  <li><a href="#find" id="markdown-toc-find">find指令的用途</a></li>
+  <li><a href="#find-1" id="markdown-toc-find-1">find指令常用参数说明</a></li>
+  <li><a href="#find-2" id="markdown-toc-find-2">find指令常用例子</a>    <ul>
+      <li><a href="#section" id="markdown-toc-section">查找前5个最大的文件</a></li>
+      <li><a href="#section-1" id="markdown-toc-section-1">查找某一段时间修改过的文件</a></li>
+      <li><a href="#section-2" id="markdown-toc-section-2">在多个目录中查找</a></li>
+      <li><a href="#section-3" id="markdown-toc-section-3">排除指定目录查找</a></li>
+      <li><a href="#section-4" id="markdown-toc-section-4">按照文件类型查找</a></li>
+      <li><a href="#section-5" id="markdown-toc-section-5">重复文件查找</a></li>
     </ul>
   </li>
-  <li><a href="#ip-5" id="markdown-toc-ip-5">IP地址与硬件地址</a>    <ul>
-      <li><a href="#ip-6" id="markdown-toc-ip-6">IP地址与硬件地址的原理区别</a></li>
-      <li><a href="#arp" id="markdown-toc-arp">ARP协议</a></li>
-    </ul>
-  </li>
-  <li><a href="#ip-7" id="markdown-toc-ip-7">IP数据报格式</a>    <ul>
-      <li><a href="#ip-8" id="markdown-toc-ip-8">IP首部格式</a></li>
-      <li><a href="#section" id="markdown-toc-section">报文段切割</a></li>
-    </ul>
-  </li>
-  <li><a href="#ip-9" id="markdown-toc-ip-9">IP层转发分组</a></li>
 </ul>
 
-<h3 id="ip">IP地址分类</h3>
+<h3 id="find">find指令的用途</h3>
 
-<p>IP地址唯一标识网络中某一个设备, 其定义如下:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>IP ::= { 网络号 : 主机号 }
+<div class="highlighter-rouge"><pre class="highlight"><code>在目录层次中查找满足特定要求的文件
 </code></pre>
 </div>
 
-<h4 id="ip-1">IP地址编址历史</h4>
+<h3 id="find-1">find指令常用参数说明</h3>
 
 <ul>
-  <li>分类编址: IP地址可以划分为ABCDE五类, 可以参考下图</li>
-  <li>划分子网: 在分类编址的基础上定义了子网的概念和划分原理</li>
-  <li>无分类编址: 抛弃分类编址的方式, 重新定义编址方式</li>
+  <li>-type c: 按照文件类型c查找, 文件类型c说明如下:
+    <ul>
+      <li>b: 块设备文件</li>
+      <li>c: 字符设备文件</li>
+      <li>d: 目录</li>
+      <li>p: 管道文件</li>
+      <li>f: 普通文件</li>
+      <li>l: 符号链接文件</li>
+      <li>s: 套接字文件</li>
+    </ul>
+  </li>
+  <li>-name fname: 按照fname(不加目录前缀)查找文件</li>
+  <li>-exec command: 对查找到的文件进行指令处理, 注意结尾以’;’结束</li>
+  <li>-mmin n: 查找n分钟之前修改过的文件</li>
+  <li>-mtime n: 查找n天之前修改过的文件</li>
+  <li>-xdev: 只查找当前的文件系统</li>
+  <li>-printf: 如果find指令返回值为true, 指定格式输出结果</li>
+  <li>-prune: 排除指定的搜索范围</li>
+  <li>-o: 或者</li>
 </ul>
 
-<h4 id="ip-2">IP地址分类</h4>
-
-<p><img src="/assets/computer-network/ip-classification.jpg" alt="IP分类编址" /></p>
-
-<h4 id="ip-3">IP常用地址</h4>
-
-<p><img src="/assets/computer-network/ip-use-usually-classification.gif" alt="IP常用地址" /></p>
-
-<blockquote>
-  <p>说明:</p>
-
-  <ul>
-    <li>A类地址中减去2表示排除了网络号全0(表示<code class="highlighter-rouge">本网络</code>)和网络号127(表示<code class="highlighter-rouge">环回地址</code>)</li>
-    <li>B类地址中减去1表示排除了128.0(保留)网络</li>
-    <li>C类地址中减去1表示排除了192.0.0(保留)网络</li>
-  </ul>
-</blockquote>
-
-<h4 id="ip-4">特殊IP地址</h4>
-
-<p><img src="/assets/computer-network/ip-use-rarely.jpg" alt="特殊IP地址" /></p>
-
 <hr />
 
-<h3 id="ip-5">IP地址与硬件地址</h3>
+<h3 id="find-2">find指令常用例子</h3>
 
-<p>IP地址唯一表示网络中的某一个设备, 硬件地址也是唯一表示某一个设备, 那么为什么需要两种地址呢?</p>
+<h4 id="section">查找前5个最大的文件</h4>
 
-<blockquote>
-  <p>这是因为全世界有着各种各样的网络, 不同的网络使用不同的硬件地址, 为了使得这些异构网络之间能够通信, 就需要一个统一的规则来表示每个设备, 也就是IP地址了</p>
-</blockquote>
-
-<h4 id="ip-6">IP地址与硬件地址的原理区别</h4>
-
-<p><img src="/assets/computer-network/ip-ipAddress-and-macAddress.jpg" alt="IP地址与硬件地址的原理区别" /></p>
-
-<h4 id="arp">ARP协议</h4>
-
-<p><code class="highlighter-rouge">ARP协议</code>是用来找出IP地址对应的硬件地址, 还有一个协议是<code class="highlighter-rouge">RARP协议</code>, 是用来找出硬件地址对应的IP地址, 这两个协议都是处于网络层中</p>
-
-<p><code class="highlighter-rouge">ARP协议</code>的工作原理如下图所示:</p>
-
-<p><img src="/assets/computer-network/ip-arp.jpg" alt="ARP协议的工作原理" /></p>
-
-<p>ARP工作原理解释如下:</p>
-
-<ol>
-  <li>主机A在局域网中广播ARP请求分组</li>
-  <li>所有主机都受到ARP请求分组, 但是只有主机B响应分组</li>
-  <li>主机A收到主机B的响应分组, 在ARP高速缓存中记录主机B</li>
-</ol>
-
-<blockquote>
-  <p>注意:</p>
-
-  <ul>
-    <li>主机A发送出ARP请求分组, 主机B会在ARP高速缓存中记录主机A, 这样可以避免主机B要找主机A的时候也要发出一个ARP请求分组, 减少了网络开销</li>
-    <li>ARP高速缓存中的记录是有生存时间的, 过了生存时间的记录就会自动删除, 这是基于网络中的硬件地址是动态变更这种情况考虑的, 例如主机B换了一个网络适配器, 其先前的地址也就无效了</li>
-    <li>ARP协议是解决同一个局域网内的主机中IP地址与硬件地址的映射问题</li>
-  </ul>
-</blockquote>
-
-<hr />
-
-<h3 id="ip-7">IP数据报格式</h3>
-
-<h4 id="ip-8">IP首部格式</h4>
-
-<p><img src="/assets/computer-network/ip-header.jpg" alt="IP数据报格式" /></p>
-
-<ul>
-  <li>版本: IP协议版本(IPv4, IPv6等)</li>
-  <li>首部长度: IP首部的字节长度, 范围为20~60</li>
-  <li>区分服务: 更多服务</li>
-  <li>总长度: IP数据报的长度, 范围为20~65535字节, 一般以太网使用的MTU(Maximum Transfer Unit)为1500, MTU表示IP数据报中数据部分的最大长度</li>
-  <li>标识: 报文段发生分片的时候使用, 接收端通过标识可以合并同一个标识的IP数据报</li>
-  <li>标志: 目前使用DF(Don’t Fragment)和MF(More Fragment)</li>
-  <li>片偏移: IP数据报合并时, 用来确认每一个IP数据报在原始报文段中的位置, 8个字节为单位</li>
-  <li>生存时间: IP数据报的生存时间, 目前一般表示跳数</li>
-  <li>协议: 表示IP数据报使用的协议, 例如: TCP, UDP, OSPF</li>
-  <li>首部检验和: 检验IP首部, 每一次路由转发后, 都会检验首部的正确性</li>
-  <li>源地址: 发送方IP地址</li>
-  <li>目的地址: 接收方IP地址</li>
-  <li>可选字段(长度可变)</li>
-  <li>填充: IP首部填充0, 知道满足以4个字节为单位</li>
-</ul>
-
-<h4 id="section">报文段切割</h4>
-
-<p><img src="/assets/computer-network/ip-data-split.png" alt="IP数据报分片举例" /></p>
-
-<blockquote>
-  <p>解释如下:
-原始题目中规定IP数据报的<code class="highlighter-rouge">MTU</code>为1400, 由于<code class="highlighter-rouge">片偏移</code>是以8个字节为单位, 我们发现8能够整除1400, 所以我们可以直接以1400个字节为切割单位, 分别切割出1400/1400/1000这样的3个数据, 然后分别计算<code class="highlighter-rouge">片偏移</code>, 得到0/175/350, 这样把这些数据写到各自的首部中, 另外还需要给这3个数据一个共同的<code class="highlighter-rouge">标识</code>(例如:12345).</p>
-
-  <p>这样切割之后, 接收端就可以根据<code class="highlighter-rouge">标识</code>和<code class="highlighter-rouge">片偏移</code>来组合IP数据报, 得到原始的报文段</p>
-</blockquote>
-
-<hr />
-
-<h3 id="ip-9">IP层转发分组</h3>
-
-<p>转发分组涉及两个概念: <code class="highlighter-rouge">路由</code>和<code class="highlighter-rouge">路由表</code></p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>路由 ::= ( 目的网络地址, 下一跳地址 )
-路由表 ::= 包含路由信息的表格
+<div class="highlighter-rouge"><pre class="highlight"><code>find / -type f -exec du {} \; | sort -n | tail -n 5
 </code></pre>
 </div>
 
-<p>每一个IP数据报的转发都需要查询<code class="highlighter-rouge">路由表</code>, <code class="highlighter-rouge">路由表</code>如下图所示:</p>
+<blockquote>
+  <p>-exec du表示对每一个找到的文件都计算文件大小</p>
 
-<p><img src="/assets/computer-network/ip-transfer-algorithm.jpg" alt="IP层转发分组" /></p>
+  <p>sort -n表示对所有文件按大小升序排序</p>
+
+  <p>tail -n 5表示取最后5个文件</p>
+</blockquote>
+
+<h4 id="section-1">查找某一段时间修改过的文件</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>find / -mmin +60 -mmin -120 -type f
+</code></pre>
+</div>
 
 <blockquote>
-  <p>分组转发算法流程如下:</p>
+  <p>-mmin +60: 表示前60分钟之前</p>
 
-  <ol>
-    <li>从IP数据报首部中提取目的IP地址D, 并计算得到网络地址N</li>
-    <li>如果N就是与路由器直接相连的网络, 那么直接交付到目的主机, 否则执行(3)</li>
-    <li>如果路由表中有目的地址D的特定主机路由, 那么交付特定路由器, 否则执行(4)</li>
-    <li>如果路由表中有目的网络N的转发地址, 那么交付对应的路由器, 否则执行(5)</li>
-    <li>如果路由表中有默认路由, 那么交付默认路由器, 否则执行(6)</li>
-    <li>报告转发分组出错</li>
-  </ol>
+  <p>-mmin -120: 表示前120分钟之后</p>
+
+  <p>所以该指令就是查找2个小时之前的1小时内修改过的文件</p>
+</blockquote>
+
+<h4 id="section-2">在多个目录中查找</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>find /etc /var /mnt /media -xdev -mmin -5 -type f
+</code></pre>
+</div>
+
+<blockquote>
+  <p>该指令在/etc, /var, /mnt, /media这些目录下查找</p>
+
+  <p>-xdev表示只对该文件系统查找</p>
+
+  <p>-mmin -5 表示5分钟之内修改过的文件</p>
+</blockquote>
+
+<h4 id="section-3">排除指定目录查找</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>find / \( -name proc -o -name sys \) -prune -o -type f
+</code></pre>
+</div>
+
+<blockquote>
+  <p>该指令表示对根目录查找, 但是排除 /proc 和 /sys这两个目录</p>
+
+  <p>-prune -o表示对满足括号中条件的目录排除在外</p>
+</blockquote>
+
+<h4 id="section-4">按照文件类型查找</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>find . -name "*.png" -o -name "*.jpg" -o -name "*.gif" -type f
+</code></pre>
+</div>
+
+<blockquote>
+  <p>该指令表示在当前目录中查找格式为png, jpg, gif的文件</p>
+
+  <p>-o 表示或者</p>
+</blockquote>
+
+<h4 id="section-5">重复文件查找</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>find . -type f -exec md5sum '{}' ';' | sort | uniq --all-repeated=separate -w 24
+</code></pre>
+</div>
+
+<blockquote>
+  <p>该指令表示对当前目录下的文件计算MD5并通过前24位进行比较</p>
 </blockquote>
 
       </article>
       <hr>
       
-      <a href="/2016/03/27/algorithm-backtracking/">上一篇博客：回溯法原理学习笔记</a><br>
+      <a href="/2016/03/27/computer-network-ip/">上一篇博客：IP原理学习笔记</a><br>
       
-      
-      <a href="/2016/03/28/linux-command-find/">下一篇博客：find指令学习笔记</a>
       
       <hr>
       <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a></div>
@@ -291,7 +250,7 @@
     <div class="post-area post comment">
       <!-- 多说评论框 start -->
       
-      <div class="ds-thread" data-thread-key="/2016/03/27/computer-network-ip" data-title="IP原理学习笔记" data-url="schStudio.github.io/2016/03/27/computer-network-ip/"></div>
+      <div class="ds-thread" data-thread-key="/2016/03/28/linux-command-find" data-title="find指令学习笔记" data-url="schStudio.github.io/2016/03/28/linux-command-find/"></div>
       
       <!-- 多说评论框 end -->
     </div>

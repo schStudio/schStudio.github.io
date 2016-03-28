@@ -182,19 +182,21 @@
 
 <h4 id="section-4">迭代回溯</h4>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>void iterativeBackTrack( void ) {
+<div class="highlighter-rouge"><pre class="highlight"><code>void iterativeBackTrack() {
     int t = 1;
     while( t &gt; 0 ) {
-        for( int i = f( n, t ); i &lt;= g( n, t ); ++i ) {
-            x[ t ] = h( i );
-            if( constraint( t ) &amp;&amp; bound( t ) ) {
-                if( solution( t ) )	//表示有可行解
-                    Output( x );
-                else
-                    ++t;
-            } else {
-                --t;
+        if( f( n, t ) &lt;= g( n, t ) ) {
+            for( int i = f( n, t ); i &lt;= g( n, t ); ++i ) {
+                x[ t ] = h( i );
+                if( constraint( t ) &amp;&amp; bound( t ) ) {
+                    if( solution( t ) )	//表示有可行解
+                        Output( x );
+                    else
+                        ++t;
+                }
             }
+        } else {
+            --t;
         }
     }
 }

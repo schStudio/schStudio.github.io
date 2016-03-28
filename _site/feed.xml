@@ -5,9 +5,144 @@
     <description>苏灿灏的博客 大数据爱好者</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 27 Mar 2016 21:42:44 +0800</pubDate>
-    <lastBuildDate>Sun, 27 Mar 2016 21:42:44 +0800</lastBuildDate>
+    <pubDate>Mon, 28 Mar 2016 16:43:33 +0800</pubDate>
+    <lastBuildDate>Mon, 28 Mar 2016 16:43:33 +0800</lastBuildDate>
     <generator>Jekyll v3.1.2</generator>
+    
+      <item>
+        <title>find指令学习笔记</title>
+        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#find&quot; id=&quot;markdown-toc-find&quot;&gt;find指令的用途&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#find-1&quot; id=&quot;markdown-toc-find-1&quot;&gt;find指令常用参数说明&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#find-2&quot; id=&quot;markdown-toc-find-2&quot;&gt;find指令常用例子&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#section&quot; id=&quot;markdown-toc-section&quot;&gt;查找前5个最大的文件&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-1&quot; id=&quot;markdown-toc-section-1&quot;&gt;查找某一段时间修改过的文件&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-2&quot; id=&quot;markdown-toc-section-2&quot;&gt;在多个目录中查找&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-3&quot; id=&quot;markdown-toc-section-3&quot;&gt;排除指定目录查找&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-4&quot; id=&quot;markdown-toc-section-4&quot;&gt;按照文件类型查找&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-5&quot; id=&quot;markdown-toc-section-5&quot;&gt;重复文件查找&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;find&quot;&gt;find指令的用途&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;在目录层次中查找满足特定要求的文件
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;find-1&quot;&gt;find指令常用参数说明&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;-type c: 按照文件类型c查找, 文件类型c说明如下:
+    &lt;ul&gt;
+      &lt;li&gt;b: 块设备文件&lt;/li&gt;
+      &lt;li&gt;c: 字符设备文件&lt;/li&gt;
+      &lt;li&gt;d: 目录&lt;/li&gt;
+      &lt;li&gt;p: 管道文件&lt;/li&gt;
+      &lt;li&gt;f: 普通文件&lt;/li&gt;
+      &lt;li&gt;l: 符号链接文件&lt;/li&gt;
+      &lt;li&gt;s: 套接字文件&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;-name fname: 按照fname(不加目录前缀)查找文件&lt;/li&gt;
+  &lt;li&gt;-exec command: 对查找到的文件进行指令处理, 注意结尾以’;’结束&lt;/li&gt;
+  &lt;li&gt;-mmin n: 查找n分钟之前修改过的文件&lt;/li&gt;
+  &lt;li&gt;-mtime n: 查找n天之前修改过的文件&lt;/li&gt;
+  &lt;li&gt;-xdev: 只查找当前的文件系统&lt;/li&gt;
+  &lt;li&gt;-printf: 如果find指令返回值为true, 指定格式输出结果&lt;/li&gt;
+  &lt;li&gt;-prune: 排除指定的搜索范围&lt;/li&gt;
+  &lt;li&gt;-o: 或者&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;find-2&quot;&gt;find指令常用例子&lt;/h3&gt;
+
+&lt;h4 id=&quot;section&quot;&gt;查找前5个最大的文件&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find / -type f -exec du {} \; | sort -n | tail -n 5
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;-exec du表示对每一个找到的文件都计算文件大小&lt;/p&gt;
+
+  &lt;p&gt;sort -n表示对所有文件按大小升序排序&lt;/p&gt;
+
+  &lt;p&gt;tail -n 5表示取最后5个文件&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;section-1&quot;&gt;查找某一段时间修改过的文件&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find / -mmin +60 -mmin -120 -type f
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;-mmin +60: 表示前60分钟之前&lt;/p&gt;
+
+  &lt;p&gt;-mmin -120: 表示前120分钟之后&lt;/p&gt;
+
+  &lt;p&gt;所以该指令就是查找2个小时之前的1小时内修改过的文件&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;section-2&quot;&gt;在多个目录中查找&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find /etc /var /mnt /media -xdev -mmin -5 -type f
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;该指令在/etc, /var, /mnt, /media这些目录下查找&lt;/p&gt;
+
+  &lt;p&gt;-xdev表示只对该文件系统查找&lt;/p&gt;
+
+  &lt;p&gt;-mmin -5 表示5分钟之内修改过的文件&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;section-3&quot;&gt;排除指定目录查找&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find / \( -name proc -o -name sys \) -prune -o -type f
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;该指令表示对根目录查找, 但是排除 /proc 和 /sys这两个目录&lt;/p&gt;
+
+  &lt;p&gt;-prune -o表示对满足括号中条件的目录排除在外&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;section-4&quot;&gt;按照文件类型查找&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find . -name &quot;*.png&quot; -o -name &quot;*.jpg&quot; -o -name &quot;*.gif&quot; -type f
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;该指令表示在当前目录中查找格式为png, jpg, gif的文件&lt;/p&gt;
+
+  &lt;p&gt;-o 表示或者&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;section-5&quot;&gt;重复文件查找&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find . -type f -exec md5sum &#39;{}&#39; &#39;;&#39; | sort | uniq --all-repeated=separate -w 24
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;该指令表示对当前目录下的文件计算MD5并通过前24位进行比较&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+        <pubDate>Mon, 28 Mar 2016 00:00:00 +0800</pubDate>
+        <link>/2016/03/28/linux-command-find/</link>
+        <guid isPermaLink="true">/2016/03/28/linux-command-find/</guid>
+        
+        
+        <category>Linux</category>
+        
+      </item>
     
       <item>
         <title>IP原理学习笔记</title>
@@ -254,19 +389,21 @@
 
 &lt;h4 id=&quot;section-4&quot;&gt;迭代回溯&lt;/h4&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;void iterativeBackTrack( void ) {
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;void iterativeBackTrack() {
     int t = 1;
     while( t &amp;gt; 0 ) {
-        for( int i = f( n, t ); i &amp;lt;= g( n, t ); ++i ) {
-            x[ t ] = h( i );
-            if( constraint( t ) &amp;amp;&amp;amp; bound( t ) ) {
-                if( solution( t ) )	//表示有可行解
-                    Output( x );
-                else
-                    ++t;
-            } else {
-                --t;
+        if( f( n, t ) &amp;lt;= g( n, t ) ) {
+            for( int i = f( n, t ); i &amp;lt;= g( n, t ); ++i ) {
+                x[ t ] = h( i );
+                if( constraint( t ) &amp;amp;&amp;amp; bound( t ) ) {
+                    if( solution( t ) )	//表示有可行解
+                        Output( x );
+                    else
+                        ++t;
+                }
             }
+        } else {
+            --t;
         }
     }
 }
