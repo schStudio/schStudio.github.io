@@ -5,9 +5,212 @@
     <description>苏灿灏的博客 大数据爱好者</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 28 Mar 2016 16:43:33 +0800</pubDate>
-    <lastBuildDate>Mon, 28 Mar 2016 16:43:33 +0800</lastBuildDate>
+    <pubDate>Tue, 29 Mar 2016 20:40:02 +0800</pubDate>
+    <lastBuildDate>Tue, 29 Mar 2016 20:40:02 +0800</lastBuildDate>
     <generator>Jekyll v3.1.2</generator>
+    
+      <item>
+        <title>Subsets(II)</title>
+        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#subsets&quot; id=&quot;markdown-toc-subsets&quot;&gt;Subsets&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#section&quot; id=&quot;markdown-toc-section&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-1&quot; id=&quot;markdown-toc-section-1&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-2&quot; id=&quot;markdown-toc-section-2&quot;&gt;总结&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#subsets-ii&quot; id=&quot;markdown-toc-subsets-ii&quot;&gt;Subsets II&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-3&quot; id=&quot;markdown-toc-section-3&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-4&quot; id=&quot;markdown-toc-section-4&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-5&quot; id=&quot;markdown-toc-section-5&quot;&gt;总结&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;subsets&quot;&gt;Subsets&lt;/h2&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;题目描述&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Given a set of distinct integers, nums, return all possible subsets.&lt;/p&gt;
+
+  &lt;p&gt;Note:&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;Elements in a subset must be in non-descending order.&lt;/li&gt;
+    &lt;li&gt;The solution set must not contain duplicate subsets.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;For example,
+If nums = [1,2,3], a solution is:
+    [
+      [3],
+      [1],
+      [2],
+      [1,2,3],
+      [1,3],
+      [2,3],
+      [1,2],
+      []
+    ]&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;解法&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;递归方式&lt;/p&gt;
+
+    &lt;p&gt;代码如下:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  static List&amp;lt;List&amp;lt;Integer&amp;gt;&amp;gt; res = new ArrayList&amp;lt;&amp;gt;();
+    
+  public static List&amp;lt;List&amp;lt;Integer&amp;gt;&amp;gt; subsetsRecursion( int[] nums ) {
+      Arrays.sort( nums );
+      helperRecursion( nums, 0, new ArrayList&amp;lt;Integer&amp;gt;() );
+      return res;
+  }
+  private static void helperRecursion( int[] nums, int t, List&amp;lt;Integer&amp;gt; tmpRes ) {
+      // 获得一个子集
+      if( t == nums.length ) {
+          res.add( new ArrayList&amp;lt;Integer&amp;gt;(tmpRes) );
+          return;
+      }
+      // 不选择当前深度的节点
+      helperRecursion( nums, t+1, tmpRes );
+
+      // 选择当前深度的节点
+      tmpRes.add( nums[t] );
+      helperRecursion( nums, t+1, tmpRes );
+      tmpRes.remove( tmpRes.size()-1 );
+  }
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;思考过程: 求一个集合的所有子集, 这个问题可以归类为&lt;code class=&quot;highlighter-rouge&quot;&gt;回溯法&lt;/code&gt;中的&lt;code class=&quot;highlighter-rouge&quot;&gt;子集树&lt;/code&gt;问题, 而且这棵树是一棵完全二叉树, 利用&lt;code class=&quot;highlighter-rouge&quot;&gt;回溯法&lt;/code&gt;中的递归写法可以很容易的写出代码.&lt;/p&gt;
+
+    &lt;p&gt;处理过程: 利用一个变量&lt;code class=&quot;highlighter-rouge&quot;&gt;t&lt;/code&gt;表示当前树的深度, 在&lt;code class=&quot;highlighter-rouge&quot;&gt;t&lt;/code&gt;深度的时候, 有两种选择, 一种是不选择当前深度的节点并且进入下一层, 另一种是选择当前深度的节点并且进入下一层. 其终止条件就是到达叶子节点.&lt;/p&gt;
+
+    &lt;p&gt;时空复杂度: 时间复杂度是O(2^n), 空间复杂度是O(n): 递归的空间, 排除构造出来的子集空间&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;迭代方式&lt;/p&gt;
+
+    &lt;p&gt;代码如下:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  public static List&amp;lt;List&amp;lt;Integer&amp;gt;&amp;gt; subsetIteration( int[] nums ) {
+      Arrays.sort( nums );
+      List&amp;lt;List&amp;lt;Integer&amp;gt;&amp;gt; res = new ArrayList&amp;lt;&amp;gt;();
+        
+      // 初始状态: 结果集中包含了子集: 空集
+      res.add( new ArrayList&amp;lt;Integer&amp;gt;() );
+        
+      // 构造过程: 动态生成每一个子集并且加入结果集
+      for( int i = 0; i &amp;lt; nums.length; ++i ) {
+          int subsetCount = res.size();
+          for( int j = 0; j &amp;lt; subsetCount; ++j ) {
+              List&amp;lt;Integer&amp;gt; newSubset = new ArrayList&amp;lt;&amp;gt;( res.get(j) );
+              newSubset.add( nums[i] );
+              res.add( newSubset );
+          }
+      }
+        
+      // 结束状态: 返回结果集
+      return res;
+  }
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;思考过程: 在思考问题解之前, 可以先思考另外一个问题: 对结果集产生影响的基本因素是什么? 基本因素就是数组中的元素. 再思考一个问题: 基本因素是如何影响结果集的? 当原本数组加入一个新的元素的时候, 由于元素在子集中可选可不选, 不选的话不会对原本的结果集产生影响, 选择的话原本的结果集会多添加一些新子集, 而且这些新子集=旧子集+新元素&lt;/p&gt;
+
+    &lt;p&gt;处理过程: 首先, 对于任何的数组, 其结果集中一定有一个空集; 之后对每一个元素, 产生一些新子集: 新子集=旧子集+新元素, 并且把新子集加入结果集中; 最后返回结果集.&lt;/p&gt;
+
+    &lt;p&gt;时空复杂度: 时间复杂度O(2^n), 空间复杂度O(1): 排除构造出来的子集空间&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;section-2&quot;&gt;总结&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;对于有处理模型的问题, 我们很容易想到解决方案; 但是有时候我们并不知道处理模型是什么, 我们应该从小方面入手, 思考问题的基本因素, 从基本因素展开分析, 从而构造出一个问题的解决方案&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;subsets-ii&quot;&gt;Subsets II&lt;/h2&gt;
+
+&lt;h3 id=&quot;section-3&quot;&gt;题目描述&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Given a collection of integers that might contain duplicates, nums, return all possible subsets.&lt;/p&gt;
+
+  &lt;p&gt;Note:&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;Elements in a subset must be in non-descending order.&lt;/li&gt;
+    &lt;li&gt;The solution set must not contain duplicate subsets.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;For example,
+If nums = [1,2,2], a solution is:
+    [
+      [2],
+      [1],
+      [1,2,2],
+      [2,2],
+      [1,2],
+      []
+    ]&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;section-4&quot;&gt;解法&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static List&amp;lt;List&amp;lt;Integer&amp;gt;&amp;gt; subsetsIteration( int[] nums ) {
+	Arrays.sort( nums );
+	List&amp;lt;List&amp;lt;Integer&amp;gt;&amp;gt; res = new ArrayList&amp;lt;&amp;gt;();
+    
+	// 初始状态: 结果集中包含了子集: 空集
+	res.add( new ArrayList&amp;lt;Integer&amp;gt;() );
+    
+	// 构造过程: 对每一个元素构造出新子集并加入结果集
+	for( int i = 0; i &amp;lt; nums.length; ) {
+		// 统计重复个数
+		int repeatNum = 0;
+		while( i+repeatNum &amp;lt; nums.length &amp;amp;&amp;amp;
+				nums[i] == nums[repeatNum+i] ) ++repeatNum;
+		// 构造子集
+		int subsetCount = res.size();
+		for( int j = 0; j &amp;lt; subsetCount; ++j ) {
+			List&amp;lt;Integer&amp;gt; subset = new ArrayList&amp;lt;Integer&amp;gt;( res.get(j) );
+			for( int k = 0; k &amp;lt; repeatNum; ++k ) {
+				subset.add( nums[i] );
+				res.add( new ArrayList&amp;lt;Integer&amp;gt;( subset ) );
+			}
+		}
+		i += repeatNum;
+	}
+    
+	// 结束状态: 返回结果集
+	return res;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;思考过程: 其基本思考过程同上面的Subsets迭代方式差不多, 不同点在于出现了重复元素, 那么还是一样, 我们思考重复元素对原始结果集的影响是什么? 思考这样一个例子[ 1, 2, 2 ], 当处理完元素[1]的时候, 我们得到的结果集是{ {}, {1} }, 接下来对于重复元素[2], 我们可以构造出来的新子集=旧子集+(1或2)个[2], 也就是说, 对于重复元素, 我们可以选择1-n个重复元素加入旧子集形成新子集, 对于重复元素的解决方案就出来了, 最后可以得到上面的代码&lt;/p&gt;
+
+&lt;h3 id=&quot;section-5&quot;&gt;总结&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;还是一样, 对于一个新的问题, 我们应该从基本的角度去思考, 从而展开到一个问题的解决方案&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+        <pubDate>Tue, 29 Mar 2016 00:00:00 +0800</pubDate>
+        <link>/2016/03/29/leetcode-subsets(II)/</link>
+        <guid isPermaLink="true">/2016/03/29/leetcode-subsets(II)/</guid>
+        
+        
+        <category>Leetcode</category>
+        
+      </item>
     
       <item>
         <title>find指令学习笔记</title>
