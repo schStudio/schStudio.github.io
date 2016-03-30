@@ -5,8 +5,8 @@
     <description>苏灿灏的博客 大数据爱好者</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 30 Mar 2016 10:50:54 +0800</pubDate>
-    <lastBuildDate>Wed, 30 Mar 2016 10:50:54 +0800</lastBuildDate>
+    <pubDate>Wed, 30 Mar 2016 16:42:06 +0800</pubDate>
+    <lastBuildDate>Wed, 30 Mar 2016 16:42:06 +0800</lastBuildDate>
     <generator>Jekyll v3.1.2</generator>
     
       <item>
@@ -165,6 +165,108 @@ private static void swap( int[] nums, int i, int j ) {
         <pubDate>Wed, 30 Mar 2016 00:00:00 +0800</pubDate>
         <link>/2016/03/30/leetcode-permutations(II)/</link>
         <guid isPermaLink="true">/2016/03/30/leetcode-permutations(II)/</guid>
+        
+        
+        <category>Leetcode</category>
+        
+      </item>
+    
+      <item>
+        <title>Next Permutation</title>
+        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#section&quot; id=&quot;markdown-toc-section&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#section-1&quot; id=&quot;markdown-toc-section-1&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#section-2&quot; id=&quot;markdown-toc-section-2&quot;&gt;总结&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;题目描述&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Implement next permutation, which rearranges numbers into the lexicographically &amp;gt; next greater permutation of numbers.&lt;/p&gt;
+
+  &lt;p&gt;If such arrangement is not possible, it must rearrange it as the lowest possible &amp;gt; order (ie, sorted in ascending order).&lt;/p&gt;
+
+  &lt;p&gt;The replacement must be in-place, do not allocate extra memory.&lt;/p&gt;
+
+  &lt;p&gt;Here are some examples. Inputs are in the left-hand column and its corresponding &amp;gt; outputs are in the right-hand column.&lt;/p&gt;
+
+  &lt;p&gt;1,2,3 → 1,3,2&lt;/p&gt;
+
+  &lt;p&gt;3,2,1 → 1,2,3&lt;/p&gt;
+
+  &lt;p&gt;1,1,5 → 1,5,1&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;解法&lt;/h3&gt;
+
+&lt;p&gt;代码如下:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static void nextPermutation( int[] nums ) {
+
+    // 从后往前找到第一个递增对 [i, i+1]
+    int i = nums.length-2;
+    for( ; i &amp;gt;= 0 &amp;amp;&amp;amp; nums[i] &amp;gt;= nums[i+1]; --i );
+
+    // 已经不存在递增对, 所有排列已经列举完了, 这里重新开始
+    if( i &amp;lt; 0 ) {
+        reverse( nums, 0, nums.length-1 );
+        return;
+    }
+
+    // 从后往前找到第一个 [j] &amp;gt; [i]
+    int j = nums.length-1;
+    for( ; j &amp;gt; i &amp;amp;&amp;amp; nums[j] &amp;lt;= nums[i]; --j );
+
+    // 构造下一个全排列
+    swap( nums, i, j );
+    i = i + 1;
+    j = nums.length-1;
+    reverse( nums, i, j );
+}
+private static void swap( int[] nums, int i, int j ) {
+    int t = nums[i];
+    nums[i] = nums[j];
+    nums[j] = t;
+}
+private static void reverse( int[] nums, int i, int j ) {
+    while( i &amp;lt; j ) {
+        swap( nums, i++, j-- );
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;思考过程: 求一个排列的下一个排列, 从数值上看, 就是找到下一个值, 使得下一个值&lt;code class=&quot;highlighter-rouge&quot;&gt;比当前值大&lt;/code&gt;并且要&lt;code class=&quot;highlighter-rouge&quot;&gt;最接近&lt;/code&gt;. 所以我们可以从数值的低位部分入手, 因为改变低位对数值大小的影响最小, 也就满足了&lt;code class=&quot;highlighter-rouge&quot;&gt;最接近&lt;/code&gt;这个条件. 现在考虑一个例子:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;[A&lt;sub&gt;1&lt;/sub&gt;, A&lt;sub&gt;2&lt;/sub&gt;, … , A&lt;sub&gt;K&lt;/sub&gt;, A&lt;sub&gt;K+1&lt;/sub&gt;, …, A&lt;sub&gt;N&lt;/sub&gt;]&lt;/li&gt;
+  &lt;li&gt;A&lt;sub&gt;K+1&lt;/sub&gt; &amp;gt; … &amp;gt; A&lt;sub&gt;N&lt;/sub&gt; ( 1 &amp;lt; K &amp;lt; N, 也就是[K+1…N]递减 )&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;由于[K+1…N]这部分是递减的, 那么在这部分做修改是不可能构造出一个比当前值还大的值, 所以就要第[K]位加进来, 也就是对[K…N]这部分做修改, 那么该如何改呢?&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;在[K+1…N]中找一个刚好比[K]大的值, 与[K]交换, 才能构造出一个比当前值大的值, 所以就可以在[K+1…N]中由后往前找合适的值([K+1…N]是递减的, 所以由后往前找)&lt;/li&gt;
+  &lt;li&gt;找到合适的值之后与[K]交换, 交换之后[K+1…N]还是递减的&lt;/li&gt;
+  &lt;li&gt;修改[K+1…N]这部分变为最小值, 因为[K+1…N]是递减的, 翻转以下就可以了&lt;/li&gt;
+  &lt;li&gt;得到下一个全排列的值&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;疑难点: 求下一个排列的问题可以转化为数值的问题, 然后又要想到数值的变化影响因素中, 低位的影响是最小的, 所以思考点要转移到如何修改低位部分&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;时空复杂度: 时间复杂度是O(n), 空间复杂度是O(1)&lt;/p&gt;
+
+&lt;h3 id=&quot;section-2&quot;&gt;总结&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;专注问题的思考点, 并且不断转换思考点, 直到问题清晰可解&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+        <pubDate>Wed, 30 Mar 2016 00:00:00 +0800</pubDate>
+        <link>/2016/03/30/leetcode-next-permutation/</link>
+        <guid isPermaLink="true">/2016/03/30/leetcode-next-permutation/</guid>
         
         
         <category>Leetcode</category>

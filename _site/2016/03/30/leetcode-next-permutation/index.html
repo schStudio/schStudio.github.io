@@ -5,10 +5,10 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Permutations(II)</title>
+	<title>Next Permutation</title>
 	<meta name="description" content="">
 	
-	<link rel="canonical" href="/2016/03/30/leetcode-permutations(II)/">
+	<link rel="canonical" href="/2016/03/30/leetcode-next-permutation/">
 	<link rel="alternate" type="application/rss+xml" title="SCH" href="/feed.xml" />
 	
 	<!-- <link rel="stylesheet" href="/css/main.css"> -->
@@ -108,167 +108,109 @@
   <div id="myArticle" class="col-sm-9">
     <div class="post-area post">
       <header>
-        <h1>Permutations(II)</h1>
+        <h1>Next Permutation</h1>
         <p>Mar 30, 2016</p>
       </header>
       <hr>
       <article>
         <ul id="markdown-toc">
-  <li><a href="#permutations" id="markdown-toc-permutations">Permutations</a>    <ul>
-      <li><a href="#section" id="markdown-toc-section">题目描述</a></li>
-      <li><a href="#section-1" id="markdown-toc-section-1">解法</a></li>
-      <li><a href="#section-2" id="markdown-toc-section-2">总结</a></li>
-    </ul>
-  </li>
-  <li><a href="#permutations-ii" id="markdown-toc-permutations-ii">Permutations II</a>    <ul>
-      <li><a href="#section-3" id="markdown-toc-section-3">题目描述</a></li>
-      <li><a href="#section-4" id="markdown-toc-section-4">解法</a></li>
-      <li><a href="#section-5" id="markdown-toc-section-5">总结</a></li>
-    </ul>
-  </li>
+  <li><a href="#section" id="markdown-toc-section">题目描述</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">解法</a></li>
+  <li><a href="#section-2" id="markdown-toc-section-2">总结</a></li>
 </ul>
-
-<h2 id="permutations">Permutations</h2>
 
 <h3 id="section">题目描述</h3>
 
 <blockquote>
-  <p>Given a collection of distinct numbers, return all possible permutations.</p>
+  <p>Implement next permutation, which rearranges numbers into the lexicographically &gt; next greater permutation of numbers.</p>
 
-  <p>For example,</p>
+  <p>If such arrangement is not possible, it must rearrange it as the lowest possible &gt; order (ie, sorted in ascending order).</p>
 
-  <p>[1,2,3] have the following permutations:</p>
+  <p>The replacement must be in-place, do not allocate extra memory.</p>
 
-  <p>[1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], and [3,2,1].</p>
+  <p>Here are some examples. Inputs are in the left-hand column and its corresponding &gt; outputs are in the right-hand column.</p>
+
+  <p>1,2,3 → 1,3,2</p>
+
+  <p>3,2,1 → 1,2,3</p>
+
+  <p>1,1,5 → 1,5,1</p>
 </blockquote>
 
 <h3 id="section-1">解法</h3>
 
 <p>代码如下:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>static List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;&gt;();
+<div class="highlighter-rouge"><pre class="highlight"><code>public static void nextPermutation( int[] nums ) {
 
-public static List&lt;List&lt;Integer&gt;&gt; permute( int[] nums ) {
-    helperPermute( nums, 0 );
-    return res;
-}
-private static void helperPermute( int[] nums, int t ) {
-    if( t == nums.length ) {
-        // 构造一个结果
-        List&lt;Integer&gt; tmpRes = new ArrayList&lt;&gt;(nums.length);
-        for( int num : nums ) tmpRes.add( num );
-        
-        // 加入结果集
-        res.add( tmpRes );
-    } else {
-        for( int i = t; i &lt; nums.length; ++i ) {
-            swap( nums, t, i);
-            helperPermute( nums, t+1 );
-            swap( nums, t, i);
-        }
+    // 从后往前找到第一个递增对 [i, i+1]
+    int i = nums.length-2;
+    for( ; i &gt;= 0 &amp;&amp; nums[i] &gt;= nums[i+1]; --i );
+
+    // 已经不存在递增对, 所有排列已经列举完了, 这里重新开始
+    if( i &lt; 0 ) {
+        reverse( nums, 0, nums.length-1 );
+        return;
     }
-}
 
+    // 从后往前找到第一个 [j] &gt; [i]
+    int j = nums.length-1;
+    for( ; j &gt; i &amp;&amp; nums[j] &lt;= nums[i]; --j );
+
+    // 构造下一个全排列
+    swap( nums, i, j );
+    i = i + 1;
+    j = nums.length-1;
+    reverse( nums, i, j );
+}
 private static void swap( int[] nums, int i, int j ) {
     int t = nums[i];
     nums[i] = nums[j];
     nums[j] = t;
 }
+private static void reverse( int[] nums, int i, int j ) {
+    while( i &lt; j ) {
+        swap( nums, i++, j-- );
+    }
+}
 </code></pre>
 </div>
 
-<p>思考过程: 求一个集合的全排列, 这个问题可以归类为<code class="highlighter-rouge">回溯法</code>中的<code class="highlighter-rouge">排列树</code>问题.</p>
-
-<p>代码可以这样理解, 集合S的全排列由以下的结果组成:</p>
+<p>思考过程: 求一个排列的下一个排列, 从数值上看, 就是找到下一个值, 使得下一个值<code class="highlighter-rouge">比当前值大</code>并且要<code class="highlighter-rouge">最接近</code>. 所以我们可以从数值的低位部分入手, 因为改变低位对数值大小的影响最小, 也就满足了<code class="highlighter-rouge">最接近</code>这个条件. 现在考虑一个例子:</p>
 
 <ul>
-  <li>S[1]+全排列( S[2…n] )</li>
-  <li>S[2]+全排列( S[1, 3…n] )</li>
-  <li>S[3]+全排列( S[2, 1, 4…n] )</li>
-  <li>…</li>
-  <li>S[n]+全排列( S[1…n-1] )</li>
+  <li>[A<sub>1</sub>, A<sub>2</sub>, … , A<sub>K</sub>, A<sub>K+1</sub>, …, A<sub>N</sub>]</li>
+  <li>A<sub>K+1</sub> &gt; … &gt; A<sub>N</sub> ( 1 &lt; K &lt; N, 也就是[K+1…N]递减 )</li>
 </ul>
 
-<p>也就是把S的中每一个元素都提取到第一位, 剩下的元素做全排列</p>
+<p>由于[K+1…N]这部分是递减的, 那么在这部分做修改是不可能构造出一个比当前值还大的值, 所以就要第[K]位加进来, 也就是对[K…N]这部分做修改, 那么该如何改呢?</p>
+
+<ol>
+  <li>在[K+1…N]中找一个刚好比[K]大的值, 与[K]交换, 才能构造出一个比当前值大的值, 所以就可以在[K+1…N]中由后往前找合适的值([K+1…N]是递减的, 所以由后往前找)</li>
+  <li>找到合适的值之后与[K]交换, 交换之后[K+1…N]还是递减的</li>
+  <li>修改[K+1…N]这部分变为最小值, 因为[K+1…N]是递减的, 翻转以下就可以了</li>
+  <li>得到下一个全排列的值</li>
+</ol>
 
 <blockquote>
-  <p>疑难点: 为什么要swap2次? 因为我们要保证在处理完一次结果之后, 要恢复数组的原始状态, 这样下一次处理的时候才能正确把下一个元素交换到第一个位置来.</p>
+  <p>疑难点: 求下一个排列的问题可以转化为数值的问题, 然后又要想到数值的变化影响因素中, 低位的影响是最小的, 所以思考点要转移到如何修改低位部分</p>
 </blockquote>
 
-<p>时空复杂度: 时间复杂度是O(n!), 空间复杂度是O(n): 递归的空间, 排除构造出来的全排列</p>
+<p>时空复杂度: 时间复杂度是O(n), 空间复杂度是O(1)</p>
 
 <h3 id="section-2">总结</h3>
 
 <blockquote>
-  <p>如果一个处理过程是迭代形式的, 而且迭代过程有严格的状态要求, 那么就十分需要注意子处理过程所带来的影响.</p>
-</blockquote>
-
-<hr />
-
-<h2 id="permutations-ii">Permutations II</h2>
-
-<h3 id="section-3">题目描述</h3>
-
-<blockquote>
-  <p>Given a collection of numbers that might contain duplicates, return all possible unique permutations.</p>
-
-  <p>For example,</p>
-
-  <p>[1,1,2] have the following unique permutations:</p>
-
-  <p>[1,1,2], [1,2,1], and [2,1,1].</p>
-</blockquote>
-
-<h3 id="section-4">解法</h3>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>static List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;&gt;();
-
-public static List&lt;List&lt;Integer&gt;&gt; permuteUnique( int[] nums ) {
-    Arrays.sort( nums );
-    helperPermuteUnique( nums, 0, nums.length-1 );
-    return res;
-}
-private static void helperPermuteUnique( int[] nums, int i, int j ) {
-    if( i == j ) {
-        List&lt;Integer&gt; tmpRes = new ArrayList&lt;&gt;(nums.length);
-        for( int num : nums ) tmpRes.add( num );
-        res.add( tmpRes );
-    } 
-    for( int k = i; k &lt;= j; ++k ) {
-        if( findSame(nums, i, k) ) continue;
-        swap( nums, i, k );
-        helperPermuteUnique( nums, i+1, j );
-        swap( nums, i, k );
-    }
-}
-
-private static boolean findSame( int[] nums, int i, int j ) {
-    for( int k = i; k &lt; j; ++k )
-        if( nums[j] == nums[k] ) return true;
-    return false;
-}
-
-private static void swap( int[] nums, int i, int j ) {
-    int t = nums[i];
-    nums[i] = nums[j];
-    nums[j] = t;
-}
-</code></pre>
-</div>
-
-<p>思考过程: 对于有重复元素集合的全排列, 可以用上面无重复元素的全排列来解决, 区别就是我们在这个基础上还要排除一些重复的全排列, 那么我们需要思考的问题是: 按照无重复元素的全排列处理过程, 如何消除重复元素带来的影响? 我们知道全排列的一次处理过程就是把每一个元素都搬到第一个位置, 然后做剩余元素的全排列, 所以我们只需要判断当前元素跟前面的元素有没有重复, 有重复的话就是已经处理过的, 直接跳过.</p>
-
-<h3 id="section-5">总结</h3>
-
-<blockquote>
-  <p>借助已有的处理模型去思考问题的解决方案</p>
+  <p>专注问题的思考点, 并且不断转换思考点, 直到问题清晰可解</p>
 </blockquote>
 
       </article>
       <hr>
       
-      <a href="/2016/03/30/leetcode-next-permutation/">上一篇博客：Next Permutation</a><br>
+      <a href="/2016/03/29/leetcode-subsets(II)/">上一篇博客：Subsets(II)</a><br>
       
+      
+      <a href="/2016/03/30/leetcode-permutations(II)/">下一篇博客：Permutations(II)</a>
       
       <hr>
       <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a></div>
@@ -277,7 +219,7 @@ private static void swap( int[] nums, int i, int j ) {
     <div class="post-area post comment">
       <!-- 多说评论框 start -->
       
-      <div class="ds-thread" data-thread-key="/2016/03/30/leetcode-permutations(II)" data-title="Permutations(II)" data-url="schStudio.github.io/2016/03/30/leetcode-permutations(II)/"></div>
+      <div class="ds-thread" data-thread-key="/2016/03/30/leetcode-next-permutation" data-title="Next Permutation" data-url="schStudio.github.io/2016/03/30/leetcode-next-permutation/"></div>
       
       <!-- 多说评论框 end -->
     </div>
