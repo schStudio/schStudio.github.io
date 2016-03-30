@@ -5,10 +5,10 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Subsets(II)</title>
+	<title>NQueens(II)</title>
 	<meta name="description" content="">
 	
-	<link rel="canonical" href="/2016/03/29/leetcode-subsets(II)/">
+	<link rel="canonical" href="/2016/03/30/leetcode-NQueens(II)/">
 	<link rel="alternate" type="application/rss+xml" title="SCH" href="/feed.xml" />
 	
 	<!-- <link rel="stylesheet" href="/css/main.css"> -->
@@ -108,53 +108,54 @@
   <div id="myArticle" class="col-sm-9">
     <div class="post-area post">
       <header>
-        <h1>Subsets(II)</h1>
-        <p>Mar 29, 2016</p>
+        <h1>NQueens(II)</h1>
+        <p>Mar 30, 2016</p>
       </header>
       <hr>
       <article>
         <ul id="markdown-toc">
-  <li><a href="#subsets" id="markdown-toc-subsets">Subsets</a>    <ul>
+  <li><a href="#nqueens" id="markdown-toc-nqueens">NQueens</a>    <ul>
       <li><a href="#section" id="markdown-toc-section">题目描述</a></li>
       <li><a href="#section-1" id="markdown-toc-section-1">解法</a></li>
       <li><a href="#section-2" id="markdown-toc-section-2">总结</a></li>
     </ul>
   </li>
-  <li><a href="#subsets-ii" id="markdown-toc-subsets-ii">Subsets II</a>    <ul>
+  <li><a href="#nqueens-ii" id="markdown-toc-nqueens-ii">NQueens II</a>    <ul>
       <li><a href="#section-3" id="markdown-toc-section-3">题目描述</a></li>
       <li><a href="#section-4" id="markdown-toc-section-4">解法</a></li>
-      <li><a href="#section-5" id="markdown-toc-section-5">总结</a></li>
     </ul>
   </li>
 </ul>
 
-<h2 id="subsets">Subsets</h2>
+<h2 id="nqueens">NQueens</h2>
 
 <h3 id="section">题目描述</h3>
 
 <blockquote>
-  <p>Given a set of distinct integers, nums, return all possible subsets.</p>
+  <p>The n-queens puzzle is the problem of placing n queens on an n×n chessboard such &gt; that no two queens attack each other.</p>
 
-  <p>Note:</p>
+  <p><img src="http://articles.leetcode.com/wp-content/uploads/2012/03/8-queens.png" alt="8-Queens" /></p>
 
-  <ul>
-    <li>Elements in a subset must be in non-descending order.</li>
-    <li>The solution set must not contain duplicate subsets.</li>
-  </ul>
+  <p>Given an integer n, return all distinct solutions to the n-queens puzzle.</p>
 
-  <p>For example,
-If nums = [1,2,3], a solution is:
-    [
-      [3],
-      [1],
-      [2],
-      [1,2,3],
-      [1,3],
-      [2,3],
-      [1,2],
-      []
-    ]</p>
+  <p>Each solution contains a distinct board configuration of the n-queens’ placement, where ‘Q’ and ‘.’ both indicate a queen and an empty space respectively.
+For example,
+There exist two distinct solutions to the 4-queens puzzle:</p>
 </blockquote>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[
+ [".Q..",  // Solution 1
+  "...Q",
+  "Q...",
+  "..Q."],
+
+ ["..Q.",  // Solution 2
+  "Q...",
+  "...Q",
+  ".Q.."]
+]
+</code></pre>
+</div>
 
 <h3 id="section-1">解法</h3>
 
@@ -164,154 +165,160 @@ If nums = [1,2,3], a solution is:
 
     <p>代码如下:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code>  static List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;&gt;();
-    
-  public static List&lt;List&lt;Integer&gt;&gt; subsetsRecursion( int[] nums ) {
-      Arrays.sort( nums );
-      helperRecursion( nums, 0, new ArrayList&lt;Integer&gt;() );
+    <div class="highlighter-rouge"><pre class="highlight"><code>  public static List&lt;List&lt;String&gt;&gt; solveNQueensRecursion( int n ) {
+      List&lt;List&lt;String&gt;&gt; res = new ArrayList&lt;&gt;();
+      // 创建棋盘: board[i]表示第i行第board[i]列
+      int[] board = new int[n];
+      // 初始化棋盘, -1表示没有棋子
+      Arrays.fill(board, -1);
+      // 回溯查找解
+      helperNQueens( 0, board, res );
       return res;
   }
-  private static void helperRecursion( int[] nums, int t, List&lt;Integer&gt; tmpRes ) {
-      // 获得一个子集
-      if( t == nums.length ) {
-          res.add( new ArrayList&lt;Integer&gt;(tmpRes) );
+
+  private static void helperNQueens(int t, int[] board, List&lt;List&lt;String&gt;&gt; res) {
+      if( t == board.length ) {
+          res.add( newBoard(board) );
           return;
       }
-      // 不选择当前深度的节点
-      helperRecursion( nums, t+1, tmpRes );
+      for( int i = 0; i &lt; board.length; ++i ) {
+          board[t] = i;
+          if( constraints( board, t ) )
+              helperNQueens( t+1, board, res );
+      }
+  }
 
-      // 选择当前深度的节点
-      tmpRes.add( nums[t] );
-      helperRecursion( nums, t+1, tmpRes );
-      tmpRes.remove( tmpRes.size()-1 );
+  private static boolean constraints(int[] board, int t) {
+      for( int i = 0; i &lt; t; ++i ) {
+          if( (board[i] == board[t]) ||
+                  (t-i == board[t]-board[i] || t-i == board[i]-board[t]) )
+              return false;
+      }
+      return true;
+  }
+
+  /*
+   * 返回棋盘的表示形式, 类型为List&lt;String&gt;
+   */
+  private static List&lt;String&gt; newBoard(int[] board) {
+      List&lt;String&gt; res = new ArrayList&lt;&gt;();
+      int n = board.length;
+      char[][] newBoard = new char[n][n];
+      for( int i = 0; i &lt; n; ++i )
+          Arrays.fill(newBoard[i], '.');
+      for( int i = 0; i &lt; n; ++i ) {
+          newBoard[i][board[i]] = 'Q';
+          StringBuilder sb = new StringBuilder();
+          for( char c : newBoard[i] ) sb.append(c);
+          res.add( sb.toString() );
+      }
+      return res;
   }
 </code></pre>
     </div>
-
-    <p>思考过程: 求一个集合的所有子集, 这个问题可以归类为<code class="highlighter-rouge">回溯法</code>中的<code class="highlighter-rouge">子集树</code>问题, 而且这棵树是一棵完全二叉树, 利用<code class="highlighter-rouge">回溯法</code>中的递归写法可以很容易的写出代码.</p>
-
-    <p>处理过程: 利用一个变量<code class="highlighter-rouge">t</code>表示当前树的深度, 在<code class="highlighter-rouge">t</code>深度的时候, 有两种选择, 一种是不选择当前深度的节点并且进入下一层, 另一种是选择当前深度的节点并且进入下一层. 其终止条件就是到达叶子节点.</p>
-
-    <p>时空复杂度: 时间复杂度是O(2^n), 空间复杂度是O(n): 递归的空间, 排除构造出来的子集空间</p>
   </li>
+</ul>
+
+<p>思考过程: N皇后问题属于经典的题目, 用<code class="highlighter-rouge">回溯法</code>来解决</p>
+
+<blockquote>
+  <p>疑难点: 难点主要有两个, 一个是<code class="highlighter-rouge">棋盘的表示</code>, 另一个是皇后之间的<code class="highlighter-rouge">冲突判断</code></p>
+
+  <ul>
+    <li>
+      <p><code class="highlighter-rouge">棋盘的表示</code>要建立在对问题约束条件的理解之上. 棋盘之中皇后之间不能处于同一行, 也不能处于同一列, 那么我们可以用一个数组board来表示这个棋盘.</p>
+
+      <ul>
+        <li>数组下标表示棋盘中的行值</li>
+        <li>数组的值表示棋盘中的列值</li>
+      </ul>
+    </li>
+    <li>
+      <p><code class="highlighter-rouge">冲突判断</code>有3个条件:</p>
+
+      <ul>
+        <li>皇后不能处于同一行: 不需要显示判断, 因为我们以行作为递归, 皇后不可能出现在同一行</li>
+        <li>皇后不能处于同一列: 根据 board[i] == board[j] 作为判断</li>
+        <li>皇后不能处于同一斜线: 根据 j-i == abs(board[j]-board[i]) (j&gt;i)</li>
+      </ul>
+    </li>
+  </ul>
+
+  <p>斜线的判断可能比较难以理解: 意思是行值差与列值差相等表示皇后在同一斜线上.</p>
+</blockquote>
+
+<p>时空复杂度: 时间复杂度是O(n!), 空间复杂度是O(n): 递归的空间, 排除构造出来的棋盘</p>
+
+<h3 id="section-2">总结</h3>
+
+<blockquote>
+  <p>善于观察题目的限制条件, 从而构造出合适的数据结构</p>
+</blockquote>
+
+<ul>
   <li>
     <p>迭代方式</p>
 
     <p>代码如下:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code>  public static List&lt;List&lt;Integer&gt;&gt; subsetIteration( int[] nums ) {
-      Arrays.sort( nums );
-      List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;&gt;();
-        
-      // 初始状态: 结果集中包含了子集: 空集
-      res.add( new ArrayList&lt;Integer&gt;() );
-        
-      // 构造过程: 动态生成每一个子集并且加入结果集
-      for( int i = 0; i &lt; nums.length; ++i ) {
-          int subsetCount = res.size();
-          for( int j = 0; j &lt; subsetCount; ++j ) {
-              List&lt;Integer&gt; newSubset = new ArrayList&lt;&gt;( res.get(j) );
-              newSubset.add( nums[i] );
-              res.add( newSubset );
+    <div class="highlighter-rouge"><pre class="highlight"><code>  public static List&lt;List&lt;String&gt;&gt; solveNQueensIteration( int n ) {
+      List&lt;List&lt;String&gt;&gt; res = new ArrayList&lt;&gt;();
+      // 创建棋盘: board[i]表示第i行第board[i]列
+      int[] board = new int[n];
+
+      // 初始化第0行的状态
+      board[0] = -1;
+      // t表示目前处于第t行
+      int t = 0;
+      while( t &gt;= 0 ) {
+          // 查找第t行皇后的存放位置
+          ++board[t];
+          while( board[t] &lt; n &amp;&amp; !constraints( board, t ) ) ++board[t];
+
+          // 找到第t行皇后的存放位置就进入下一行
+          if( board[t] &lt; n ) {
+              if( t == n-1 ) {
+                  res.add( newBoard(board) );
+              } else {
+                  ++t;
+                  board[t] = -1;
+              }
+          } else {
+              --t;
           }
       }
-        
-      // 结束状态: 返回结果集
       return res;
   }
 </code></pre>
     </div>
-
-    <p>思考过程: 在思考问题解之前, 可以先思考另外一个问题: 对结果集产生影响的基本因素是什么? 基本因素就是数组中的元素. 再思考一个问题: 基本因素是如何影响结果集的? 当原本数组加入一个新的元素的时候, 由于元素在子集中可选可不选, 不选的话不会对原本的结果集产生影响, 选择的话原本的结果集会多添加一些新子集, 而且这些新子集=旧子集+新元素</p>
-
-    <p>处理过程: 首先, 对于任何的数组, 其结果集中一定有一个空集; 之后对每一个元素, 产生一些新子集: 新子集=旧子集+新元素, 并且把新子集加入结果集中; 最后返回结果集.</p>
-
-    <p>时空复杂度: 时间复杂度O(2^n), 空间复杂度O(1): 排除构造出来的子集空间</p>
   </li>
 </ul>
 
-<h3 id="section-2">总结</h3>
-
-<blockquote>
-  <p>对于有处理模型的问题, 我们很容易想到解决方案; 但是有时候我们并不知道处理模型是什么, 我们应该从小方面入手, 思考问题的基本因素, 从基本因素展开分析, 从而构造出一个问题的解决方案</p>
-</blockquote>
-
 <hr />
 
-<h2 id="subsets-ii">Subsets II</h2>
+<h2 id="nqueens-ii">NQueens II</h2>
 
 <h3 id="section-3">题目描述</h3>
 
 <blockquote>
-  <p>Given a collection of integers that might contain duplicates, nums, return all possible subsets.</p>
+  <p>Follow up for N-Queens problem.</p>
 
-  <p>Note:</p>
+  <p>Now, instead outputting board configurations, return the total number of distinct solutions.
+<img src="http://articles.leetcode.com/wp-content/uploads/2012/03/8-queens.png" alt="8-Queens" /></p>
 
-  <ul>
-    <li>Elements in a subset must be in non-descending order.</li>
-    <li>The solution set must not contain duplicate subsets.</li>
-  </ul>
-
-  <p>For example,
-If nums = [1,2,2], a solution is:
-    [
-      [2],
-      [1],
-      [1,2,2],
-      [2,2],
-      [1,2],
-      []
-    ]</p>
 </blockquote>
 
 <h3 id="section-4">解法</h3>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>public static List&lt;List&lt;Integer&gt;&gt; subsetsIteration( int[] nums ) {
-    Arrays.sort( nums );
-    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;&gt;();
-    
-    // 初始状态: 结果集中包含了子集: 空集
-    res.add( new ArrayList&lt;Integer&gt;() );
-    
-    // 构造过程: 对每一个元素构造出新子集并加入结果集
-    for( int i = 0; i &lt; nums.length; ) {
-        // 统计重复个数
-        int repeatNum = 0;
-        while( i+repeatNum &lt; nums.length &amp;&amp;
-                nums[i] == nums[repeatNum+i] ) ++repeatNum;
-        // 构造子集
-        int subsetCount = res.size();
-        for( int j = 0; j &lt; subsetCount; ++j ) {
-            List&lt;Integer&gt; subset = new ArrayList&lt;Integer&gt;( res.get(j) );
-            for( int k = 0; k &lt; repeatNum; ++k ) {
-                subset.add( nums[i] );
-                res.add( new ArrayList&lt;Integer&gt;( subset ) );
-            }
-        }
-        i += repeatNum;
-    }
-    
-    // 结束状态: 返回结果集
-    return res;
-}
-</code></pre>
-</div>
-
-<p>思考过程: 其基本思考过程同上面的Subsets迭代方式差不多, 不同点在于出现了重复元素, 那么还是一样, 我们思考重复元素对原始结果集的影响是什么? 思考这样一个例子[ 1, 2, 2 ], 当处理完元素[1]的时候, 我们得到的结果集是{ {}, {1} }, 接下来对于重复元素[2], 我们可以构造出来的新子集=旧子集+(1或2)个[2], 也就是说, 对于重复元素, 我们可以选择1-n个重复元素加入旧子集形成新子集, 对于重复元素的解决方案就出来了, 最后可以得到上面的代码</p>
-
-<h3 id="section-5">总结</h3>
-
-<blockquote>
-  <p>还是一样, 对于一个新的问题, 我们应该从基本的角度去思考, 从而展开到一个问题的解决方案</p>
-</blockquote>
+<p>该题目的算法与上一道题的一模一样, 只需要在相应的<code class="highlighter-rouge">递归版本</code>或<code class="highlighter-rouge">迭代版本</code>中找到可行解的时候统计数量即可</p>
 
       </article>
       <hr>
       
-      <a href="/2016/03/28/linux-command-find/">上一篇博客：find指令学习笔记</a><br>
+      <a href="/2016/03/29/leetcode-subsets(II)/">上一篇博客：Subsets(II)</a><br>
       
       
-      <a href="/2016/03/30/leetcode-NQueens(II)/">下一篇博客：NQueens(II)</a>
+      <a href="/2016/03/30/leetcode-next-permutation/">下一篇博客：Next Permutation</a>
       
       <hr>
       <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a></div>
@@ -320,7 +327,7 @@ If nums = [1,2,2], a solution is:
     <div class="post-area post comment">
       <!-- 多说评论框 start -->
       
-      <div class="ds-thread" data-thread-key="/2016/03/29/leetcode-subsets(II)" data-title="Subsets(II)" data-url="schStudio.github.io/2016/03/29/leetcode-subsets(II)/"></div>
+      <div class="ds-thread" data-thread-key="/2016/03/30/leetcode-NQueens(II)" data-title="NQueens(II)" data-url="schStudio.github.io/2016/03/30/leetcode-NQueens(II)/"></div>
       
       <!-- 多说评论框 end -->
     </div>

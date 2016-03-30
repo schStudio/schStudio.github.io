@@ -5,8 +5,8 @@
     <description>苏灿灏的博客 大数据爱好者</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 30 Mar 2016 16:42:06 +0800</pubDate>
-    <lastBuildDate>Wed, 30 Mar 2016 16:42:06 +0800</lastBuildDate>
+    <pubDate>Wed, 30 Mar 2016 20:37:51 +0800</pubDate>
+    <lastBuildDate>Wed, 30 Mar 2016 20:37:51 +0800</lastBuildDate>
     <generator>Jekyll v3.1.2</generator>
     
       <item>
@@ -267,6 +267,216 @@ private static void reverse( int[] nums, int i, int j ) {
         <pubDate>Wed, 30 Mar 2016 00:00:00 +0800</pubDate>
         <link>/2016/03/30/leetcode-next-permutation/</link>
         <guid isPermaLink="true">/2016/03/30/leetcode-next-permutation/</guid>
+        
+        
+        <category>Leetcode</category>
+        
+      </item>
+    
+      <item>
+        <title>NQueens(II)</title>
+        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#nqueens&quot; id=&quot;markdown-toc-nqueens&quot;&gt;NQueens&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#section&quot; id=&quot;markdown-toc-section&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-1&quot; id=&quot;markdown-toc-section-1&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-2&quot; id=&quot;markdown-toc-section-2&quot;&gt;总结&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#nqueens-ii&quot; id=&quot;markdown-toc-nqueens-ii&quot;&gt;NQueens II&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-3&quot; id=&quot;markdown-toc-section-3&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-4&quot; id=&quot;markdown-toc-section-4&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;nqueens&quot;&gt;NQueens&lt;/h2&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;题目描述&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The n-queens puzzle is the problem of placing n queens on an n×n chessboard such &amp;gt; that no two queens attack each other.&lt;/p&gt;
+
+  &lt;p&gt;&lt;img src=&quot;http://articles.leetcode.com/wp-content/uploads/2012/03/8-queens.png&quot; alt=&quot;8-Queens&quot; /&gt;&lt;/p&gt;
+
+  &lt;p&gt;Given an integer n, return all distinct solutions to the n-queens puzzle.&lt;/p&gt;
+
+  &lt;p&gt;Each solution contains a distinct board configuration of the n-queens’ placement, where ‘Q’ and ‘.’ both indicate a queen and an empty space respectively.
+For example,
+There exist two distinct solutions to the 4-queens puzzle:&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[
+ [&quot;.Q..&quot;,  // Solution 1
+  &quot;...Q&quot;,
+  &quot;Q...&quot;,
+  &quot;..Q.&quot;],
+
+ [&quot;..Q.&quot;,  // Solution 2
+  &quot;Q...&quot;,
+  &quot;...Q&quot;,
+  &quot;.Q..&quot;]
+]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;解法&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;递归方式&lt;/p&gt;
+
+    &lt;p&gt;代码如下:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  public static List&amp;lt;List&amp;lt;String&amp;gt;&amp;gt; solveNQueensRecursion( int n ) {
+      List&amp;lt;List&amp;lt;String&amp;gt;&amp;gt; res = new ArrayList&amp;lt;&amp;gt;();
+      // 创建棋盘: board[i]表示第i行第board[i]列
+      int[] board = new int[n];
+      // 初始化棋盘, -1表示没有棋子
+      Arrays.fill(board, -1);
+      // 回溯查找解
+      helperNQueens( 0, board, res );
+      return res;
+  }
+
+  private static void helperNQueens(int t, int[] board, List&amp;lt;List&amp;lt;String&amp;gt;&amp;gt; res) {
+      if( t == board.length ) {
+          res.add( newBoard(board) );
+          return;
+      }
+      for( int i = 0; i &amp;lt; board.length; ++i ) {
+          board[t] = i;
+          if( constraints( board, t ) )
+              helperNQueens( t+1, board, res );
+      }
+  }
+
+  private static boolean constraints(int[] board, int t) {
+      for( int i = 0; i &amp;lt; t; ++i ) {
+          if( (board[i] == board[t]) ||
+                  (t-i == board[t]-board[i] || t-i == board[i]-board[t]) )
+              return false;
+      }
+      return true;
+  }
+
+  /*
+   * 返回棋盘的表示形式, 类型为List&amp;lt;String&amp;gt;
+   */
+  private static List&amp;lt;String&amp;gt; newBoard(int[] board) {
+      List&amp;lt;String&amp;gt; res = new ArrayList&amp;lt;&amp;gt;();
+      int n = board.length;
+      char[][] newBoard = new char[n][n];
+      for( int i = 0; i &amp;lt; n; ++i )
+          Arrays.fill(newBoard[i], &#39;.&#39;);
+      for( int i = 0; i &amp;lt; n; ++i ) {
+          newBoard[i][board[i]] = &#39;Q&#39;;
+          StringBuilder sb = new StringBuilder();
+          for( char c : newBoard[i] ) sb.append(c);
+          res.add( sb.toString() );
+      }
+      return res;
+  }
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;思考过程: N皇后问题属于经典的题目, 用&lt;code class=&quot;highlighter-rouge&quot;&gt;回溯法&lt;/code&gt;来解决&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;疑难点: 难点主要有两个, 一个是&lt;code class=&quot;highlighter-rouge&quot;&gt;棋盘的表示&lt;/code&gt;, 另一个是皇后之间的&lt;code class=&quot;highlighter-rouge&quot;&gt;冲突判断&lt;/code&gt;&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;
+      &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;棋盘的表示&lt;/code&gt;要建立在对问题约束条件的理解之上. 棋盘之中皇后之间不能处于同一行, 也不能处于同一列, 那么我们可以用一个数组board来表示这个棋盘.&lt;/p&gt;
+
+      &lt;ul&gt;
+        &lt;li&gt;数组下标表示棋盘中的行值&lt;/li&gt;
+        &lt;li&gt;数组的值表示棋盘中的列值&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;冲突判断&lt;/code&gt;有3个条件:&lt;/p&gt;
+
+      &lt;ul&gt;
+        &lt;li&gt;皇后不能处于同一行: 不需要显示判断, 因为我们以行作为递归, 皇后不可能出现在同一行&lt;/li&gt;
+        &lt;li&gt;皇后不能处于同一列: 根据 board[i] == board[j] 作为判断&lt;/li&gt;
+        &lt;li&gt;皇后不能处于同一斜线: 根据 j-i == abs(board[j]-board[i]) (j&amp;gt;i)&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;斜线的判断可能比较难以理解: 意思是行值差与列值差相等表示皇后在同一斜线上.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;时空复杂度: 时间复杂度是O(n!), 空间复杂度是O(n): 递归的空间, 排除构造出来的棋盘&lt;/p&gt;
+
+&lt;h3 id=&quot;section-2&quot;&gt;总结&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;善于观察题目的限制条件, 从而构造出合适的数据结构&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;迭代方式&lt;/p&gt;
+
+    &lt;p&gt;代码如下:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  public static List&amp;lt;List&amp;lt;String&amp;gt;&amp;gt; solveNQueensIteration( int n ) {
+      List&amp;lt;List&amp;lt;String&amp;gt;&amp;gt; res = new ArrayList&amp;lt;&amp;gt;();
+      // 创建棋盘: board[i]表示第i行第board[i]列
+      int[] board = new int[n];
+
+      // 初始化第0行的状态
+      board[0] = -1;
+      // t表示目前处于第t行
+      int t = 0;
+      while( t &amp;gt;= 0 ) {
+          // 查找第t行皇后的存放位置
+          ++board[t];
+          while( board[t] &amp;lt; n &amp;amp;&amp;amp; !constraints( board, t ) ) ++board[t];
+
+          // 找到第t行皇后的存放位置就进入下一行
+          if( board[t] &amp;lt; n ) {
+              if( t == n-1 ) {
+                  res.add( newBoard(board) );
+              } else {
+                  ++t;
+                  board[t] = -1;
+              }
+          } else {
+              --t;
+          }
+      }
+      return res;
+  }
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;nqueens-ii&quot;&gt;NQueens II&lt;/h2&gt;
+
+&lt;h3 id=&quot;section-3&quot;&gt;题目描述&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Follow up for N-Queens problem.&lt;/p&gt;
+
+  &lt;p&gt;Now, instead outputting board configurations, return the total number of distinct solutions.
+&lt;img src=&quot;http://articles.leetcode.com/wp-content/uploads/2012/03/8-queens.png&quot; alt=&quot;8-Queens&quot; /&gt;&lt;/p&gt;
+
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;section-4&quot;&gt;解法&lt;/h3&gt;
+
+&lt;p&gt;该题目的算法与上一道题的一模一样, 只需要在相应的&lt;code class=&quot;highlighter-rouge&quot;&gt;递归版本&lt;/code&gt;或&lt;code class=&quot;highlighter-rouge&quot;&gt;迭代版本&lt;/code&gt;中找到可行解的时候统计数量即可&lt;/p&gt;
+</description>
+        <pubDate>Wed, 30 Mar 2016 00:00:00 +0800</pubDate>
+        <link>/2016/03/30/leetcode-NQueens(II)/</link>
+        <guid isPermaLink="true">/2016/03/30/leetcode-NQueens(II)/</guid>
         
         
         <category>Leetcode</category>
