@@ -126,35 +126,34 @@ category: Leetcode
 
 ### 解法
 
-	public static List<List<Integer>> subsetsIteration( int[] nums ) {
-		Arrays.sort( nums );
-		List<List<Integer>> res = new ArrayList<>();
+    public static List<List<Integer>> subsetsIteration( int[] nums ) {
+        Arrays.sort( nums );
+        List<List<Integer>> res = new ArrayList<>();
         
-		// 初始状态: 结果集中包含了子集: 空集
-		res.add( new ArrayList<Integer>() );
+        // 初始状态: 结果集中包含了子集: 空集
+        res.add( new ArrayList<Integer>() );
         
-		// 构造过程: 对每一个元素构造出新子集并加入结果集
-		for( int i = 0; i < nums.length; ) {
-			// 统计重复个数
-			int repeatNum = 0;
-			while( i+repeatNum < nums.length &&
-					nums[i] == nums[repeatNum+i] ) ++repeatNum;
-			// 构造子集
-			int subsetCount = res.size();
-			for( int j = 0; j < subsetCount; ++j ) {
-				List<Integer> subset = new ArrayList<Integer>( res.get(j) );
-				for( int k = 0; k < repeatNum; ++k ) {
-					subset.add( nums[i] );
-					res.add( new ArrayList<Integer>( subset ) );
-				}
-			}
-			i += repeatNum;
-		}
+        // 构造过程: 对每一个元素构造出新子集并加入结果集
+        for( int i = 0; i < nums.length; ) {
+            // 统计重复个数
+            int repeatNum = 0;
+            while( i+repeatNum < nums.length &&
+                    nums[i] == nums[repeatNum+i] ) ++repeatNum;
+            // 构造子集
+            int subsetCount = res.size();
+            for( int j = 0; j < subsetCount; ++j ) {
+                List<Integer> subset = new ArrayList<Integer>( res.get(j) );
+                for( int k = 0; k < repeatNum; ++k ) {
+                    subset.add( nums[i] );
+                    res.add( new ArrayList<Integer>( subset ) );
+                }
+            }
+            i += repeatNum;
+        }
         
-		// 结束状态: 返回结果集
-		return res;
-	}
-    
+        // 结束状态: 返回结果集
+        return res;
+    }
 
 思考过程: 其基本思考过程同上面的Subsets迭代方式差不多, 不同点在于出现了重复元素, 那么还是一样, 我们思考重复元素对原始结果集的影响是什么? 思考这样一个例子[ 1, 2, 2 ], 当处理完元素[1]的时候, 我们得到的结果集是{ {}, {1} }, 接下来对于重复元素[2], 我们可以构造出来的新子集=旧子集+(1或2)个[2], 也就是说, 对于重复元素, 我们可以选择1-n个重复元素加入旧子集形成新子集, 对于重复元素的解决方案就出来了, 最后可以得到上面的代码
 
