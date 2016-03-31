@@ -5,8 +5,8 @@
     <description>苏灿灏的博客 大数据爱好者</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 31 Mar 2016 12:57:59 +0800</pubDate>
-    <lastBuildDate>Thu, 31 Mar 2016 12:57:59 +0800</lastBuildDate>
+    <pubDate>Thu, 31 Mar 2016 13:52:54 +0800</pubDate>
+    <lastBuildDate>Thu, 31 Mar 2016 13:52:54 +0800</lastBuildDate>
     <generator>Jekyll v3.1.2</generator>
     
       <item>
@@ -83,6 +83,262 @@ public static void helperCombine(
         <pubDate>Thu, 31 Mar 2016 00:00:00 +0800</pubDate>
         <link>/2016/03/31/leetcode-Combinations/</link>
         <guid isPermaLink="true">/2016/03/31/leetcode-Combinations/</guid>
+        
+        
+        <category>Leetcode</category>
+        
+      </item>
+    
+      <item>
+        <title>CombinationSum(II)(III)</title>
+        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#combinationsum&quot; id=&quot;markdown-toc-combinationsum&quot;&gt;CombinationSum&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#section&quot; id=&quot;markdown-toc-section&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-1&quot; id=&quot;markdown-toc-section-1&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#combinationsum-ii&quot; id=&quot;markdown-toc-combinationsum-ii&quot;&gt;CombinationSum II&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-2&quot; id=&quot;markdown-toc-section-2&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-3&quot; id=&quot;markdown-toc-section-3&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-4&quot; id=&quot;markdown-toc-section-4&quot;&gt;总结&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#combinationsum-iii&quot; id=&quot;markdown-toc-combinationsum-iii&quot;&gt;CombinationSum III&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-5&quot; id=&quot;markdown-toc-section-5&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-6&quot; id=&quot;markdown-toc-section-6&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;combinationsum&quot;&gt;CombinationSum&lt;/h2&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;题目描述&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Given a set of candidate numbers (C) and a target number (T), find all unique combinations in C where the candidate numbers sums to T.&lt;/p&gt;
+
+  &lt;p&gt;The same repeated number may be chosen from C unlimited number of times.&lt;/p&gt;
+
+  &lt;p&gt;Note:&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;All numbers (including target) will be positive integers.&lt;/li&gt;
+    &lt;li&gt;Elements in a combination (a1, a2, … , ak) must be in non-descending order. (ie, &amp;gt; a1 ≤ a2 ≤ … ≤ ak).&lt;/li&gt;
+    &lt;li&gt;The solution set must not contain duplicate combinations.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;For example, given candidate set 2,3,6,7 and target 7,
+A solution set is:&lt;/p&gt;
+
+  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;[7]&lt;/code&gt;&lt;/p&gt;
+
+  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;[2, 2, 3]&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;解法&lt;/h3&gt;
+
+&lt;p&gt;代码如下:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static List&amp;lt;List&amp;lt;Integer&amp;gt;&amp;gt; combinationSum( 
+        int[] candidates, int target ) {
+    // 排序, 后面才可以进行剪枝
+    Arrays.sort( candidates );
+    List&amp;lt;List&amp;lt;Integer&amp;gt;&amp;gt; res = new ArrayList&amp;lt;&amp;gt;();
+    helperCombinationSum2( 
+            candidates, target, 0, new ArrayList&amp;lt;Integer&amp;gt;(), res );
+    return res;
+}
+
+private static void helperCombinationSum2(
+        int[] candidates, int target, int t, List&amp;lt;Integer&amp;gt; tmpRes, 
+        List&amp;lt;List&amp;lt;Integer&amp;gt;&amp;gt; res) {
+    // 约束条件
+    if( t == candidates.length ) {
+        return;
+    }
+    // 剪枝
+    if( candidates[t] &amp;gt; target ) {
+        return;
+    }
+    
+    // 遍历解空间
+    int i = 0;
+    for( ; i*candidates[t] &amp;lt;= target; ++i ) {
+        if( i != 0 ) tmpRes.add( candidates[t] );
+        if( i*candidates[t] == target ) {
+            res.add( new ArrayList&amp;lt;Integer&amp;gt;( tmpRes) );
+        } else {
+            helperCombinationSum2( candidates, 
+            	target-i*candidates[t], t+1, tmpRes, res );
+        }
+    }
+    while( i-- &amp;gt; 1 )
+        tmpRes.remove( tmpRes.size()-1 );
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;思考过程: &lt;code class=&quot;highlighter-rouge&quot;&gt;回溯法&lt;/code&gt;. 对于candidates数组中的每一个值, 可以无限重复取, 但是实际上只要取到一定程度就就可以结束了, 结束条件: i*candidates[t] &amp;gt; target, 也就是取[0…i]的情况, [i+1…∞]不取.&lt;/p&gt;
+
+&lt;p&gt;时空复杂度: 时间复杂度是&lt;code class=&quot;highlighter-rouge&quot;&gt;不确定&lt;/code&gt;, 空间复杂度是O(n): 递归的空间, 排除构造出来的结果集&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;combinationsum-ii&quot;&gt;CombinationSum II&lt;/h2&gt;
+
+&lt;h3 id=&quot;section-2&quot;&gt;题目描述&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Given a collection of candidate numbers (C) and a target number (T), find all unique combinations in C where the candidate numbers sums to T.&lt;/p&gt;
+
+  &lt;p&gt;Each number in C may only be used once in the combination.&lt;/p&gt;
+
+  &lt;p&gt;Note:&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;All numbers (including target) will be positive integers.&lt;/li&gt;
+    &lt;li&gt;Elements in a combination (a1, a2, … , ak) must be in non-descending order. (ie, a1 ≤ a2 ≤ … ≤ ak).&lt;/li&gt;
+    &lt;li&gt;The solution set must not contain duplicate combinations.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;For example, given candidate set 10,1,2,7,6,1,5 and target 8,&lt;/p&gt;
+
+  &lt;p&gt;A solution set is:&lt;/p&gt;
+
+  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;[1, 7]&lt;/code&gt;&lt;/p&gt;
+
+  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;[1, 2, 5]&lt;/code&gt;&lt;/p&gt;
+
+  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;[2, 6]&lt;/code&gt;&lt;/p&gt;
+
+  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;[1, 1, 6]&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;section-3&quot;&gt;解法&lt;/h3&gt;
+
+&lt;p&gt;代码如下:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static List&amp;lt;List&amp;lt;Integer&amp;gt;&amp;gt; combinationSum2( 
+		int[] candidates, int target ) {
+	// 排序, 后面才可以进行剪枝
+	Arrays.sort( candidates );
+	List&amp;lt;List&amp;lt;Integer&amp;gt;&amp;gt; res = new ArrayList&amp;lt;&amp;gt;();
+	helperCombinationSum( 
+			candidates, target, 0, new ArrayList&amp;lt;Integer&amp;gt;(), res );
+	return res;
+}
+
+private static void helperCombinationSum(
+		int[] candidates, int target, int t, List&amp;lt;Integer&amp;gt; tmpRes, 
+		List&amp;lt;List&amp;lt;Integer&amp;gt;&amp;gt; res) {
+	if( t == candidates.length ) {
+		return;
+	}
+	// 剪枝
+	if( candidates[t] &amp;gt; target ) {
+		return;
+	}
+	
+	// 统计重复元素个数
+	int repeatCount = 0;
+	while( repeatCount+t &amp;lt; candidates.length &amp;amp;&amp;amp; 
+			candidates[t] == candidates[t+repeatCount])
+		++repeatCount;
+	
+	// 遍历解空间
+	int i = 0;
+	for( ; i &amp;lt;= repeatCount &amp;amp;&amp;amp; i*candidates[t] &amp;lt;= target; ++i ) {
+		if( i != 0 ) tmpRes.add( candidates[t] );
+		if( i*candidates[t] == target ) {
+			res.add( new ArrayList&amp;lt;Integer&amp;gt;( tmpRes) );
+		} else {
+			helperCombinationSum( candidates, 
+			    target-i*candidates[t], t+repeatCount, tmpRes, res );
+		}
+	}
+	while( i-- &amp;gt; 1 )
+		tmpRes.remove( tmpRes.size()-1 );
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;思考过程: 同CombinationSum一样. 不一样的地方: CombinationSum中的每个元素取[0,∞]个, 这里每个元素取[0…R]个, R表示元素的重复个数, 所以代码里面就多了限制条件: &lt;code class=&quot;highlighter-rouge&quot;&gt;i &amp;lt;= repeatCount&lt;/code&gt; 而且进入下一层要跨越重复元素: &lt;code class=&quot;highlighter-rouge&quot;&gt;t+repeatCount&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;时空复杂度: 时间复杂度是&lt;code class=&quot;highlighter-rouge&quot;&gt;不确定&lt;/code&gt;, 空间复杂度是O(n): 递归的空间, 排除构造出来的结果集&lt;/p&gt;
+
+&lt;h3 id=&quot;section-4&quot;&gt;总结&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;借助已有的处理模型, 思考新问题中&lt;code class=&quot;highlighter-rouge&quot;&gt;影响因素&lt;/code&gt;对结果产生的影响, 并且从原有模型中调整得到解决方案&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;combinationsum-iii&quot;&gt;CombinationSum III&lt;/h2&gt;
+
+&lt;h3 id=&quot;section-5&quot;&gt;题目描述&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Find all possible combinations of k numbers that add up to a number n, given that only numbers from 1 to 9 can be used and each combination should be a unique set of numbers.&lt;/p&gt;
+
+  &lt;p&gt;Ensure that numbers within the set are sorted in ascending order.&lt;/p&gt;
+
+  &lt;p&gt;Example 1:&lt;/p&gt;
+
+  &lt;p&gt;Input: k = 3, n = 7&lt;/p&gt;
+
+  &lt;p&gt;Output:&lt;/p&gt;
+
+  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;[[1,2,4]]&lt;/code&gt;&lt;/p&gt;
+
+  &lt;p&gt;Example 2:&lt;/p&gt;
+
+  &lt;p&gt;Input: k = 3, n = 9&lt;/p&gt;
+
+  &lt;p&gt;Output:&lt;/p&gt;
+
+  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;[[1,2,6], [1,3,5], [2,3,4]]&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;section-6&quot;&gt;解法&lt;/h3&gt;
+
+&lt;p&gt;代码如下:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static List&amp;lt;List&amp;lt;Integer&amp;gt;&amp;gt; combinationSum3( int n, int k ) {
+    List&amp;lt;List&amp;lt;Integer&amp;gt;&amp;gt; res = new ArrayList&amp;lt;&amp;gt;();
+    helperCombinationSum3( n, k, new ArrayList&amp;lt;Integer&amp;gt;(), res );
+    return res;
+}
+
+private static void helperCombinationSum3( int n, int k, List&amp;lt;Integer&amp;gt; tmpRes, 
+        List&amp;lt;List&amp;lt;Integer&amp;gt;&amp;gt; res) {
+    // 约束条件
+    if( k &amp;lt;= 0 || n &amp;lt;= 0 ) {
+        return;
+    }
+    
+    // 保证结果子集中不可能出现重复元素
+    int i = tmpRes.size()==0 ? 1 : tmpRes.get(tmpRes.size()-1)+1;
+    for( ; i &amp;lt;= 9; ++i ) {
+        tmpRes.add( i );
+        if( n-i == 0 &amp;amp;&amp;amp; k-1 == 0 ) {
+            res.add( new ArrayList&amp;lt;Integer&amp;gt;(tmpRes) );
+        } else {
+            helperCombinationSum3( n-i, k-1, tmpRes, res );
+        }
+        tmpRes.remove( tmpRes.size()-1 );
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;思考过程: &lt;code class=&quot;highlighter-rouge&quot;&gt;回溯法&lt;/code&gt;. 本质上跟上面两题都是一样的. 不同的地方就是: &lt;code class=&quot;highlighter-rouge&quot;&gt;约束条件&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;解空间的遍历方式&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;时空复杂度: 时间复杂度是&lt;code class=&quot;highlighter-rouge&quot;&gt;不确定&lt;/code&gt;, 空间复杂度是O(n): 递归的空间, 排除构造出来的结果集&lt;/p&gt;
+</description>
+        <pubDate>Thu, 31 Mar 2016 00:00:00 +0800</pubDate>
+        <link>/2016/03/31/leetcode-CombinationSum(II)(III)/</link>
+        <guid isPermaLink="true">/2016/03/31/leetcode-CombinationSum(II)(III)/</guid>
         
         
         <category>Leetcode</category>
@@ -1619,285 +1875,6 @@ If nums = [1,2,2], a solution is:
         
         
         <category>算法</category>
-        
-      </item>
-    
-      <item>
-        <title>TCP原理学习笔记</title>
-        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#tcp&quot; id=&quot;markdown-toc-tcp&quot;&gt;TCP概述&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#tcp-1&quot; id=&quot;markdown-toc-tcp-1&quot;&gt;TCP特点&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#tcp-2&quot; id=&quot;markdown-toc-tcp-2&quot;&gt;TCP连接&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#tcp-3&quot; id=&quot;markdown-toc-tcp-3&quot;&gt;TCP报文段&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#tcp-4&quot; id=&quot;markdown-toc-tcp-4&quot;&gt;TCP可靠传输&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#section&quot; id=&quot;markdown-toc-section&quot;&gt;滑动窗口&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-1&quot; id=&quot;markdown-toc-section-1&quot;&gt;超时重传&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-2&quot; id=&quot;markdown-toc-section-2&quot;&gt;选择确认&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#tcp-5&quot; id=&quot;markdown-toc-tcp-5&quot;&gt;TCP流量控制&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#tcp-6&quot; id=&quot;markdown-toc-tcp-6&quot;&gt;TCP拥塞控制&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-3&quot; id=&quot;markdown-toc-section-3&quot;&gt;拥塞控制原理&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-4&quot; id=&quot;markdown-toc-section-4&quot;&gt;拥塞控制方法&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#tcp-7&quot; id=&quot;markdown-toc-tcp-7&quot;&gt;TCP连接管理&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-5&quot; id=&quot;markdown-toc-section-5&quot;&gt;建立连接&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-6&quot; id=&quot;markdown-toc-section-6&quot;&gt;释放连接&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;tcp&quot;&gt;TCP概述&lt;/h3&gt;
-
-&lt;h4 id=&quot;tcp-1&quot;&gt;TCP特点&lt;/h4&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;面向连接: 在连接的基础上双方才可以通信&lt;/li&gt;
-  &lt;li&gt;端到端: 通信只有两个端点&lt;/li&gt;
-  &lt;li&gt;可靠交付: 传输什么样的数据, 就接受什么样的数据&lt;/li&gt;
-  &lt;li&gt;全双工通信: 通信是双向的, 而且不会相互干扰&lt;/li&gt;
-  &lt;li&gt;面向字节流: 数据以字节传输, 表明TCP不知道数据的含义&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;tcp-2&quot;&gt;TCP连接&lt;/h4&gt;
-
-&lt;p&gt;什么是TCP连接? TCP连接就是一个抽象表示, 指出了通信双方的身份.&lt;/p&gt;
-
-&lt;p&gt;通信中的一方我们用套接字(socket)表示&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;套接字socket = ( IP地址: 端口号 )
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;而且我们知道TCP连接是&lt;code class=&quot;highlighter-rouge&quot;&gt;端到端&lt;/code&gt;的, 所以TCP连接可以这样表示:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;TCP连接 ::= { socket1, socket2 } = { (IP1: port1), (IP2: port2) }
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;tcp-3&quot;&gt;TCP报文段&lt;/h3&gt;
-
-&lt;p&gt;TCP报文段的组成很简单, 只有首部和数据, 表示如下:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;TCP报文段 ::= TCP首部 + 数据部分
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;TCP首部信息如下图所示(注:数字表示位数):
-&lt;img src=&quot;\assets\computer-network\tcp-header.png&quot; alt=&quot;TCP首部信息&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;首部信息中各字段解释如下:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;源端口: 发送方port, 可知端口范围为0~65535&lt;/li&gt;
-  &lt;li&gt;目的端口: 接收方port, 可知端口范围为0~65535&lt;/li&gt;
-  &lt;li&gt;序号: 报文段的编号, 可知序号范围0~2^32^-1, 由于TCP是面向字节流的,所以一个序号表示一个字节&lt;/li&gt;
-  &lt;li&gt;确认号: 告知对方自己期望的下一个报文段编号&lt;/li&gt;
-  &lt;li&gt;数据偏移: TCP首部长度, 表示到达数据部分的偏移量, 范围为0~15, 所以首部长度最多为60字节&lt;/li&gt;
-  &lt;li&gt;保留: 未定义&lt;/li&gt;
-  &lt;li&gt;URG: 紧急位, 用于设置紧急指针&lt;/li&gt;
-  &lt;li&gt;ACK: 确认位, 用于设置确认号&lt;/li&gt;
-  &lt;li&gt;PSH: 推送位, 告知TCP数据发送&lt;/li&gt;
-  &lt;li&gt;RST: 重置位, 告知对方TCP出现错误,需要重新连接&lt;/li&gt;
-  &lt;li&gt;SYN: 同步位, 建立连接的标志&lt;/li&gt;
-  &lt;li&gt;FIN: 结束位, 释放连接的标志&lt;/li&gt;
-  &lt;li&gt;窗口: 告知对方自己的接受窗口&lt;/li&gt;
-  &lt;li&gt;检验和: 检验TCP报文段的有效性, 包括TCP首部和数据部分&lt;/li&gt;
-  &lt;li&gt;紧急指针: URG置1有效, 定位紧急数据&lt;/li&gt;
-  &lt;li&gt;选项(长度可变): 用于扩展TCP首部信息&lt;/li&gt;
-  &lt;li&gt;填充: 填充TCP首部格式使得满足以4字节为单位&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;TCP报文段的规则中定义了&lt;code class=&quot;highlighter-rouge&quot;&gt;MSS&lt;/code&gt;(Maximum Segment Size:最大报文段长度), 表示TCP报文段中数据部分的最大长度, 默认值是536, 所以因特网中的所有主机都应能够接受536+20=556字节的最大报文段&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;tcp-4&quot;&gt;TCP可靠传输&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;可靠传输&lt;/strong&gt;有三个方面的含义:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;无差错: 数据传输之前之后是一样的&lt;/li&gt;
-  &lt;li&gt;不丢失: 发送方发送的数据, 接收方一定可以接收到&lt;/li&gt;
-  &lt;li&gt;不重复: 发送方发送的数据, 接收方不会重复接受&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;section&quot;&gt;滑动窗口&lt;/h4&gt;
-
-&lt;p&gt;滑动窗口是基于字节流的, 所以滑动的单位为1字节, 其结构如下图所示:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;\assets\computer-network\tcp-sliding-window.png&quot; alt=&quot;滑动窗口结构图&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;说明如下:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Category #1: 已发送, 已确认&lt;/li&gt;
-  &lt;li&gt;Category #2: 已发送, 未确认&lt;/li&gt;
-  &lt;li&gt;Category #3: 未发送, 可发送&lt;/li&gt;
-  &lt;li&gt;Category #4: 未发送, 不可发送&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;需要注意的细节问题:&lt;/p&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;发送窗口可能要比接受窗口小, 因为发送方要考虑网络拥塞问题&lt;/li&gt;
-    &lt;li&gt;对于不按序到达的数据如何处理, TCP标准没有说明. 但是考虑网络资源的珍贵性, 一般情况下接收方都会接受下来暂时保存着&lt;/li&gt;
-    &lt;li&gt;接收方必须要有累计确认的功能, 因为这样可以很好的减小开销&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/blockquote&gt;
-
-&lt;h4 id=&quot;section-1&quot;&gt;超时重传&lt;/h4&gt;
-
-&lt;p&gt;&lt;strong&gt;超时重传&lt;/strong&gt;是为了保证可靠传输, 其实现涉及两个东西: &lt;code class=&quot;highlighter-rouge&quot;&gt;RTT&lt;/code&gt;(Round-Time Trip)和&lt;code class=&quot;highlighter-rouge&quot;&gt;RTO&lt;/code&gt;(Retransmission Time-Out).&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;RTT&lt;/code&gt;: 报文段往返时间&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;RTO&lt;/code&gt;: 超时重传时间, 略大于&lt;code class=&quot;highlighter-rouge&quot;&gt;RTT&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;一个报文段发送出去, 如果过了&lt;code class=&quot;highlighter-rouge&quot;&gt;RTO&lt;/code&gt;时间还没有接收到确认, 那么就需要重传报文段&lt;/p&gt;
-
-&lt;p&gt;我们知道网络情况是动态的, 有时候网络良好, 有时候网络拥塞, 那么&lt;code class=&quot;highlighter-rouge&quot;&gt;RTT&lt;/code&gt;就应该也是动态变化的,&lt;code class=&quot;highlighter-rouge&quot;&gt;RTO&lt;/code&gt;自然而然也就跟着&lt;code class=&quot;highlighter-rouge&quot;&gt;RTT&lt;/code&gt;动态变化. 这个动态变化就需要设计一个算法来计算, 我们这里就简单讲一下3个算法.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;自适应算法:&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  RTTs = (1-a)*(旧RTTs) + a*(新RTT样本)
-  RTO = RTTs + 4*RTTD (注:RTTD表示RTT偏差加权平均值)
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Karn算法: 在自适应算法基础上, 提出只要报文段重传, 那么就不采用其样本RTT&lt;/li&gt;
-  &lt;li&gt;Karn修正算法: 在Karn算法基础上, 剔除只要报文段重传, 那么RTO就增大一点&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;section-2&quot;&gt;选择确认&lt;/h4&gt;
-
-&lt;p&gt;SAK(Selective ACK)选择确认是指在发生数据未按序到达的时候, 接收方告诉发送方自己接收了哪些数据, 从而发送发可以决定重发丢失的数据, 而不是全部重新重发, 使得网络资源得到更好的利用&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;SAK的实现原理是借助TCP首部信息中的&lt;code class=&quot;highlighter-rouge&quot;&gt;选项(可选长度)&lt;/code&gt;这一部分. 我们知道一个连续的字节段可以由头序号和尾序号表示, 一个序号需要4个字节, 所以一个字节段需要8个字节表示, 那么我们是不是一次告诉发送方5个字节段呢?(首部最长60字节,20字节是固定的,所以有&lt;code class=&quot;highlighter-rouge&quot;&gt;40字节/8字节=5&lt;/code&gt;). 然而并没有, 因为还需要2个字节, 分别表明使用SAK选项和选项长度, 所以只有40-2=38个字节可用, 所以一次最多告诉发送方4个字节段&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;tcp-5&quot;&gt;TCP流量控制&lt;/h3&gt;
-
-&lt;p&gt;所谓流量控制, 就是接收方让发送方不要发送太多的数据, 好让接收方来得及接受, 过程如下图所示:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;\assets\computer-network\tcp-flow-control.jpg&quot; alt=&quot;TCP流量控制&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;从上图可以看出, 接收方一共进行了3次流量控制&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;注意: 现在考虑一种情况, 在上图中, 接下来B处理完了缓冲区的数据, 那么B就会发送一个rwnd=400的报文段, 然而报文段却在中途丢失了, 那么A就一直等B的通知, 而B也一直等A发数据, 因为B认为自己已经通知A可以发送了, 这样就形成了一个死锁.
-所以TCP为每一个连接都设置了一个&lt;code class=&quot;highlighter-rouge&quot;&gt;持续计时器&lt;/code&gt;, 每当接收方得知发送方的发送窗口值为0的时候, 启动&lt;code class=&quot;highlighter-rouge&quot;&gt;持续计时器&lt;/code&gt;, 时间一到接收方就发送一个&lt;code class=&quot;highlighter-rouge&quot;&gt;探测报文段&lt;/code&gt;, 一直持续这个过程直到发送方的发送窗口不为0&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;tcp-6&quot;&gt;TCP拥塞控制&lt;/h3&gt;
-
-&lt;p&gt;所谓拥塞控制, 就是防止过多的数据注入到网络中, 使得网络中的路由器或链路不致过载&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;注意: 拥塞控制不同于流量控制, 拥塞控制是基于整个网络考虑, 而流量控制是基于通信双方考虑&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h4 id=&quot;section-3&quot;&gt;拥塞控制原理&lt;/h4&gt;
-
-&lt;p&gt;拥塞控制从大方面考虑可以分为两种: &lt;code class=&quot;highlighter-rouge&quot;&gt;开环控制&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;闭环控制&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;开环控制&lt;/code&gt;是指在网络设计的时候把相关拥塞因素考虑进来, 一旦网络运行起来就不变更了; &lt;code class=&quot;highlighter-rouge&quot;&gt;闭环控制&lt;/code&gt;则是动态地考虑拥塞情况并做出控制, 我们这里讲一下&lt;code class=&quot;highlighter-rouge&quot;&gt;闭环控制&lt;/code&gt;的原理&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;闭环控制&lt;/code&gt;是基于反馈环路的概念.属于&lt;code class=&quot;highlighter-rouge&quot;&gt;闭环控制&lt;/code&gt;有以下几步&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;检测网络系统得知拥塞发生的时间地点&lt;/li&gt;
-  &lt;li&gt;把拥塞信息发送到可以采取行动的地方&lt;/li&gt;
-  &lt;li&gt;调整网络系统的运行以解决拥塞问题&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h4 id=&quot;section-4&quot;&gt;拥塞控制方法&lt;/h4&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;慢开始(slow-start): 从发送数据开始, 拥塞窗口逐渐增大&lt;/li&gt;
-  &lt;li&gt;拥塞避免(congestion avoidance): 从感知到拥塞开始, 拥塞窗口缓慢增大&lt;/li&gt;
-  &lt;li&gt;快重传(fast retransmit): 从丢失报文段开始, 不断重复确认丢失报文段, 使得尽快重传报文段&lt;/li&gt;
-  &lt;li&gt;快恢复(fast recovery): 从发现快重传开始, 缩小一半拥塞窗口&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;一般情况下&lt;code class=&quot;highlighter-rouge&quot;&gt;慢开始&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;拥塞避免&lt;/code&gt;一起使用, &lt;code class=&quot;highlighter-rouge&quot;&gt;快重传&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;快恢复&lt;/code&gt;一起使用&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;慢开始&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;拥塞避免&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;\assets\computer-network\tcp-slow-start-and-congestion-avoidance.jpg&quot; alt=&quot;慢开始和拥塞避免&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;快重传&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;快恢复&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;\assets\computer-network\tcp-fast-retransmit-fast-recovery.jpg&quot; alt=&quot;快重传和快恢复&quot; /&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;注:&lt;/p&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;ssthresh是指慢开始门限, 也就是慢开始算法切换掉的分割线&lt;/li&gt;
-    &lt;li&gt;慢开始算法的拥塞窗口起始值是1&lt;/li&gt;
-    &lt;li&gt;发送方窗口上限值 = Min [ rwnd, cwnd ]&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/blockquote&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;tcp-7&quot;&gt;TCP连接管理&lt;/h3&gt;
-
-&lt;h4 id=&quot;section-5&quot;&gt;建立连接&lt;/h4&gt;
-
-&lt;p&gt;&lt;img src=&quot;\assets\computer-network\tcp-link-create.png&quot; alt=&quot;TCP建立连接&quot; /&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;这里为什么需要三次握手, 而不是两次握手呢?&lt;/p&gt;
-
-  &lt;p&gt;&lt;strong&gt;主要是从服务端角度考虑, 目的是为了不浪费服务端资源&lt;/strong&gt;&lt;/p&gt;
-
-  &lt;p&gt;考虑两次握手的情景, 客户端发送了请求连接(1), 但是延迟了, 于是客户端再发送一次请求连接(2), 并且完成了通信和释放了连接(2), 之后服务端收到了连接(1)并建立连接, 但是客户端已经不需要连接(1)了, 所以连接(1)会造成服务端网络资源的浪费&lt;/p&gt;
-
-  &lt;p&gt;&lt;strong&gt;但是使用三次握手会引来另外一个问题: 客户端资源的浪费&lt;/strong&gt;&lt;/p&gt;
-
-  &lt;p&gt;主要是因为客户端发送第三次握手过后, 客户端就可以发送数据了, 但是连接是否建立成功还不一定, 所以就有可能造成客户端资源的浪费&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h4 id=&quot;section-6&quot;&gt;释放连接&lt;/h4&gt;
-
-&lt;p&gt;&lt;img src=&quot;\assets\computer-network\tcp-link-release.gif&quot; alt=&quot;TCP建立连接&quot; /&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;TCP连接建立和释放过程中, 每一步报文段分别发生丢失我们要怎么处理呢?&lt;/p&gt;
-
-  &lt;p&gt;&lt;strong&gt;关键在于理解: 无论客户端还是服务端, 只要是状态变更的发起者, 那么就要负责重传服务&lt;/strong&gt;&lt;/p&gt;
-
-  &lt;p&gt;例如1: 在TCP连接建立过程中, 客户端从CLOSED到SYN-SENT, 状态发生变更发起者是客户端, 客户端就要负责失败重传; 服务端从LISTEN到SYN-RCVD, 状态发生变更发起者是服务器, 服务端要负责失败重传&lt;/p&gt;
-
-  &lt;p&gt;例如2:在TCP连接释放过程中, 客户端从ESTABLISHED到FIN-WAIT1, 状态发生变更发起者是客户端, 客户端份负责重传; 服务端从CLOSE-WAIT到LAST-ACK, 状态发生变更发起者是服务端, 服务端负责重传&lt;/p&gt;
-&lt;/blockquote&gt;
-</description>
-        <pubDate>Sat, 26 Mar 2016 00:00:00 +0800</pubDate>
-        <link>/2016/03/26/computer-network-tcp/</link>
-        <guid isPermaLink="true">/2016/03/26/computer-network-tcp/</guid>
-        
-        
-        <category>计算机网络</category>
         
       </item>
     

@@ -5,10 +5,10 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Combinations</title>
+	<title>CombinationSum(II)(III)</title>
 	<meta name="description" content="">
 	
-	<link rel="canonical" href="/2016/03/31/leetcode-Combinations/">
+	<link rel="canonical" href="/2016/03/31/leetcode-CombinationSum(II)(III)/">
 	<link rel="alternate" type="application/rss+xml" title="SCH" href="/feed.xml" />
 	
 	<!-- <link rel="stylesheet" href="/css/main.css"> -->
@@ -110,85 +110,263 @@
   <div id="myArticle" class="col-sm-9">
     <div class="post-area post">
       <header>
-        <h1>Combinations</h1>
+        <h1>CombinationSum(II)(III)</h1>
         <p>Mar 31, 2016</p>
       </header>
       <hr>
       <article>
         <ul id="markdown-toc">
-  <li><a href="#combinations" id="markdown-toc-combinations">Combinations</a>    <ul>
+  <li><a href="#combinationsum" id="markdown-toc-combinationsum">CombinationSum</a>    <ul>
       <li><a href="#section" id="markdown-toc-section">题目描述</a></li>
       <li><a href="#section-1" id="markdown-toc-section-1">解法</a></li>
-      <li><a href="#section-2" id="markdown-toc-section-2">总结</a></li>
+    </ul>
+  </li>
+  <li><a href="#combinationsum-ii" id="markdown-toc-combinationsum-ii">CombinationSum II</a>    <ul>
+      <li><a href="#section-2" id="markdown-toc-section-2">题目描述</a></li>
+      <li><a href="#section-3" id="markdown-toc-section-3">解法</a></li>
+      <li><a href="#section-4" id="markdown-toc-section-4">总结</a></li>
+    </ul>
+  </li>
+  <li><a href="#combinationsum-iii" id="markdown-toc-combinationsum-iii">CombinationSum III</a>    <ul>
+      <li><a href="#section-5" id="markdown-toc-section-5">题目描述</a></li>
+      <li><a href="#section-6" id="markdown-toc-section-6">解法</a></li>
     </ul>
   </li>
 </ul>
 
-<h2 id="combinations">Combinations</h2>
+<h2 id="combinationsum">CombinationSum</h2>
 
 <h3 id="section">题目描述</h3>
 
 <blockquote>
-  <p>Given two integers n and k, return all possible combinations of k numbers out of 1 … n.</p>
+  <p>Given a set of candidate numbers (C) and a target number (T), find all unique combinations in C where the candidate numbers sums to T.</p>
 
-  <p>For example,</p>
+  <p>The same repeated number may be chosen from C unlimited number of times.</p>
 
-  <p>If n = 4 and k = 2, a solution is:
-[
-  [2,4],
-  [3,4],
-  [2,3],
-  [1,2],
-  [1,3],
-  [1,4],
-]</p>
+  <p>Note:</p>
+
+  <ul>
+    <li>All numbers (including target) will be positive integers.</li>
+    <li>Elements in a combination (a1, a2, … , ak) must be in non-descending order. (ie, &gt; a1 ≤ a2 ≤ … ≤ ak).</li>
+    <li>The solution set must not contain duplicate combinations.</li>
+  </ul>
+
+  <p>For example, given candidate set 2,3,6,7 and target 7,
+A solution set is:</p>
+
+  <p><code class="highlighter-rouge">[7]</code></p>
+
+  <p><code class="highlighter-rouge">[2, 2, 3]</code></p>
 </blockquote>
 
 <h3 id="section-1">解法</h3>
 
 <p>代码如下:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>public static List&lt;List&lt;Integer&gt;&gt; combine( int n, int k ) {
+<div class="highlighter-rouge"><pre class="highlight"><code>public static List&lt;List&lt;Integer&gt;&gt; combinationSum( 
+        int[] candidates, int target ) {
+    // 排序, 后面才可以进行剪枝
+    Arrays.sort( candidates );
     List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;&gt;();
-    helperCombine( n, 1, k, new ArrayList&lt;Integer&gt;(), res );
+    helperCombinationSum2( 
+            candidates, target, 0, new ArrayList&lt;Integer&gt;(), res );
     return res;
 }
-public static void helperCombine( 
-        int n, int t, int k, List&lt;Integer&gt; tmpRes, List&lt;List&lt;Integer&gt;&gt; res ) {
+
+private static void helperCombinationSum2(
+        int[] candidates, int target, int t, List&lt;Integer&gt; tmpRes, 
+        List&lt;List&lt;Integer&gt;&gt; res) {
     // 约束条件
-    if( t &gt; n ) {
+    if( t == candidates.length ) {
         return;
     }
-    // 不选取当前值
-    helperCombine( n, t+1, k, tmpRes, res );
-    
-    // 选取当前值
-    tmpRes.add( t );
-    if( k-1 == 0 ) {    // 获得一个结果
-        res.add( new ArrayList&lt;Integer&gt;(tmpRes) );
-    } else {            // 进入下一层
-        helperCombine( n, t+1, k-1, tmpRes, res );
+    // 剪枝
+    if( candidates[t] &gt; target ) {
+        return;
     }
-    tmpRes.remove( tmpRes.size()-1 );
+    
+    // 遍历解空间
+    int i = 0;
+    for( ; i*candidates[t] &lt;= target; ++i ) {
+        if( i != 0 ) tmpRes.add( candidates[t] );
+        if( i*candidates[t] == target ) {
+            res.add( new ArrayList&lt;Integer&gt;( tmpRes) );
+        } else {
+            helperCombinationSum2( candidates, 
+            	target-i*candidates[t], t+1, tmpRes, res );
+        }
+    }
+    while( i-- &gt; 1 )
+        tmpRes.remove( tmpRes.size()-1 );
 }
 </code></pre>
 </div>
 
-<p>思考过程: <code class="highlighter-rouge">回溯法</code>. 对于[1…n]中的每一个元素, 可取可不取</p>
+<p>思考过程: <code class="highlighter-rouge">回溯法</code>. 对于candidates数组中的每一个值, 可以无限重复取, 但是实际上只要取到一定程度就就可以结束了, 结束条件: i*candidates[t] &gt; target, 也就是取[0…i]的情况, [i+1…∞]不取.</p>
 
-<p>时空复杂度: 时间复杂度是O(2^n), 空间复杂度是O(n): 递归的空间, 排除构造出来的结果集</p>
+<p>时空复杂度: 时间复杂度是<code class="highlighter-rouge">不确定</code>, 空间复杂度是O(n): 递归的空间, 排除构造出来的结果集</p>
 
-<h3 id="section-2">总结</h3>
+<hr />
+
+<h2 id="combinationsum-ii">CombinationSum II</h2>
+
+<h3 id="section-2">题目描述</h3>
 
 <blockquote>
-  <p>把<code class="highlighter-rouge">约束条件</code>放在方法头部更容易理解</p>
+  <p>Given a collection of candidate numbers (C) and a target number (T), find all unique combinations in C where the candidate numbers sums to T.</p>
+
+  <p>Each number in C may only be used once in the combination.</p>
+
+  <p>Note:</p>
+
+  <ul>
+    <li>All numbers (including target) will be positive integers.</li>
+    <li>Elements in a combination (a1, a2, … , ak) must be in non-descending order. (ie, a1 ≤ a2 ≤ … ≤ ak).</li>
+    <li>The solution set must not contain duplicate combinations.</li>
+  </ul>
+
+  <p>For example, given candidate set 10,1,2,7,6,1,5 and target 8,</p>
+
+  <p>A solution set is:</p>
+
+  <p><code class="highlighter-rouge">[1, 7]</code></p>
+
+  <p><code class="highlighter-rouge">[1, 2, 5]</code></p>
+
+  <p><code class="highlighter-rouge">[2, 6]</code></p>
+
+  <p><code class="highlighter-rouge">[1, 1, 6]</code></p>
 </blockquote>
+
+<h3 id="section-3">解法</h3>
+
+<p>代码如下:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>public static List&lt;List&lt;Integer&gt;&gt; combinationSum2( 
+		int[] candidates, int target ) {
+	// 排序, 后面才可以进行剪枝
+	Arrays.sort( candidates );
+	List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;&gt;();
+	helperCombinationSum( 
+			candidates, target, 0, new ArrayList&lt;Integer&gt;(), res );
+	return res;
+}
+
+private static void helperCombinationSum(
+		int[] candidates, int target, int t, List&lt;Integer&gt; tmpRes, 
+		List&lt;List&lt;Integer&gt;&gt; res) {
+	if( t == candidates.length ) {
+		return;
+	}
+	// 剪枝
+	if( candidates[t] &gt; target ) {
+		return;
+	}
+	
+	// 统计重复元素个数
+	int repeatCount = 0;
+	while( repeatCount+t &lt; candidates.length &amp;&amp; 
+			candidates[t] == candidates[t+repeatCount])
+		++repeatCount;
+	
+	// 遍历解空间
+	int i = 0;
+	for( ; i &lt;= repeatCount &amp;&amp; i*candidates[t] &lt;= target; ++i ) {
+		if( i != 0 ) tmpRes.add( candidates[t] );
+		if( i*candidates[t] == target ) {
+			res.add( new ArrayList&lt;Integer&gt;( tmpRes) );
+		} else {
+			helperCombinationSum( candidates, 
+			    target-i*candidates[t], t+repeatCount, tmpRes, res );
+		}
+	}
+	while( i-- &gt; 1 )
+		tmpRes.remove( tmpRes.size()-1 );
+}
+</code></pre>
+</div>
+
+<p>思考过程: 同CombinationSum一样. 不一样的地方: CombinationSum中的每个元素取[0,∞]个, 这里每个元素取[0…R]个, R表示元素的重复个数, 所以代码里面就多了限制条件: <code class="highlighter-rouge">i &lt;= repeatCount</code> 而且进入下一层要跨越重复元素: <code class="highlighter-rouge">t+repeatCount</code></p>
+
+<p>时空复杂度: 时间复杂度是<code class="highlighter-rouge">不确定</code>, 空间复杂度是O(n): 递归的空间, 排除构造出来的结果集</p>
+
+<h3 id="section-4">总结</h3>
+
+<blockquote>
+  <p>借助已有的处理模型, 思考新问题中<code class="highlighter-rouge">影响因素</code>对结果产生的影响, 并且从原有模型中调整得到解决方案</p>
+</blockquote>
+
+<hr />
+
+<h2 id="combinationsum-iii">CombinationSum III</h2>
+
+<h3 id="section-5">题目描述</h3>
+
+<blockquote>
+  <p>Find all possible combinations of k numbers that add up to a number n, given that only numbers from 1 to 9 can be used and each combination should be a unique set of numbers.</p>
+
+  <p>Ensure that numbers within the set are sorted in ascending order.</p>
+
+  <p>Example 1:</p>
+
+  <p>Input: k = 3, n = 7</p>
+
+  <p>Output:</p>
+
+  <p><code class="highlighter-rouge">[[1,2,4]]</code></p>
+
+  <p>Example 2:</p>
+
+  <p>Input: k = 3, n = 9</p>
+
+  <p>Output:</p>
+
+  <p><code class="highlighter-rouge">[[1,2,6], [1,3,5], [2,3,4]]</code></p>
+</blockquote>
+
+<h3 id="section-6">解法</h3>
+
+<p>代码如下:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>public static List&lt;List&lt;Integer&gt;&gt; combinationSum3( int n, int k ) {
+    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;&gt;();
+    helperCombinationSum3( n, k, new ArrayList&lt;Integer&gt;(), res );
+    return res;
+}
+
+private static void helperCombinationSum3( int n, int k, List&lt;Integer&gt; tmpRes, 
+        List&lt;List&lt;Integer&gt;&gt; res) {
+    // 约束条件
+    if( k &lt;= 0 || n &lt;= 0 ) {
+        return;
+    }
+    
+    // 保证结果子集中不可能出现重复元素
+    int i = tmpRes.size()==0 ? 1 : tmpRes.get(tmpRes.size()-1)+1;
+    for( ; i &lt;= 9; ++i ) {
+        tmpRes.add( i );
+        if( n-i == 0 &amp;&amp; k-1 == 0 ) {
+            res.add( new ArrayList&lt;Integer&gt;(tmpRes) );
+        } else {
+            helperCombinationSum3( n-i, k-1, tmpRes, res );
+        }
+        tmpRes.remove( tmpRes.size()-1 );
+    }
+}
+</code></pre>
+</div>
+
+<p>思考过程: <code class="highlighter-rouge">回溯法</code>. 本质上跟上面两题都是一样的. 不同的地方就是: <code class="highlighter-rouge">约束条件</code>, <code class="highlighter-rouge">解空间的遍历方式</code></p>
+
+<p>时空复杂度: 时间复杂度是<code class="highlighter-rouge">不确定</code>, 空间复杂度是O(n): 递归的空间, 排除构造出来的结果集</p>
 
       </article>
       <hr>
       
-      <a href="/2016/03/31/leetcode-CombinationSum(II)(III)/">上一篇博客：CombinationSum(II)(III)</a><br>
+      <a href="/2016/03/30/linux-process-check/">上一篇博客：进程的查看</a><br>
       
+      
+      <a href="/2016/03/31/leetcode-Combinations/">下一篇博客：Combinations</a>
       
       <hr>
       <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a></div>
@@ -197,7 +375,7 @@ public static void helperCombine(
     <div class="post-area post comment">
       <!-- 多说评论框 start -->
       
-      <div class="ds-thread" data-thread-key="/2016/03/31/leetcode-Combinations" data-title="Combinations" data-url="schStudio.github.io/2016/03/31/leetcode-Combinations/"></div>
+      <div class="ds-thread" data-thread-key="/2016/03/31/leetcode-CombinationSum(II)(III)" data-title="CombinationSum(II)(III)" data-url="schStudio.github.io/2016/03/31/leetcode-CombinationSum(II)(III)/"></div>
       
       <!-- 多说评论框 end -->
     </div>
