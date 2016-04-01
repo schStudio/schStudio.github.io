@@ -5,9 +5,536 @@
     <description>苏灿灏的博客 大数据爱好者</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 31 Mar 2016 13:52:54 +0800</pubDate>
-    <lastBuildDate>Thu, 31 Mar 2016 13:52:54 +0800</lastBuildDate>
+    <pubDate>Fri, 01 Apr 2016 20:20:48 +0800</pubDate>
+    <lastBuildDate>Fri, 01 Apr 2016 20:20:48 +0800</lastBuildDate>
     <generator>Jekyll v3.1.2</generator>
+    
+      <item>
+        <title>JUnit</title>
+        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#junit&quot; id=&quot;markdown-toc-junit&quot;&gt;JUnit简介&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#junit-1&quot; id=&quot;markdown-toc-junit-1&quot;&gt;JUnit的原理&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#junit-2&quot; id=&quot;markdown-toc-junit-2&quot;&gt;JUnit结构&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#junit-3&quot; id=&quot;markdown-toc-junit-3&quot;&gt;JUnit核心类&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#junit-4&quot; id=&quot;markdown-toc-junit-4&quot;&gt;JUnit生命周期&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#junit-5&quot; id=&quot;markdown-toc-junit-5&quot;&gt;JUnit中的设计模式&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;junit&quot;&gt;JUnit简介&lt;/h3&gt;
+
+&lt;p&gt;JUnit就是为Java程序开发者实现单元测试提供一种框架，使得Java单元测试更规范有效，并且更有利于测试的集成&lt;/p&gt;
+
+&lt;h3 id=&quot;junit-1&quot;&gt;JUnit的原理&lt;/h3&gt;
+
+&lt;h4 id=&quot;junit-2&quot;&gt;JUnit结构&lt;/h4&gt;
+
+&lt;p&gt;JUnit中有7个包, 每个包的简要说明如下表:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;包名&lt;/th&gt;
+      &lt;th&gt;说明&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;junit.awtui&lt;/td&gt;
+      &lt;td&gt;以awt界面组件来显示junit测试过程结果&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;junit.swingui&lt;/td&gt;
+      &lt;td&gt;以swing界面组件来显示junit测试过程结果&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;junit.textui&lt;/td&gt;
+      &lt;td&gt;以控制台输出来显示junit测试过程结果&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;junit.framework&lt;/td&gt;
+      &lt;td&gt;junit的核心功能包, 包括Test/TestCase/TestSuite/TestResult/TestListener等类&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;junit.runner&lt;/td&gt;
+      &lt;td&gt;junit核心功能包, 主要运行Test类&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;junit.extensions&lt;/td&gt;
+      &lt;td&gt;junit扩展功能包&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h4 id=&quot;junit-3&quot;&gt;JUnit核心类&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/software-testing/junit-main-class.jpg&quot; alt=&quot;junit-main-class&quot; /&gt;&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;类名&lt;/th&gt;
+      &lt;th&gt;说明&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Test&lt;/td&gt;
+      &lt;td&gt;用于运行测试和收集测试结果, 还可以获取测试用例个数&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;TestCase&lt;/td&gt;
+      &lt;td&gt;Test接口的一个实现类, 给出了测试的基本实现&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;TestSuite&lt;/td&gt;
+      &lt;td&gt;Test接口的另一个实现类, 可以包含多个TestCase&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;TestResult&lt;/td&gt;
+      &lt;td&gt;包含收集到的测试结果&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;TestListener&lt;/td&gt;
+      &lt;td&gt;测试流程的监听接口, 可以开始/结束测试, 可以添加failures/errors&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h4 id=&quot;junit-4&quot;&gt;JUnit生命周期&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/software-testing/junit-life.png&quot; alt=&quot;junit-life&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;junit-5&quot;&gt;JUnit中的设计模式&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Template Method&lt;/p&gt;
+
+    &lt;p&gt;实质就是首先建立方法的骨架，而尽可能地将方法的具体实现向后推移.&lt;/p&gt;
+
+    &lt;p&gt;TestCase.runBare()就采用了这种模式，客户类均可以重载它的三个方法，这样使得测试的可伸缩性得到提高.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  public void runBare() throws Throwable{ 
+      setUp(); 
+      try {
+          runTest();
+      } finally {
+          tearDown();
+      }
+  }
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Command&lt;/p&gt;
+
+    &lt;p&gt;实质就是将动作封装为一个对象，而不关心动作的接收者。这样动作的接收者可以一直到动作具体执行时才需确定.&lt;/p&gt;
+
+    &lt;p&gt;接口Test就是一个Command集，使得不同类的不同测试方法可以通过同一种接口Test构造其框架结构。这样对测试的集成带来了很多方便.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Fri, 01 Apr 2016 00:00:00 +0800</pubDate>
+        <link>/2016/04/01/software-testing-junit/</link>
+        <guid isPermaLink="true">/2016/04/01/software-testing-junit/</guid>
+        
+        
+        <category>软件测试</category>
+        
+      </item>
+    
+      <item>
+        <title>BestTimeToBuyAndSellStock(II)(III)(IV)</title>
+        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#besttimetobuyandsellstock&quot; id=&quot;markdown-toc-besttimetobuyandsellstock&quot;&gt;BestTimeToBuyAndSellStock&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#section&quot; id=&quot;markdown-toc-section&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-1&quot; id=&quot;markdown-toc-section-1&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#besttimetobuyandsellstock-ii&quot; id=&quot;markdown-toc-besttimetobuyandsellstock-ii&quot;&gt;BestTimeToBuyAndSellStock II&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-2&quot; id=&quot;markdown-toc-section-2&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-3&quot; id=&quot;markdown-toc-section-3&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#besttimetobuyandsellstock-iv&quot; id=&quot;markdown-toc-besttimetobuyandsellstock-iv&quot;&gt;BestTimeToBuyAndSellStock IV&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-4&quot; id=&quot;markdown-toc-section-4&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-5&quot; id=&quot;markdown-toc-section-5&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#besttimetobuyandsellstock-iii&quot; id=&quot;markdown-toc-besttimetobuyandsellstock-iii&quot;&gt;BestTimeToBuyAndSellStock III&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-6&quot; id=&quot;markdown-toc-section-6&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-7&quot; id=&quot;markdown-toc-section-7&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;besttimetobuyandsellstock&quot;&gt;BestTimeToBuyAndSellStock&lt;/h2&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;题目描述&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Say you have an array for which the ith element is the price of a given stock on day i.&lt;/p&gt;
+
+  &lt;p&gt;If you were only permitted to complete at most one transaction (ie, buy one and sell one share of the stock), design an algorithm to find the maximum profit.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;解法&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;暴力法&lt;/p&gt;
+
+    &lt;p&gt;代码如下:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  public static int maxProfitBruteForce( int[] prices ) {
+      int maxProfit = 0;
+      for( int i = 0; i &amp;lt; prices.length-1; ++i ) {
+          for( int j = i+1; j &amp;lt; prices.length; ++j ) {
+              if( prices[j] - prices[i] &amp;gt; maxProfit )
+                  maxProfit = prices[j] - prices[i];
+          }
+      }
+      return maxProfit;
+  }
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;思考过程: 对于每一天, 我们都计算出这一天卖出可以获得的maxProfit&lt;/p&gt;
+
+    &lt;p&gt;时空复杂度: 时间复杂度是O(n^2), 空间复杂度是O(1)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;分治法&lt;/p&gt;
+
+    &lt;p&gt;代码如下:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  public static int maxProfitDivideAndConquer( 
+          int[] prices, int left, int right ) {
+      if( left &amp;gt;= right ) return 0;
+      int mid = left + (right-left)/2;
+      int leftMaxProfit = maxProfitDivideAndConquer( prices, left, mid );
+      int rightMaxProfit = maxProfitDivideAndConquer( prices, mid+1, right );
+      // 求出左半部分最低价
+      int leftMin = mid;
+      for( int i = mid; i &amp;gt;= left; --i )
+          if( prices[i] &amp;lt; prices[leftMin] )
+              leftMin = i;
+
+      // 求出右半部分最高价
+      int rightMax = mid;
+      for( int i = mid; i &amp;lt;= right; ++i )
+          if( prices[i] &amp;gt; prices[rightMax] )
+              rightMax = i;
+
+      return Math.max( 
+              Math.max( leftMaxProfit, rightMaxProfit ), 
+              prices[rightMax]-prices[leftMin] );
+  }
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;思考过程: 对于给定的一段时间&lt;code class=&quot;highlighter-rouge&quot;&gt;[left...right]&lt;/code&gt;, 我们从中间mid把时间段切割为&lt;code class=&quot;highlighter-rouge&quot;&gt;[left...mid]&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;[mid+1...right]&lt;/code&gt;, 那么在&lt;code class=&quot;highlighter-rouge&quot;&gt;[left...right]&lt;/code&gt;这段时间的解为以下的情况之一:&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;[left…mid] 的maxProfit&lt;/li&gt;
+      &lt;li&gt;[mid+1…right] 的maxProfit&lt;/li&gt;
+      &lt;li&gt;右半部分最高价 - 左半部分最低价&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;时空复杂度: 时间复杂度是O(nlogn), 空间复杂度是O(logn)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;动态规划&lt;/p&gt;
+
+    &lt;p&gt;代码如下:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  public static int maxProfitDP( int[] prices ) {
+      int leftMin = 0, maxProfit = 0;
+      for( int i = 1; i &amp;lt; prices.length; ++i ) {
+          if( prices[i] - prices[leftMin] &amp;gt; maxProfit )
+              maxProfit = prices[i] - prices[leftMin];
+          if( prices[i] &amp;lt; prices[leftMin] )
+              leftMin = i;
+      }
+      return maxProfit;
+  }
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;思考过程: 由前面的暴力法可知, 我们对每一天都求出这一天卖出的maxProfit, 而这个maxProfit实际上是&lt;code class=&quot;highlighter-rouge&quot;&gt;当天价格-历史价格最低价&lt;/code&gt;. 暴力法中我们遍历查询历史价格, 其实我们可以用一个变量来记录历史价格最低价, 也就是代码中的&lt;code class=&quot;highlighter-rouge&quot;&gt;leftMin&lt;/code&gt;. 这样可以把查询时间从O(n)降到O(1).&lt;/p&gt;
+
+    &lt;p&gt;这种解法看似与DP没什么关系, 只是在原来的基础上做出了优化而已, 其实这个优化就是动态规划的思想了. 其体现如下:&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;最优子结构: maxProfit[i] = max( maxProrit[i-1], prices[i]-prices[leftMin] )&lt;/li&gt;
+      &lt;li&gt;重叠子问题: leftMin的查找&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;时空复杂度: 时间复杂度是O(n), 空间复杂度是O(1)&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;besttimetobuyandsellstock-ii&quot;&gt;BestTimeToBuyAndSellStock II&lt;/h2&gt;
+
+&lt;h3 id=&quot;section-2&quot;&gt;题目描述&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Say you have an array for which the ith element is the price of a given stock on day i.&lt;/p&gt;
+
+  &lt;p&gt;Design an algorithm to find the maximum profit. You may complete as many transactions as you like (ie, buy one and sell one share of the stock multiple times). However, you may not engage in multiple transactions at the same time (ie, you must sell the stock before you buy again).&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;section-3&quot;&gt;解法&lt;/h3&gt;
+
+&lt;p&gt;代码如下:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static int maxProfit( int[] prices ) {
+    // S表示前一次卖的日期, B表示前一次买的日期
+    int S = 0, B = 0, maxProfit = 0;
+    for( int i = 1; i &amp;lt; prices.length; ++i ) {
+        if( B &amp;gt;= S ) {        // 最近一次交易是买
+            if( prices[i] &amp;lt; prices[B] ) {
+                B = i;
+            } else if( prices[i] &amp;gt; prices[B] ) {
+                maxProfit += prices[i] - prices[B];
+                S = i;
+            } 
+        } else {            // 最近一次交易是卖
+            if( prices[i] &amp;gt; prices[S] ) {
+                maxProfit += prices[i] - prices[S];
+                S = i;
+            } else if( prices[i] &amp;lt; prices[S] ) {
+                B = i;
+            }
+        }
+    }
+    return maxProfit;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;思考过程: 因为交易次数无限, 所以只要赚钱就卖出去, 低价就买回来 – &lt;code class=&quot;highlighter-rouge&quot;&gt;贪心算法&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;我们使用两个变量: &lt;code class=&quot;highlighter-rouge&quot;&gt;S&lt;/code&gt;表示前一次卖出的日期, &lt;code class=&quot;highlighter-rouge&quot;&gt;B&lt;/code&gt;表示前一次买进的日期. 对于每一天, 先判断最近一次交易是买还是卖.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;最近一次交易是买, 如果今天价格更低就当作今天才买进, 如果今天价格更高就卖出去.&lt;/li&gt;
+  &lt;li&gt;最近一次交易是卖, 如果今天价格更高就当作今天才卖出, 如果今天价格更低就买进来.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;时空复杂度: 时间复杂度是O(n), 空间复杂度是O(1)&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;besttimetobuyandsellstock-iv&quot;&gt;BestTimeToBuyAndSellStock IV&lt;/h2&gt;
+
+&lt;h3 id=&quot;section-4&quot;&gt;题目描述&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Say you have an array for which the ith element is the price of a given stock on day i.&lt;/p&gt;
+
+  &lt;p&gt;Design an algorithm to find the maximum profit. You may complete at most k transactions.&lt;/p&gt;
+
+  &lt;p&gt;Note:&lt;/p&gt;
+
+  &lt;p&gt;You may not engage in multiple transactions at the same time (ie, you must sell the stock before you buy again).&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;section-5&quot;&gt;解法&lt;/h3&gt;
+
+&lt;p&gt;代码如下:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static int maxProfitDP( int k, int[] prices ) {
+    int len = prices.length;
+
+    // 如果交易次数超过最大交易次数, 获取最大利润
+    if( k &amp;gt; len/2 ) return quickSolve( prices );
+
+    // dp[i][j]: 在第j天之前交易i次可以获得的最大利润
+    int[][] dp = new int[k+1][len];
+    for( int i = 1; i &amp;lt;= k; ++i ) {
+        // holds: 买进状态下, 目前持有的最大利润
+        int holds = -prices[0];
+        for( int j = 1; j &amp;lt; len; ++j ) {
+            dp[i][j] = Math.max( dp[i][j-1], holds+prices[j] );
+            holds = Math.max( holds, dp[i-1][j-1]-prices[j] );
+        }
+    }
+    return dp[k][len-1];
+}
+
+private static int quickSolve( int[] prices ) {
+    int profit = 0;
+    for( int i = 1; i &amp;lt; prices.length; ++i )
+        if( prices[i] &amp;gt; prices[i-1] )
+            profit += prices[i] - prices[i-1];
+    return profit;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;思考过程: 我们的目的是找到n天之内进行最多k次交易的最大利润, 那么我们给出以下定义:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;dp[i][j]&lt;/code&gt;: j天之内进行最多i次交易的最大利润&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;我们发现dp[i][j]可能与价格prices[j]有关, 也可能无关.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;如果无关, 容易知道&lt;code class=&quot;highlighter-rouge&quot;&gt;dp[i][j]&lt;/code&gt;等于&lt;code class=&quot;highlighter-rouge&quot;&gt;dp[i][j-1]&lt;/code&gt; (最优子结构性质)&lt;/li&gt;
+  &lt;li&gt;如果有关, &lt;code class=&quot;highlighter-rouge&quot;&gt;prices[j]&lt;/code&gt;是如何影响&lt;code class=&quot;highlighter-rouge&quot;&gt;dp[i][j]&lt;/code&gt;的取值的呢? 如果&lt;code class=&quot;highlighter-rouge&quot;&gt;prices[j]&lt;/code&gt;能够影响&lt;code class=&quot;highlighter-rouge&quot;&gt;dp[i][j]&lt;/code&gt;, 那么就只能是&lt;code class=&quot;highlighter-rouge&quot;&gt;prices[j]&lt;/code&gt;这个价格卖出获得更大的利润. 所以就需要记录一个变量&lt;code class=&quot;highlighter-rouge&quot;&gt;holds: 买进状态下, 持有的最大利润&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;分析到这里就会发现&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dp[i][j] = max( dp[i][j-1], holds+prices[j] )
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;那么&lt;code class=&quot;highlighter-rouge&quot;&gt;holds&lt;/code&gt;是如何受&lt;code class=&quot;highlighter-rouge&quot;&gt;prices[j]&lt;/code&gt;的影响的呢? 因为holds表示买进状态, 所以如果&lt;code class=&quot;highlighter-rouge&quot;&gt;prices[j]&lt;/code&gt;能够影响&lt;code class=&quot;highlighter-rouge&quot;&gt;holds&lt;/code&gt;, 那么就只能是买进&lt;code class=&quot;highlighter-rouge&quot;&gt;prices[j]&lt;/code&gt;, 而且买进之前的最大利润是&lt;code class=&quot;highlighter-rouge&quot;&gt;dp[i-1][j-1]&lt;/code&gt;, 所以&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;holds = max( holds, dp[i-1][j-1]-prices[j] )
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;时空复杂度: 时间复杂度是O(kn), 空间复杂度是O(kn)&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;besttimetobuyandsellstock-iii&quot;&gt;BestTimeToBuyAndSellStock III&lt;/h2&gt;
+
+&lt;h3 id=&quot;section-6&quot;&gt;题目描述&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Say you have an array for which the ith element is the price of a given stock on day i.&lt;/p&gt;
+
+  &lt;p&gt;Design an algorithm to find the maximum profit. You may complete at most two transactions.&lt;/p&gt;
+
+  &lt;p&gt;Note:&lt;/p&gt;
+
+  &lt;p&gt;You may not engage in multiple transactions at the same time (ie, you must sell the stock before you buy again).&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;section-7&quot;&gt;解法&lt;/h3&gt;
+
+&lt;p&gt;代码如下:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static int maxProfitDP( int[] prices ) {
+    int len = prices.length;
+    int k = 2;
+    // 如果交易次数超过最大交易次数, 获取最大利润
+    if( k &amp;gt; len/2 ) return quickSolve( prices );
+
+    // dp[i][j]: 在第j天之前交易i次可以获得的最大利润
+    int[][] dp = new int[k+1][len];
+    for( int i = 1; i &amp;lt;= k; ++i ) {
+        // holds: 买进状态下, 目前持有的最大利润
+        int holds = -prices[0];
+        for( int j = 1; j &amp;lt; len; ++j ) {
+            dp[i][j] = Math.max( dp[i][j-1], holds+prices[j] );
+            holds = Math.max( holds, dp[i-1][j-1]-prices[j] );
+        }
+    }
+    return dp[k][len-1];
+}
+
+private static int quickSolve( int[] prices ) {
+    int profit = 0;
+    for( int i = 1; i &amp;lt; prices.length; ++i )
+        if( prices[i] &amp;gt; prices[i-1] )
+            profit += prices[i] - prices[i-1];
+    return profit;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;思考过程: 这是上一题中k=2的特殊情况&lt;/p&gt;
+
+&lt;p&gt;时空复杂度: 时间复杂度是O(n), 空间复杂度是O(n)&lt;/p&gt;
+</description>
+        <pubDate>Fri, 01 Apr 2016 00:00:00 +0800</pubDate>
+        <link>/2016/04/01/leetcode-BestTimeToBuyAndSellStock(II)(III)(IV)/</link>
+        <guid isPermaLink="true">/2016/04/01/leetcode-BestTimeToBuyAndSellStock(II)(III)(IV)/</guid>
+        
+        
+        <category>Leetcode</category>
+        
+      </item>
+    
+      <item>
+        <title>动态规划原理学习笔记</title>
+        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#section&quot; id=&quot;markdown-toc-section&quot;&gt;动态规划定义&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#section-1&quot; id=&quot;markdown-toc-section-1&quot;&gt;动态规划原理&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#section-2&quot; id=&quot;markdown-toc-section-2&quot;&gt;动态规划的基本要素&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-3&quot; id=&quot;markdown-toc-section-3&quot;&gt;最优子结构&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-4&quot; id=&quot;markdown-toc-section-4&quot;&gt;重叠子问题&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#section-5&quot; id=&quot;markdown-toc-section-5&quot;&gt;动态规划的变形&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-6&quot; id=&quot;markdown-toc-section-6&quot;&gt;备忘录方法&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;动态规划定义&lt;/h3&gt;
+
+&lt;p&gt;动态规划算法是一种&lt;code class=&quot;highlighter-rouge&quot;&gt;计算算法&lt;/code&gt;, 可以在多项式时间计算出问题的解&lt;/p&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;动态规划原理&lt;/h3&gt;
+
+&lt;p&gt;动态规划的计算原理是&lt;code class=&quot;highlighter-rouge&quot;&gt;问题分解&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;原理: 动态规划算法与分治法类似, 基本思想是&lt;code class=&quot;highlighter-rouge&quot;&gt;将待求解问题分解为若干个子问题, 先求解子问题, 然后从子问题的解得到原始问题的解&lt;/code&gt;. 与分治法不同的是, 动态规划划分出来的&lt;code class=&quot;highlighter-rouge&quot;&gt;子问题往往不是相互独立的&lt;/code&gt;. 若用分治法来解这类问题, 则分解得到的子问题数目太多, 以至于需要耗费指数时间解决问题, 而子问题的数目常常只有多项式量级. 在用分治法求解时, 有些子问题被重复计算了很多次. 如果我们能够保存已解决的子问题答案, 在需要的时候查一下, 这样就可以避免大量的重复计算, 从而得到多项式时间算法. 为了达到此目的, 可以用一个表来记录已解决的子问题答案. 不管该子问题以后是否被用到, 只要它被计算过, 就将其结果填入表中. 这就是动态规划的基本思想.&lt;/p&gt;
+
+&lt;p&gt;动态规划算法适用于解&lt;code class=&quot;highlighter-rouge&quot;&gt;最优化问题&lt;/code&gt;.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;算法的步骤如下:&lt;/p&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;找出最优解的性质, 并刻画其结构特征&lt;/li&gt;
+    &lt;li&gt;递归定义最优值&lt;/li&gt;
+    &lt;li&gt;以自底向顶的方式计算出最优值&lt;/li&gt;
+    &lt;li&gt;根据计算最优值时得到的信息, 构造最优解&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;section-2&quot;&gt;动态规划的基本要素&lt;/h3&gt;
+
+&lt;h4 id=&quot;section-3&quot;&gt;最优子结构&lt;/h4&gt;
+
+&lt;p&gt;设计动态规划算法的第一步通常是刻画最优解的结构. &lt;code class=&quot;highlighter-rouge&quot;&gt;当问题的最优解包含了其子问题的最优解是, 称该问题具有最优子结构性质&lt;/code&gt;. 问题具有最优子结构性质提供了可用动态规划算法求解的重要线索.&lt;/p&gt;
+
+&lt;p&gt;分析问题的最优子结构性质时, 所用的方法具有普遍性, 就是&lt;code class=&quot;highlighter-rouge&quot;&gt;反证法&lt;/code&gt;. 首先假设问题的最优解导出的子问题的解不是最优的, 然后再分析说明在这个假设下, 可以构造出比原有问题最优解更好的解, 从而导致矛盾.&lt;/p&gt;
+
+&lt;h4 id=&quot;section-4&quot;&gt;重叠子问题&lt;/h4&gt;
+
+&lt;p&gt;在用递归算法自顶向底解问题时, 每次产生的子问题并不总是新问题, 有些子问题被反复计算多次. 动态规划算法正是利用了这种子问题的重叠性质, 对每一个子问题只解一次, 而后将其解保存在一个表格中, 当需要再次解此子问题时, 只是以简单地查询一下. 通常, 不同的子问题个数随问题的大小呈多项式增长. 因此, 用动态规划算法通常只需要多项式时间, 从而获得较高的解题效率.&lt;/p&gt;
+
+&lt;h3 id=&quot;section-5&quot;&gt;动态规划的变形&lt;/h3&gt;
+
+&lt;h4 id=&quot;section-6&quot;&gt;备忘录方法&lt;/h4&gt;
+
+&lt;p&gt;备忘录方法用表格保存已解决子问题的答案, 在下次需要解此子问题时, 只要简单查看该子问题的答案, 而不必重新计算. 与动态规划算法不同的是, &lt;code class=&quot;highlighter-rouge&quot;&gt;备忘录方法的递归方式是自顶向底的, 而动态规划算法则是自底向顶的&lt;/code&gt;. 因此, 备忘录方法的控制结构与动态规划的控制结构相同, 区别在于备忘录方法为每个解过的子问题建立备忘录以备查询.&lt;/p&gt;
+
+&lt;p&gt;备忘录方法为每个子问题建立一个记录项, 初始化时, 该记录项存入一个特殊值, 表示该子问题尚未求解. 在求解过程中, 对每个待求的子问题, 首先查看相应的记录项. 如果存储的是特殊值, 则表示该子问题是第一次遇到, 此时计算该子问题的解并保存进记录项. 如果存储的不是特殊值, 则表示该子问题已经被计算过, 此时直接查询返回即可.&lt;/p&gt;
+
+&lt;p&gt;一般来讲, 当一个问题的所有子问题都至少需要解一次时, 用动态规划算法比备忘录方法好. 此时动态规划算法没有任何多余的计算. 同时, 对于许多问题, 常可利用其规则的表格存取方式, 减少动态规划算法的计算时间和空间需求. 当子问题空间中的部分字问题可不必求解时, 用备忘录方法则较有利, 因为从其控制结构可以看出, 该方法只解那些确实需要求解的子问题.&lt;/p&gt;
+</description>
+        <pubDate>Fri, 01 Apr 2016 00:00:00 +0800</pubDate>
+        <link>/2016/04/01/algorithm-dynamic-programming/</link>
+        <guid isPermaLink="true">/2016/04/01/algorithm-dynamic-programming/</guid>
+        
+        
+        <category>算法</category>
+        
+      </item>
     
       <item>
         <title>Combinations</title>
@@ -1427,454 +1954,6 @@ If nums = [1,2,2], a solution is:
         
         
         <category>Leetcode</category>
-        
-      </item>
-    
-      <item>
-        <title>find指令学习笔记</title>
-        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#find&quot; id=&quot;markdown-toc-find&quot;&gt;find指令的用途&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#find-1&quot; id=&quot;markdown-toc-find-1&quot;&gt;find指令常用参数说明&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#find-2&quot; id=&quot;markdown-toc-find-2&quot;&gt;find指令常用例子&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#section&quot; id=&quot;markdown-toc-section&quot;&gt;查找前5个最大的文件&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-1&quot; id=&quot;markdown-toc-section-1&quot;&gt;查找某一段时间修改过的文件&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-2&quot; id=&quot;markdown-toc-section-2&quot;&gt;在多个目录中查找&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-3&quot; id=&quot;markdown-toc-section-3&quot;&gt;排除指定目录查找&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-4&quot; id=&quot;markdown-toc-section-4&quot;&gt;按照文件类型查找&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-5&quot; id=&quot;markdown-toc-section-5&quot;&gt;重复文件查找&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;find&quot;&gt;find指令的用途&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;在目录层次中查找满足特定要求的文件
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;find-1&quot;&gt;find指令常用参数说明&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;-type c: 按照文件类型c查找, 文件类型c说明如下:
-    &lt;ul&gt;
-      &lt;li&gt;b: 块设备文件&lt;/li&gt;
-      &lt;li&gt;c: 字符设备文件&lt;/li&gt;
-      &lt;li&gt;d: 目录&lt;/li&gt;
-      &lt;li&gt;p: 管道文件&lt;/li&gt;
-      &lt;li&gt;f: 普通文件&lt;/li&gt;
-      &lt;li&gt;l: 符号链接文件&lt;/li&gt;
-      &lt;li&gt;s: 套接字文件&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;-name fname: 按照fname(不加目录前缀)查找文件&lt;/li&gt;
-  &lt;li&gt;-exec command: 对查找到的文件进行指令处理, 注意结尾以’;’结束&lt;/li&gt;
-  &lt;li&gt;-mmin n: 查找n分钟之前修改过的文件&lt;/li&gt;
-  &lt;li&gt;-mtime n: 查找n天之前修改过的文件&lt;/li&gt;
-  &lt;li&gt;-xdev: 只查找当前的文件系统&lt;/li&gt;
-  &lt;li&gt;-printf: 如果find指令返回值为true, 指定格式输出结果&lt;/li&gt;
-  &lt;li&gt;-prune: 排除指定的搜索范围&lt;/li&gt;
-  &lt;li&gt;-o: 或者&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;find-2&quot;&gt;find指令常用例子&lt;/h3&gt;
-
-&lt;h4 id=&quot;section&quot;&gt;查找前5个最大的文件&lt;/h4&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find / -type f -exec du {} \; | sort -n | tail -n 5
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;-exec du表示对每一个找到的文件都计算文件大小&lt;/p&gt;
-
-  &lt;p&gt;sort -n表示对所有文件按大小升序排序&lt;/p&gt;
-
-  &lt;p&gt;tail -n 5表示取最后5个文件&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h4 id=&quot;section-1&quot;&gt;查找某一段时间修改过的文件&lt;/h4&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find / -mmin +60 -mmin -120 -type f
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;-mmin +60: 表示前60分钟之前&lt;/p&gt;
-
-  &lt;p&gt;-mmin -120: 表示前120分钟之后&lt;/p&gt;
-
-  &lt;p&gt;所以该指令就是查找2个小时之前的1小时内修改过的文件&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h4 id=&quot;section-2&quot;&gt;在多个目录中查找&lt;/h4&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find /etc /var /mnt /media -xdev -mmin -5 -type f
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;该指令在/etc, /var, /mnt, /media这些目录下查找&lt;/p&gt;
-
-  &lt;p&gt;-xdev表示只对该文件系统查找&lt;/p&gt;
-
-  &lt;p&gt;-mmin -5 表示5分钟之内修改过的文件&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h4 id=&quot;section-3&quot;&gt;排除指定目录查找&lt;/h4&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find / \( -name proc -o -name sys \) -prune -o -type f
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;该指令表示对根目录查找, 但是排除 /proc 和 /sys这两个目录&lt;/p&gt;
-
-  &lt;p&gt;-prune -o表示对满足括号中条件的目录排除在外&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h4 id=&quot;section-4&quot;&gt;按照文件类型查找&lt;/h4&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find . -name &quot;*.png&quot; -o -name &quot;*.jpg&quot; -o -name &quot;*.gif&quot; -type f
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;该指令表示在当前目录中查找格式为png, jpg, gif的文件&lt;/p&gt;
-
-  &lt;p&gt;-o 表示或者&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h4 id=&quot;section-5&quot;&gt;重复文件查找&lt;/h4&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find . -type f -exec md5sum &#39;{}&#39; &#39;;&#39; | sort | uniq --all-repeated=separate -w 24
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;该指令表示对当前目录下的文件计算MD5并通过前24位进行比较&lt;/p&gt;
-&lt;/blockquote&gt;
-</description>
-        <pubDate>Mon, 28 Mar 2016 00:00:00 +0800</pubDate>
-        <link>/2016/03/28/linux-command-find/</link>
-        <guid isPermaLink="true">/2016/03/28/linux-command-find/</guid>
-        
-        
-        <category>Linux</category>
-        
-      </item>
-    
-      <item>
-        <title>IP原理学习笔记</title>
-        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#ip&quot; id=&quot;markdown-toc-ip&quot;&gt;IP地址分类&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#ip-1&quot; id=&quot;markdown-toc-ip-1&quot;&gt;IP地址编址历史&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#ip-2&quot; id=&quot;markdown-toc-ip-2&quot;&gt;IP地址分类&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#ip-3&quot; id=&quot;markdown-toc-ip-3&quot;&gt;IP常用地址&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#ip-4&quot; id=&quot;markdown-toc-ip-4&quot;&gt;特殊IP地址&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#ip-5&quot; id=&quot;markdown-toc-ip-5&quot;&gt;IP地址与硬件地址&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#ip-6&quot; id=&quot;markdown-toc-ip-6&quot;&gt;IP地址与硬件地址的原理区别&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#arp&quot; id=&quot;markdown-toc-arp&quot;&gt;ARP协议&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#ip-7&quot; id=&quot;markdown-toc-ip-7&quot;&gt;IP数据报格式&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#ip-8&quot; id=&quot;markdown-toc-ip-8&quot;&gt;IP首部格式&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#section&quot; id=&quot;markdown-toc-section&quot;&gt;报文段切割&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#ip-9&quot; id=&quot;markdown-toc-ip-9&quot;&gt;IP层转发分组&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;ip&quot;&gt;IP地址分类&lt;/h3&gt;
-
-&lt;p&gt;IP地址唯一标识网络中某一个设备, 其定义如下:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;IP ::= { 网络号 : 主机号 }
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h4 id=&quot;ip-1&quot;&gt;IP地址编址历史&lt;/h4&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;分类编址: IP地址可以划分为ABCDE五类, 可以参考下图&lt;/li&gt;
-  &lt;li&gt;划分子网: 在分类编址的基础上定义了子网的概念和划分原理&lt;/li&gt;
-  &lt;li&gt;无分类编址: 抛弃分类编址的方式, 重新定义编址方式&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;ip-2&quot;&gt;IP地址分类&lt;/h4&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/computer-network/ip-classification.jpg&quot; alt=&quot;IP分类编址&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;ip-3&quot;&gt;IP常用地址&lt;/h4&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/computer-network/ip-use-usually-classification.gif&quot; alt=&quot;IP常用地址&quot; /&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;说明:&lt;/p&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;A类地址中减去2表示排除了网络号全0(表示&lt;code class=&quot;highlighter-rouge&quot;&gt;本网络&lt;/code&gt;)和网络号127(表示&lt;code class=&quot;highlighter-rouge&quot;&gt;环回地址&lt;/code&gt;)&lt;/li&gt;
-    &lt;li&gt;B类地址中减去1表示排除了128.0(保留)网络&lt;/li&gt;
-    &lt;li&gt;C类地址中减去1表示排除了192.0.0(保留)网络&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/blockquote&gt;
-
-&lt;h4 id=&quot;ip-4&quot;&gt;特殊IP地址&lt;/h4&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/computer-network/ip-use-rarely.jpg&quot; alt=&quot;特殊IP地址&quot; /&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;ip-5&quot;&gt;IP地址与硬件地址&lt;/h3&gt;
-
-&lt;p&gt;IP地址唯一表示网络中的某一个设备, 硬件地址也是唯一表示某一个设备, 那么为什么需要两种地址呢?&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;这是因为全世界有着各种各样的网络, 不同的网络使用不同的硬件地址, 为了使得这些异构网络之间能够通信, 就需要一个统一的规则来表示每个设备, 也就是IP地址了&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h4 id=&quot;ip-6&quot;&gt;IP地址与硬件地址的原理区别&lt;/h4&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/computer-network/ip-ipAddress-and-macAddress.jpg&quot; alt=&quot;IP地址与硬件地址的原理区别&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;arp&quot;&gt;ARP协议&lt;/h4&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ARP协议&lt;/code&gt;是用来找出IP地址对应的硬件地址, 还有一个协议是&lt;code class=&quot;highlighter-rouge&quot;&gt;RARP协议&lt;/code&gt;, 是用来找出硬件地址对应的IP地址, 这两个协议都是处于网络层中&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ARP协议&lt;/code&gt;的工作原理如下图所示:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/computer-network/ip-arp.jpg&quot; alt=&quot;ARP协议的工作原理&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;ARP工作原理解释如下:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;主机A在局域网中广播ARP请求分组&lt;/li&gt;
-  &lt;li&gt;所有主机都受到ARP请求分组, 但是只有主机B响应分组&lt;/li&gt;
-  &lt;li&gt;主机A收到主机B的响应分组, 在ARP高速缓存中记录主机B&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;注意:&lt;/p&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;主机A发送出ARP请求分组, 主机B会在ARP高速缓存中记录主机A, 这样可以避免主机B要找主机A的时候也要发出一个ARP请求分组, 减少了网络开销&lt;/li&gt;
-    &lt;li&gt;ARP高速缓存中的记录是有生存时间的, 过了生存时间的记录就会自动删除, 这是基于网络中的硬件地址是动态变更这种情况考虑的, 例如主机B换了一个网络适配器, 其先前的地址也就无效了&lt;/li&gt;
-    &lt;li&gt;ARP协议是解决同一个局域网内的主机中IP地址与硬件地址的映射问题&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/blockquote&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;ip-7&quot;&gt;IP数据报格式&lt;/h3&gt;
-
-&lt;h4 id=&quot;ip-8&quot;&gt;IP首部格式&lt;/h4&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/computer-network/ip-header.jpg&quot; alt=&quot;IP数据报格式&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;版本: IP协议版本(IPv4, IPv6等)&lt;/li&gt;
-  &lt;li&gt;首部长度: IP首部的字节长度, 范围为20~60&lt;/li&gt;
-  &lt;li&gt;区分服务: 更多服务&lt;/li&gt;
-  &lt;li&gt;总长度: IP数据报的长度, 范围为20~65535字节, 一般以太网使用的MTU(Maximum Transfer Unit)为1500, MTU表示IP数据报中数据部分的最大长度&lt;/li&gt;
-  &lt;li&gt;标识: 报文段发生分片的时候使用, 接收端通过标识可以合并同一个标识的IP数据报&lt;/li&gt;
-  &lt;li&gt;标志: 目前使用DF(Don’t Fragment)和MF(More Fragment)&lt;/li&gt;
-  &lt;li&gt;片偏移: IP数据报合并时, 用来确认每一个IP数据报在原始报文段中的位置, 8个字节为单位&lt;/li&gt;
-  &lt;li&gt;生存时间: IP数据报的生存时间, 目前一般表示跳数&lt;/li&gt;
-  &lt;li&gt;协议: 表示IP数据报使用的协议, 例如: TCP, UDP, OSPF&lt;/li&gt;
-  &lt;li&gt;首部检验和: 检验IP首部, 每一次路由转发后, 都会检验首部的正确性&lt;/li&gt;
-  &lt;li&gt;源地址: 发送方IP地址&lt;/li&gt;
-  &lt;li&gt;目的地址: 接收方IP地址&lt;/li&gt;
-  &lt;li&gt;可选字段(长度可变)&lt;/li&gt;
-  &lt;li&gt;填充: IP首部填充0, 知道满足以4个字节为单位&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;section&quot;&gt;报文段切割&lt;/h4&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/computer-network/ip-data-split.png&quot; alt=&quot;IP数据报分片举例&quot; /&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;解释如下:
-原始题目中规定IP数据报的&lt;code class=&quot;highlighter-rouge&quot;&gt;MTU&lt;/code&gt;为1400, 由于&lt;code class=&quot;highlighter-rouge&quot;&gt;片偏移&lt;/code&gt;是以8个字节为单位, 我们发现8能够整除1400, 所以我们可以直接以1400个字节为切割单位, 分别切割出1400/1400/1000这样的3个数据, 然后分别计算&lt;code class=&quot;highlighter-rouge&quot;&gt;片偏移&lt;/code&gt;, 得到0/175/350, 这样把这些数据写到各自的首部中, 另外还需要给这3个数据一个共同的&lt;code class=&quot;highlighter-rouge&quot;&gt;标识&lt;/code&gt;(例如:12345).&lt;/p&gt;
-
-  &lt;p&gt;这样切割之后, 接收端就可以根据&lt;code class=&quot;highlighter-rouge&quot;&gt;标识&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;片偏移&lt;/code&gt;来组合IP数据报, 得到原始的报文段&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;ip-9&quot;&gt;IP层转发分组&lt;/h3&gt;
-
-&lt;p&gt;转发分组涉及两个概念: &lt;code class=&quot;highlighter-rouge&quot;&gt;路由&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;路由表&lt;/code&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;路由 ::= ( 目的网络地址, 下一跳地址 )
-路由表 ::= 包含路由信息的表格
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;每一个IP数据报的转发都需要查询&lt;code class=&quot;highlighter-rouge&quot;&gt;路由表&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;路由表&lt;/code&gt;如下图所示:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/computer-network/ip-transfer-algorithm.jpg&quot; alt=&quot;IP层转发分组&quot; /&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;分组转发算法流程如下:&lt;/p&gt;
-
-  &lt;ol&gt;
-    &lt;li&gt;从IP数据报首部中提取目的IP地址D, 并计算得到网络地址N&lt;/li&gt;
-    &lt;li&gt;如果N就是与路由器直接相连的网络, 那么直接交付到目的主机, 否则执行(3)&lt;/li&gt;
-    &lt;li&gt;如果路由表中有目的地址D的特定主机路由, 那么交付特定路由器, 否则执行(4)&lt;/li&gt;
-    &lt;li&gt;如果路由表中有目的网络N的转发地址, 那么交付对应的路由器, 否则执行(5)&lt;/li&gt;
-    &lt;li&gt;如果路由表中有默认路由, 那么交付默认路由器, 否则执行(6)&lt;/li&gt;
-    &lt;li&gt;报告转发分组出错&lt;/li&gt;
-  &lt;/ol&gt;
-&lt;/blockquote&gt;
-</description>
-        <pubDate>Sun, 27 Mar 2016 00:00:00 +0800</pubDate>
-        <link>/2016/03/27/computer-network-ip/</link>
-        <guid isPermaLink="true">/2016/03/27/computer-network-ip/</guid>
-        
-        
-        <category>计算机网络</category>
-        
-      </item>
-    
-      <item>
-        <title>回溯法原理学习笔记</title>
-        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#section&quot; id=&quot;markdown-toc-section&quot;&gt;回溯法定义&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#section-1&quot; id=&quot;markdown-toc-section-1&quot;&gt;回溯法原理&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#section-2&quot; id=&quot;markdown-toc-section-2&quot;&gt;回溯法算法框架&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-3&quot; id=&quot;markdown-toc-section-3&quot;&gt;递归回溯&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-4&quot; id=&quot;markdown-toc-section-4&quot;&gt;迭代回溯&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-5&quot; id=&quot;markdown-toc-section-5&quot;&gt;子集树&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-6&quot; id=&quot;markdown-toc-section-6&quot;&gt;排列树&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;section&quot;&gt;回溯法定义&lt;/h3&gt;
-
-&lt;p&gt;回溯法是一种&lt;code class=&quot;highlighter-rouge&quot;&gt;搜索算法&lt;/code&gt;, 可以系统地搜索一个问题的&lt;code class=&quot;highlighter-rouge&quot;&gt;所有解&lt;/code&gt;或&lt;code class=&quot;highlighter-rouge&quot;&gt;任一解&lt;/code&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;section-1&quot;&gt;回溯法原理&lt;/h3&gt;
-
-&lt;p&gt;回溯法的搜索原理是&lt;code class=&quot;highlighter-rouge&quot;&gt;深度优先搜索策略&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;原理: &lt;strong&gt;首先定义问题的解空间&lt;/strong&gt;, 举个&lt;code class=&quot;highlighter-rouge&quot;&gt;0-1背包&lt;/code&gt;的例子, 假设只有两个东西, 那么解空间可以这样表示{(00),(01),(10),(11)}; &lt;strong&gt;其次组织解空间, 一般组织为树或者图&lt;/strong&gt;, 所以&lt;code class=&quot;highlighter-rouge&quot;&gt;0-1背包&lt;/code&gt;的解空间就变成了一棵完全二叉树; &lt;strong&gt;最后是开始搜索&lt;/strong&gt;, 过程是这样的: 从根节点出发, 以深搜方式搜索整个解空间. 根节点首先成为&lt;code class=&quot;highlighter-rouge&quot;&gt;活节点&lt;/code&gt;, 并且纵向移至下一个新节点, 新节点就成为了&lt;code class=&quot;highlighter-rouge&quot;&gt;活结点&lt;/code&gt;, 如果&lt;code class=&quot;highlighter-rouge&quot;&gt;活结点&lt;/code&gt;无法再纵向移动, 那么就成为了&lt;code class=&quot;highlighter-rouge&quot;&gt;死节点&lt;/code&gt;, 此时就应该回溯到最近一个&lt;code class=&quot;highlighter-rouge&quot;&gt;活结点&lt;/code&gt;处, 继续用以上的方式进入下一个扩展.&lt;/p&gt;
-
-&lt;p&gt;回溯法以这种方式在解空间中搜索, 直到找到所要求的解活解空间中已经没有&lt;code class=&quot;highlighter-rouge&quot;&gt;活结点&lt;/code&gt;为止&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;算法的步骤如下:&lt;/p&gt;
-
-  &lt;ol&gt;
-    &lt;li&gt;针对所给问题, 定义问题的解空间&lt;/li&gt;
-    &lt;li&gt;确定易于搜索的解空间结构&lt;/li&gt;
-    &lt;li&gt;以深搜方式搜索解空间, 并在搜索过程中使用剪枝函数避免无效搜索&lt;/li&gt;
-  &lt;/ol&gt;
-&lt;/blockquote&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;section-2&quot;&gt;回溯法算法框架&lt;/h3&gt;
-
-&lt;h4 id=&quot;section-3&quot;&gt;递归回溯&lt;/h4&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;void backTrack( int t ) {
-    if( t &amp;gt; n ) {
-        Output( x );
-    } else {
-        for( int i = f( n, t ); i &amp;lt;= g( n, t ); ++i ) {
-            x[ t ] = h( i );
-            if( constraint( t ) &amp;amp;&amp;amp; bound( t ) )
-                backTrack( t+1 );
-        }
-    }
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;说明:&lt;/p&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;t 表示递归深度&lt;/li&gt;
-    &lt;li&gt;n 表示解空间树的总深度&lt;/li&gt;
-    &lt;li&gt;x 表示可行解&lt;/li&gt;
-    &lt;li&gt;f(n,t) 表示当前&lt;code class=&quot;highlighter-rouge&quot;&gt;活结点&lt;/code&gt;未搜索过的子树起始编号&lt;/li&gt;
-    &lt;li&gt;g(n,t) 表示当前&lt;code class=&quot;highlighter-rouge&quot;&gt;活结点&lt;/code&gt;未搜索过的子树终止编号&lt;/li&gt;
-    &lt;li&gt;constraint(t) 表示约束函数, 用于确认x[1…t]是否满足约束条件, 不满足条件可以剪枝&lt;/li&gt;
-    &lt;li&gt;bound(t) 表示限界函数, 用于确认x[1…t]是否使目标函数越界, 使目标函数越界可以剪枝&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/blockquote&gt;
-
-&lt;h4 id=&quot;section-4&quot;&gt;迭代回溯&lt;/h4&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;void iterativeBackTrack() {
-    int t = 1;
-    while( t &amp;gt; 0 ) {
-        if( f( n, t ) &amp;lt;= g( n, t ) ) {
-            for( int i = f( n, t ); i &amp;lt;= g( n, t ); ++i ) {
-                x[ t ] = h( i );
-                if( constraint( t ) &amp;amp;&amp;amp; bound( t ) ) {
-                    if( solution( t ) )	//表示有可行解
-                        Output( x );
-                    else
-                        ++t;
-                }
-            }
-        } else {
-            --t;
-        }
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h4 id=&quot;section-5&quot;&gt;子集树&lt;/h4&gt;
-
-&lt;p&gt;子集树定义:当所给的问题是从n个元素的集合中找出满足某种性质的子集时, 相应的解空间树称为子集树, 其解空间大小为O(2^n)&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;void backTrack( int t ) {
-    if( t &amp;gt; n ) {
-        Output( x );
-    } else {
-        for( int i = f( n, t ); i &amp;lt;= g( n, t ); ++i ) {
-            x[ t ] = h( i );
-            if( constraint( t ) &amp;amp;&amp;amp; bound( t ) )
-                backTrack( t+1 );
-        }
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h4 id=&quot;section-6&quot;&gt;排列树&lt;/h4&gt;
-
-&lt;p&gt;排列树定义:当所给的问题是从n个元素的集合中找出满足某种性质的排列时, 相应的解空间树称为排列树, 其解空间大小为O(n!)&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;void backTrack( int t ) {
-    if( t &amp;gt; n ) {
-        Output( x );
-    } else {
-        for( int i = f( n, t ); i &amp;lt;= g( n, t ); ++i ) {
-            // swap表示交换元素
-            swap( x[t], x[i] );
-            if( constraint( t ) &amp;amp;&amp;amp; bound( t ) )
-                backTrack( t+1 );
-            swap( x[t], x[i] );
-        }
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Sun, 27 Mar 2016 00:00:00 +0800</pubDate>
-        <link>/2016/03/27/algorithm-backtracking/</link>
-        <guid isPermaLink="true">/2016/03/27/algorithm-backtracking/</guid>
-        
-        
-        <category>算法</category>
         
       </item>
     

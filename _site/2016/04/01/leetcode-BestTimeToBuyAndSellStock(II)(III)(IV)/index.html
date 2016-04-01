@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>BestTimeToBuyAndSellStock(II)(III)(IV)</title>
+	<meta name="description" content="">
+	
+	<link rel="canonical" href="/2016/04/01/leetcode-BestTimeToBuyAndSellStock(II)(III)(IV)/">
+	<link rel="alternate" type="application/rss+xml" title="SCH" href="/feed.xml" />
+	
+	<!-- <link rel="stylesheet" href="/css/main.css"> -->
+
+	<link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css">
+	<!-- <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/fontawesome/4.2.0/css/font-awesome.min.css"> -->
+	<!-- <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css"> -->
+	
+
+	<link rel="stylesheet" type="text/css" href="/static/css/index.css">
+	
+	<!-- <script type="text/javascript" src="/static/js/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="/static/js/bootstrap.min.js"></script> -->
+
+	<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script type="text/javascript" src="http://apps.bdimg.com/libs/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+	<script type="text/javascript" src="/static/js/index.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/highlight.js/8.4/styles/monokai_sublime.min.css">
+	<!-- <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/highlight.js/8.4/styles/railscasts.min.css"> -->
+	<!-- <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/highlight.js/8.4/styles/monokai.min.css"> -->
+	<!-- <script type="text/javascript" src="http://apps.bdimg.com/libs/highlight.js/8.4/languages/dos.min.js"></script> -->
+	<script type="text/javascript" src="http://apps.bdimg.com/libs/highlight.js/8.4/highlight.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?b636473d6ffa17615f94e5db1459ea81";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+</head>
+
+ <!--  <body data-spy="scroll" data-target="#myAffix"> -->
+  <body>
+
+    <header>
+
+<!-- navbar -->
+  <nav class="navbar navbar-inverse">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">SCH</a>
+      <p class="navbar-text">Software Engineer</p>
+    </div>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
+
+        
+          <li>
+        
+          <a href="/"><span class="glyphicon glyphicon-th-large"></span> Blog</a></li>
+
+        
+          
+            
+              <li>
+            
+            <a href="/demo/"><span class="glyphicon glyphicon-play"></span> Demo</a></li>
+          
+        
+          
+            
+              <li>
+            
+            <a href="/about/"><span class="glyphicon glyphicon-heart"></span> About</a></li>
+          
+        
+          
+        
+          
+        
+          
+        
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+</header>
+
+
+
+    <div id="main" class="container main">
+      <div class="row">
+  <div id="myArticle" class="col-sm-9">
+    <div class="post-area post">
+      <header>
+        <h1>BestTimeToBuyAndSellStock(II)(III)(IV)</h1>
+        <p>Apr 1, 2016</p>
+      </header>
+      <hr>
+      <article>
+        <ul id="markdown-toc">
+  <li><a href="#besttimetobuyandsellstock" id="markdown-toc-besttimetobuyandsellstock">BestTimeToBuyAndSellStock</a>    <ul>
+      <li><a href="#section" id="markdown-toc-section">题目描述</a></li>
+      <li><a href="#section-1" id="markdown-toc-section-1">解法</a></li>
+    </ul>
+  </li>
+  <li><a href="#besttimetobuyandsellstock-ii" id="markdown-toc-besttimetobuyandsellstock-ii">BestTimeToBuyAndSellStock II</a>    <ul>
+      <li><a href="#section-2" id="markdown-toc-section-2">题目描述</a></li>
+      <li><a href="#section-3" id="markdown-toc-section-3">解法</a></li>
+    </ul>
+  </li>
+  <li><a href="#besttimetobuyandsellstock-iv" id="markdown-toc-besttimetobuyandsellstock-iv">BestTimeToBuyAndSellStock IV</a>    <ul>
+      <li><a href="#section-4" id="markdown-toc-section-4">题目描述</a></li>
+      <li><a href="#section-5" id="markdown-toc-section-5">解法</a></li>
+    </ul>
+  </li>
+  <li><a href="#besttimetobuyandsellstock-iii" id="markdown-toc-besttimetobuyandsellstock-iii">BestTimeToBuyAndSellStock III</a>    <ul>
+      <li><a href="#section-6" id="markdown-toc-section-6">题目描述</a></li>
+      <li><a href="#section-7" id="markdown-toc-section-7">解法</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="besttimetobuyandsellstock">BestTimeToBuyAndSellStock</h2>
+
+<h3 id="section">题目描述</h3>
+
+<blockquote>
+  <p>Say you have an array for which the ith element is the price of a given stock on day i.</p>
+
+  <p>If you were only permitted to complete at most one transaction (ie, buy one and sell one share of the stock), design an algorithm to find the maximum profit.</p>
+</blockquote>
+
+<h3 id="section-1">解法</h3>
+
+<ul>
+  <li>
+    <p>暴力法</p>
+
+    <p>代码如下:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>  public static int maxProfitBruteForce( int[] prices ) {
+      int maxProfit = 0;
+      for( int i = 0; i &lt; prices.length-1; ++i ) {
+          for( int j = i+1; j &lt; prices.length; ++j ) {
+              if( prices[j] - prices[i] &gt; maxProfit )
+                  maxProfit = prices[j] - prices[i];
+          }
+      }
+      return maxProfit;
+  }
+</code></pre>
+    </div>
+
+    <p>思考过程: 对于每一天, 我们都计算出这一天卖出可以获得的maxProfit</p>
+
+    <p>时空复杂度: 时间复杂度是O(n^2), 空间复杂度是O(1)</p>
+  </li>
+  <li>
+    <p>分治法</p>
+
+    <p>代码如下:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>  public static int maxProfitDivideAndConquer( 
+          int[] prices, int left, int right ) {
+      if( left &gt;= right ) return 0;
+      int mid = left + (right-left)/2;
+      int leftMaxProfit = maxProfitDivideAndConquer( prices, left, mid );
+      int rightMaxProfit = maxProfitDivideAndConquer( prices, mid+1, right );
+      // 求出左半部分最低价
+      int leftMin = mid;
+      for( int i = mid; i &gt;= left; --i )
+          if( prices[i] &lt; prices[leftMin] )
+              leftMin = i;
+
+      // 求出右半部分最高价
+      int rightMax = mid;
+      for( int i = mid; i &lt;= right; ++i )
+          if( prices[i] &gt; prices[rightMax] )
+              rightMax = i;
+
+      return Math.max( 
+              Math.max( leftMaxProfit, rightMaxProfit ), 
+              prices[rightMax]-prices[leftMin] );
+  }
+</code></pre>
+    </div>
+
+    <p>思考过程: 对于给定的一段时间<code class="highlighter-rouge">[left...right]</code>, 我们从中间mid把时间段切割为<code class="highlighter-rouge">[left...mid]</code>和<code class="highlighter-rouge">[mid+1...right]</code>, 那么在<code class="highlighter-rouge">[left...right]</code>这段时间的解为以下的情况之一:</p>
+
+    <ul>
+      <li>[left…mid] 的maxProfit</li>
+      <li>[mid+1…right] 的maxProfit</li>
+      <li>右半部分最高价 - 左半部分最低价</li>
+    </ul>
+
+    <p>时空复杂度: 时间复杂度是O(nlogn), 空间复杂度是O(logn)</p>
+  </li>
+  <li>
+    <p>动态规划</p>
+
+    <p>代码如下:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>  public static int maxProfitDP( int[] prices ) {
+      int leftMin = 0, maxProfit = 0;
+      for( int i = 1; i &lt; prices.length; ++i ) {
+          if( prices[i] - prices[leftMin] &gt; maxProfit )
+              maxProfit = prices[i] - prices[leftMin];
+          if( prices[i] &lt; prices[leftMin] )
+              leftMin = i;
+      }
+      return maxProfit;
+  }
+</code></pre>
+    </div>
+
+    <p>思考过程: 由前面的暴力法可知, 我们对每一天都求出这一天卖出的maxProfit, 而这个maxProfit实际上是<code class="highlighter-rouge">当天价格-历史价格最低价</code>. 暴力法中我们遍历查询历史价格, 其实我们可以用一个变量来记录历史价格最低价, 也就是代码中的<code class="highlighter-rouge">leftMin</code>. 这样可以把查询时间从O(n)降到O(1).</p>
+
+    <p>这种解法看似与DP没什么关系, 只是在原来的基础上做出了优化而已, 其实这个优化就是动态规划的思想了. 其体现如下:</p>
+
+    <ul>
+      <li>最优子结构: maxProfit[i] = max( maxProrit[i-1], prices[i]-prices[leftMin] )</li>
+      <li>重叠子问题: leftMin的查找</li>
+    </ul>
+
+    <p>时空复杂度: 时间复杂度是O(n), 空间复杂度是O(1)</p>
+  </li>
+</ul>
+
+<hr />
+
+<h2 id="besttimetobuyandsellstock-ii">BestTimeToBuyAndSellStock II</h2>
+
+<h3 id="section-2">题目描述</h3>
+
+<blockquote>
+  <p>Say you have an array for which the ith element is the price of a given stock on day i.</p>
+
+  <p>Design an algorithm to find the maximum profit. You may complete as many transactions as you like (ie, buy one and sell one share of the stock multiple times). However, you may not engage in multiple transactions at the same time (ie, you must sell the stock before you buy again).</p>
+</blockquote>
+
+<h3 id="section-3">解法</h3>
+
+<p>代码如下:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>public static int maxProfit( int[] prices ) {
+    // S表示前一次卖的日期, B表示前一次买的日期
+    int S = 0, B = 0, maxProfit = 0;
+    for( int i = 1; i &lt; prices.length; ++i ) {
+        if( B &gt;= S ) {        // 最近一次交易是买
+            if( prices[i] &lt; prices[B] ) {
+                B = i;
+            } else if( prices[i] &gt; prices[B] ) {
+                maxProfit += prices[i] - prices[B];
+                S = i;
+            } 
+        } else {            // 最近一次交易是卖
+            if( prices[i] &gt; prices[S] ) {
+                maxProfit += prices[i] - prices[S];
+                S = i;
+            } else if( prices[i] &lt; prices[S] ) {
+                B = i;
+            }
+        }
+    }
+    return maxProfit;
+}
+</code></pre>
+</div>
+
+<p>思考过程: 因为交易次数无限, 所以只要赚钱就卖出去, 低价就买回来 – <code class="highlighter-rouge">贪心算法</code></p>
+
+<p>我们使用两个变量: <code class="highlighter-rouge">S</code>表示前一次卖出的日期, <code class="highlighter-rouge">B</code>表示前一次买进的日期. 对于每一天, 先判断最近一次交易是买还是卖.</p>
+
+<ul>
+  <li>最近一次交易是买, 如果今天价格更低就当作今天才买进, 如果今天价格更高就卖出去.</li>
+  <li>最近一次交易是卖, 如果今天价格更高就当作今天才卖出, 如果今天价格更低就买进来.</li>
+</ul>
+
+<p>时空复杂度: 时间复杂度是O(n), 空间复杂度是O(1)</p>
+
+<hr />
+
+<h2 id="besttimetobuyandsellstock-iv">BestTimeToBuyAndSellStock IV</h2>
+
+<h3 id="section-4">题目描述</h3>
+
+<blockquote>
+  <p>Say you have an array for which the ith element is the price of a given stock on day i.</p>
+
+  <p>Design an algorithm to find the maximum profit. You may complete at most k transactions.</p>
+
+  <p>Note:</p>
+
+  <p>You may not engage in multiple transactions at the same time (ie, you must sell the stock before you buy again).</p>
+</blockquote>
+
+<h3 id="section-5">解法</h3>
+
+<p>代码如下:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>public static int maxProfitDP( int k, int[] prices ) {
+    int len = prices.length;
+
+    // 如果交易次数超过最大交易次数, 获取最大利润
+    if( k &gt; len/2 ) return quickSolve( prices );
+
+    // dp[i][j]: 在第j天之前交易i次可以获得的最大利润
+    int[][] dp = new int[k+1][len];
+    for( int i = 1; i &lt;= k; ++i ) {
+        // holds: 买进状态下, 目前持有的最大利润
+        int holds = -prices[0];
+        for( int j = 1; j &lt; len; ++j ) {
+            dp[i][j] = Math.max( dp[i][j-1], holds+prices[j] );
+            holds = Math.max( holds, dp[i-1][j-1]-prices[j] );
+        }
+    }
+    return dp[k][len-1];
+}
+
+private static int quickSolve( int[] prices ) {
+    int profit = 0;
+    for( int i = 1; i &lt; prices.length; ++i )
+        if( prices[i] &gt; prices[i-1] )
+            profit += prices[i] - prices[i-1];
+    return profit;
+}
+</code></pre>
+</div>
+
+<p>思考过程: 我们的目的是找到n天之内进行最多k次交易的最大利润, 那么我们给出以下定义:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">dp[i][j]</code>: j天之内进行最多i次交易的最大利润</li>
+</ul>
+
+<p>我们发现dp[i][j]可能与价格prices[j]有关, 也可能无关.</p>
+
+<ul>
+  <li>如果无关, 容易知道<code class="highlighter-rouge">dp[i][j]</code>等于<code class="highlighter-rouge">dp[i][j-1]</code> (最优子结构性质)</li>
+  <li>如果有关, <code class="highlighter-rouge">prices[j]</code>是如何影响<code class="highlighter-rouge">dp[i][j]</code>的取值的呢? 如果<code class="highlighter-rouge">prices[j]</code>能够影响<code class="highlighter-rouge">dp[i][j]</code>, 那么就只能是<code class="highlighter-rouge">prices[j]</code>这个价格卖出获得更大的利润. 所以就需要记录一个变量<code class="highlighter-rouge">holds: 买进状态下, 持有的最大利润</code></li>
+</ul>
+
+<p>分析到这里就会发现</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>dp[i][j] = max( dp[i][j-1], holds+prices[j] )
+</code></pre>
+</div>
+
+<p>那么<code class="highlighter-rouge">holds</code>是如何受<code class="highlighter-rouge">prices[j]</code>的影响的呢? 因为holds表示买进状态, 所以如果<code class="highlighter-rouge">prices[j]</code>能够影响<code class="highlighter-rouge">holds</code>, 那么就只能是买进<code class="highlighter-rouge">prices[j]</code>, 而且买进之前的最大利润是<code class="highlighter-rouge">dp[i-1][j-1]</code>, 所以</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>holds = max( holds, dp[i-1][j-1]-prices[j] )
+</code></pre>
+</div>
+
+<p>时空复杂度: 时间复杂度是O(kn), 空间复杂度是O(kn)</p>
+
+<hr />
+
+<h2 id="besttimetobuyandsellstock-iii">BestTimeToBuyAndSellStock III</h2>
+
+<h3 id="section-6">题目描述</h3>
+
+<blockquote>
+  <p>Say you have an array for which the ith element is the price of a given stock on day i.</p>
+
+  <p>Design an algorithm to find the maximum profit. You may complete at most two transactions.</p>
+
+  <p>Note:</p>
+
+  <p>You may not engage in multiple transactions at the same time (ie, you must sell the stock before you buy again).</p>
+</blockquote>
+
+<h3 id="section-7">解法</h3>
+
+<p>代码如下:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>public static int maxProfitDP( int[] prices ) {
+    int len = prices.length;
+    int k = 2;
+    // 如果交易次数超过最大交易次数, 获取最大利润
+    if( k &gt; len/2 ) return quickSolve( prices );
+
+    // dp[i][j]: 在第j天之前交易i次可以获得的最大利润
+    int[][] dp = new int[k+1][len];
+    for( int i = 1; i &lt;= k; ++i ) {
+        // holds: 买进状态下, 目前持有的最大利润
+        int holds = -prices[0];
+        for( int j = 1; j &lt; len; ++j ) {
+            dp[i][j] = Math.max( dp[i][j-1], holds+prices[j] );
+            holds = Math.max( holds, dp[i-1][j-1]-prices[j] );
+        }
+    }
+    return dp[k][len-1];
+}
+
+private static int quickSolve( int[] prices ) {
+    int profit = 0;
+    for( int i = 1; i &lt; prices.length; ++i )
+        if( prices[i] &gt; prices[i-1] )
+            profit += prices[i] - prices[i-1];
+    return profit;
+}
+</code></pre>
+</div>
+
+<p>思考过程: 这是上一题中k=2的特殊情况</p>
+
+<p>时空复杂度: 时间复杂度是O(n), 空间复杂度是O(n)</p>
+
+      </article>
+      <hr>
+      
+      <a href="/2016/04/01/algorithm-dynamic-programming/">上一篇博客：动态规划原理学习笔记</a><br>
+      
+      
+      <a href="/2016/04/01/software-testing-junit/">下一篇博客：JUnit</a>
+      
+      <hr>
+      <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a></div>
+      <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+    </div>
+    <div class="post-area post comment">
+      <!-- 多说评论框 start -->
+      
+      <div class="ds-thread" data-thread-key="/2016/04/01/leetcode-BestTimeToBuyAndSellStock(II)(III)(IV)" data-title="BestTimeToBuyAndSellStock(II)(III)(IV)" data-url="schStudio.github.io/2016/04/01/leetcode-BestTimeToBuyAndSellStock(II)(III)(IV)/"></div>
+      
+      <!-- 多说评论框 end -->
+    </div>
+  </div>
+
+  <div id="content" class="col-sm-3">
+    <!-- <div id="myAffix" class="shadow-bottom-center hidden-xs" data-spy="affix" data-offset-top="0" data-offset-bottom="-20"> -->
+    <div id="myAffix" class="shadow-bottom-center hidden-xs" >
+      <div class="categories-list-header">
+        Content
+      </div>
+      <div class="content-text"></div>
+    </div>
+  </div>
+</div>
+
+    </div>
+
+    
+    <div id="top" data-toggle="tooltip" data-placement="left" title="回到顶部">
+      <a href="javascript:;">
+        <div class="arrow"></div>
+        <div class="stick"></div>
+      </a>
+    </div>
+
+    <footer class="">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <a href="mailto:mrsucanhao@gmail.com"><span class="glyphicon glyphicon-envelope"></span> mrsucanhao@gmail.com</a>
+        <span class="point"> · </span>
+        
+          
+          <a href="https://github.com/schStudio">
+            <span class="icon">
+              <svg viewBox="0 0 16 16">
+                <path fill="#aaa" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/>
+              </svg>
+            </span>
+            Github
+            <!-- <span>schStudio</span> -->
+          </a>
+          
+          
+          <span class="point"> · </span>
+          <span><a href="/feed.xml">RSS</a></span>
+          <span class="point"> · </span>
+          <span>苏灿灏的博客 大数据爱好者</span>
+          <span class="point"> · </span>
+          <span>&copy; 2015 Gaohaoyang</span>
+          <span class="point"> · </span>
+          <span>Designed by <a href="https://github.com/Gaohaoyang">HyG</a></span>
+
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"hygblog"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+<!-- 多说公共JS代码 end -->
+
+<!-- 在新窗口中打开 -->
+  <script type="text/javascript">
+    function addBlankTargetForLinks () {
+      $('a[href^="http"]').each(function(){
+          $(this).attr('target', '_blank');
+      });
+    }
+    //每次在有DOM插入时触发
+    $(document).bind('DOMNodeInserted', function(event) {
+      addBlankTargetForLinks();
+    });
+  </script>
+  </body>
+</html>

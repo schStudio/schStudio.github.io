@@ -5,10 +5,10 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Combinations</title>
+	<title>JUnit</title>
 	<meta name="description" content="">
 	
-	<link rel="canonical" href="/2016/03/31/leetcode-Combinations/">
+	<link rel="canonical" href="/2016/04/01/software-testing-junit/">
 	<link rel="alternate" type="application/rss+xml" title="SCH" href="/feed.xml" />
 	
 	<!-- <link rel="stylesheet" href="/css/main.css"> -->
@@ -110,87 +110,141 @@
   <div id="myArticle" class="col-sm-9">
     <div class="post-area post">
       <header>
-        <h1>Combinations</h1>
-        <p>Mar 31, 2016</p>
+        <h1>JUnit</h1>
+        <p>Apr 1, 2016</p>
       </header>
       <hr>
       <article>
         <ul id="markdown-toc">
-  <li><a href="#combinations" id="markdown-toc-combinations">Combinations</a>    <ul>
-      <li><a href="#section" id="markdown-toc-section">题目描述</a></li>
-      <li><a href="#section-1" id="markdown-toc-section-1">解法</a></li>
-      <li><a href="#section-2" id="markdown-toc-section-2">总结</a></li>
+  <li><a href="#junit" id="markdown-toc-junit">JUnit简介</a></li>
+  <li><a href="#junit-1" id="markdown-toc-junit-1">JUnit的原理</a>    <ul>
+      <li><a href="#junit-2" id="markdown-toc-junit-2">JUnit结构</a></li>
+      <li><a href="#junit-3" id="markdown-toc-junit-3">JUnit核心类</a></li>
+      <li><a href="#junit-4" id="markdown-toc-junit-4">JUnit生命周期</a></li>
+      <li><a href="#junit-5" id="markdown-toc-junit-5">JUnit中的设计模式</a></li>
     </ul>
   </li>
 </ul>
 
-<h2 id="combinations">Combinations</h2>
+<h3 id="junit">JUnit简介</h3>
 
-<h3 id="section">题目描述</h3>
+<p>JUnit就是为Java程序开发者实现单元测试提供一种框架，使得Java单元测试更规范有效，并且更有利于测试的集成</p>
 
-<blockquote>
-  <p>Given two integers n and k, return all possible combinations of k numbers out of 1 … n.</p>
+<h3 id="junit-1">JUnit的原理</h3>
 
-  <p>For example,</p>
+<h4 id="junit-2">JUnit结构</h4>
 
-  <p>If n = 4 and k = 2, a solution is:
-[
-  [2,4],
-  [3,4],
-  [2,3],
-  [1,2],
-  [1,3],
-  [1,4],
-]</p>
-</blockquote>
+<p>JUnit中有7个包, 每个包的简要说明如下表:</p>
 
-<h3 id="section-1">解法</h3>
+<table>
+  <thead>
+    <tr>
+      <th>包名</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>junit.awtui</td>
+      <td>以awt界面组件来显示junit测试过程结果</td>
+    </tr>
+    <tr>
+      <td>junit.swingui</td>
+      <td>以swing界面组件来显示junit测试过程结果</td>
+    </tr>
+    <tr>
+      <td>junit.textui</td>
+      <td>以控制台输出来显示junit测试过程结果</td>
+    </tr>
+    <tr>
+      <td>junit.framework</td>
+      <td>junit的核心功能包, 包括Test/TestCase/TestSuite/TestResult/TestListener等类</td>
+    </tr>
+    <tr>
+      <td>junit.runner</td>
+      <td>junit核心功能包, 主要运行Test类</td>
+    </tr>
+    <tr>
+      <td>junit.extensions</td>
+      <td>junit扩展功能包</td>
+    </tr>
+  </tbody>
+</table>
 
-<p>代码如下:</p>
+<h4 id="junit-3">JUnit核心类</h4>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>public static List&lt;List&lt;Integer&gt;&gt; combine( int n, int k ) {
-    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;&gt;();
-    helperCombine( n, 1, k, new ArrayList&lt;Integer&gt;(), res );
-    return res;
-}
-public static void helperCombine( 
-        int n, int t, int k, List&lt;Integer&gt; tmpRes, List&lt;List&lt;Integer&gt;&gt; res ) {
-    // 约束条件
-    if( t &gt; n ) {
-        return;
-    }
-    // 不选取当前值
-    helperCombine( n, t+1, k, tmpRes, res );
-    
-    // 选取当前值
-    tmpRes.add( t );
-    if( k-1 == 0 ) {    // 获得一个结果
-        res.add( new ArrayList&lt;Integer&gt;(tmpRes) );
-    } else {            // 进入下一层
-        helperCombine( n, t+1, k-1, tmpRes, res );
-    }
-    tmpRes.remove( tmpRes.size()-1 );
-}
+<p><img src="/assets/software-testing/junit-main-class.jpg" alt="junit-main-class" /></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>类名</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Test</td>
+      <td>用于运行测试和收集测试结果, 还可以获取测试用例个数</td>
+    </tr>
+    <tr>
+      <td>TestCase</td>
+      <td>Test接口的一个实现类, 给出了测试的基本实现</td>
+    </tr>
+    <tr>
+      <td>TestSuite</td>
+      <td>Test接口的另一个实现类, 可以包含多个TestCase</td>
+    </tr>
+    <tr>
+      <td>TestResult</td>
+      <td>包含收集到的测试结果</td>
+    </tr>
+    <tr>
+      <td>TestListener</td>
+      <td>测试流程的监听接口, 可以开始/结束测试, 可以添加failures/errors</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="junit-4">JUnit生命周期</h4>
+
+<p><img src="/assets/software-testing/junit-life.png" alt="junit-life" /></p>
+
+<h4 id="junit-5">JUnit中的设计模式</h4>
+
+<ul>
+  <li>
+    <p>Template Method</p>
+
+    <p>实质就是首先建立方法的骨架，而尽可能地将方法的具体实现向后推移.</p>
+
+    <p>TestCase.runBare()就采用了这种模式，客户类均可以重载它的三个方法，这样使得测试的可伸缩性得到提高.</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>  public void runBare() throws Throwable{ 
+      setUp(); 
+      try {
+          runTest();
+      } finally {
+          tearDown();
+      }
+  }
 </code></pre>
-</div>
+    </div>
+  </li>
+  <li>
+    <p>Command</p>
 
-<p>思考过程: <code class="highlighter-rouge">回溯法</code>. 对于[1…n]中的每一个元素, 可取可不取</p>
+    <p>实质就是将动作封装为一个对象，而不关心动作的接收者。这样动作的接收者可以一直到动作具体执行时才需确定.</p>
 
-<p>时空复杂度: 时间复杂度是O(2^n), 空间复杂度是O(n): 递归的空间, 排除构造出来的结果集</p>
-
-<h3 id="section-2">总结</h3>
-
-<blockquote>
-  <p>把<code class="highlighter-rouge">约束条件</code>放在方法头部更容易理解</p>
-</blockquote>
+    <p>接口Test就是一个Command集，使得不同类的不同测试方法可以通过同一种接口Test构造其框架结构。这样对测试的集成带来了很多方便.</p>
+  </li>
+</ul>
 
       </article>
       <hr>
       
-      <a href="/2016/03/31/leetcode-CombinationSum(II)(III)/">上一篇博客：CombinationSum(II)(III)</a><br>
+      <a href="/2016/04/01/leetcode-BestTimeToBuyAndSellStock(II)(III)(IV)/">上一篇博客：BestTimeToBuyAndSellStock(II)(III)(IV)</a><br>
       
-      
-      <a href="/2016/04/01/algorithm-dynamic-programming/">下一篇博客：动态规划原理学习笔记</a>
       
       <hr>
       <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a></div>
@@ -199,7 +253,7 @@ public static void helperCombine(
     <div class="post-area post comment">
       <!-- 多说评论框 start -->
       
-      <div class="ds-thread" data-thread-key="/2016/03/31/leetcode-Combinations" data-title="Combinations" data-url="schStudio.github.io/2016/03/31/leetcode-Combinations/"></div>
+      <div class="ds-thread" data-thread-key="/2016/04/01/software-testing-junit" data-title="JUnit" data-url="schStudio.github.io/2016/04/01/software-testing-junit/"></div>
       
       <!-- 多说评论框 end -->
     </div>

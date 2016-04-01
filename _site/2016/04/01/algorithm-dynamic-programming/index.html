@@ -5,10 +5,10 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Combinations</title>
+	<title>动态规划原理学习笔记</title>
 	<meta name="description" content="">
 	
-	<link rel="canonical" href="/2016/03/31/leetcode-Combinations/">
+	<link rel="canonical" href="/2016/04/01/algorithm-dynamic-programming/">
 	<link rel="alternate" type="application/rss+xml" title="SCH" href="/feed.xml" />
 	
 	<!-- <link rel="stylesheet" href="/css/main.css"> -->
@@ -110,87 +110,77 @@
   <div id="myArticle" class="col-sm-9">
     <div class="post-area post">
       <header>
-        <h1>Combinations</h1>
-        <p>Mar 31, 2016</p>
+        <h1>动态规划原理学习笔记</h1>
+        <p>Apr 1, 2016</p>
       </header>
       <hr>
       <article>
         <ul id="markdown-toc">
-  <li><a href="#combinations" id="markdown-toc-combinations">Combinations</a>    <ul>
-      <li><a href="#section" id="markdown-toc-section">题目描述</a></li>
-      <li><a href="#section-1" id="markdown-toc-section-1">解法</a></li>
-      <li><a href="#section-2" id="markdown-toc-section-2">总结</a></li>
+  <li><a href="#section" id="markdown-toc-section">动态规划定义</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">动态规划原理</a></li>
+  <li><a href="#section-2" id="markdown-toc-section-2">动态规划的基本要素</a>    <ul>
+      <li><a href="#section-3" id="markdown-toc-section-3">最优子结构</a></li>
+      <li><a href="#section-4" id="markdown-toc-section-4">重叠子问题</a></li>
+    </ul>
+  </li>
+  <li><a href="#section-5" id="markdown-toc-section-5">动态规划的变形</a>    <ul>
+      <li><a href="#section-6" id="markdown-toc-section-6">备忘录方法</a></li>
     </ul>
   </li>
 </ul>
 
-<h2 id="combinations">Combinations</h2>
+<h3 id="section">动态规划定义</h3>
 
-<h3 id="section">题目描述</h3>
+<p>动态规划算法是一种<code class="highlighter-rouge">计算算法</code>, 可以在多项式时间计算出问题的解</p>
 
-<blockquote>
-  <p>Given two integers n and k, return all possible combinations of k numbers out of 1 … n.</p>
+<h3 id="section-1">动态规划原理</h3>
 
-  <p>For example,</p>
+<p>动态规划的计算原理是<code class="highlighter-rouge">问题分解</code></p>
 
-  <p>If n = 4 and k = 2, a solution is:
-[
-  [2,4],
-  [3,4],
-  [2,3],
-  [1,2],
-  [1,3],
-  [1,4],
-]</p>
-</blockquote>
+<p>原理: 动态规划算法与分治法类似, 基本思想是<code class="highlighter-rouge">将待求解问题分解为若干个子问题, 先求解子问题, 然后从子问题的解得到原始问题的解</code>. 与分治法不同的是, 动态规划划分出来的<code class="highlighter-rouge">子问题往往不是相互独立的</code>. 若用分治法来解这类问题, 则分解得到的子问题数目太多, 以至于需要耗费指数时间解决问题, 而子问题的数目常常只有多项式量级. 在用分治法求解时, 有些子问题被重复计算了很多次. 如果我们能够保存已解决的子问题答案, 在需要的时候查一下, 这样就可以避免大量的重复计算, 从而得到多项式时间算法. 为了达到此目的, 可以用一个表来记录已解决的子问题答案. 不管该子问题以后是否被用到, 只要它被计算过, 就将其结果填入表中. 这就是动态规划的基本思想.</p>
 
-<h3 id="section-1">解法</h3>
-
-<p>代码如下:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>public static List&lt;List&lt;Integer&gt;&gt; combine( int n, int k ) {
-    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;&gt;();
-    helperCombine( n, 1, k, new ArrayList&lt;Integer&gt;(), res );
-    return res;
-}
-public static void helperCombine( 
-        int n, int t, int k, List&lt;Integer&gt; tmpRes, List&lt;List&lt;Integer&gt;&gt; res ) {
-    // 约束条件
-    if( t &gt; n ) {
-        return;
-    }
-    // 不选取当前值
-    helperCombine( n, t+1, k, tmpRes, res );
-    
-    // 选取当前值
-    tmpRes.add( t );
-    if( k-1 == 0 ) {    // 获得一个结果
-        res.add( new ArrayList&lt;Integer&gt;(tmpRes) );
-    } else {            // 进入下一层
-        helperCombine( n, t+1, k-1, tmpRes, res );
-    }
-    tmpRes.remove( tmpRes.size()-1 );
-}
-</code></pre>
-</div>
-
-<p>思考过程: <code class="highlighter-rouge">回溯法</code>. 对于[1…n]中的每一个元素, 可取可不取</p>
-
-<p>时空复杂度: 时间复杂度是O(2^n), 空间复杂度是O(n): 递归的空间, 排除构造出来的结果集</p>
-
-<h3 id="section-2">总结</h3>
+<p>动态规划算法适用于解<code class="highlighter-rouge">最优化问题</code>.</p>
 
 <blockquote>
-  <p>把<code class="highlighter-rouge">约束条件</code>放在方法头部更容易理解</p>
+  <p>算法的步骤如下:</p>
+
+  <ol>
+    <li>找出最优解的性质, 并刻画其结构特征</li>
+    <li>递归定义最优值</li>
+    <li>以自底向顶的方式计算出最优值</li>
+    <li>根据计算最优值时得到的信息, 构造最优解</li>
+  </ol>
 </blockquote>
+
+<h3 id="section-2">动态规划的基本要素</h3>
+
+<h4 id="section-3">最优子结构</h4>
+
+<p>设计动态规划算法的第一步通常是刻画最优解的结构. <code class="highlighter-rouge">当问题的最优解包含了其子问题的最优解是, 称该问题具有最优子结构性质</code>. 问题具有最优子结构性质提供了可用动态规划算法求解的重要线索.</p>
+
+<p>分析问题的最优子结构性质时, 所用的方法具有普遍性, 就是<code class="highlighter-rouge">反证法</code>. 首先假设问题的最优解导出的子问题的解不是最优的, 然后再分析说明在这个假设下, 可以构造出比原有问题最优解更好的解, 从而导致矛盾.</p>
+
+<h4 id="section-4">重叠子问题</h4>
+
+<p>在用递归算法自顶向底解问题时, 每次产生的子问题并不总是新问题, 有些子问题被反复计算多次. 动态规划算法正是利用了这种子问题的重叠性质, 对每一个子问题只解一次, 而后将其解保存在一个表格中, 当需要再次解此子问题时, 只是以简单地查询一下. 通常, 不同的子问题个数随问题的大小呈多项式增长. 因此, 用动态规划算法通常只需要多项式时间, 从而获得较高的解题效率.</p>
+
+<h3 id="section-5">动态规划的变形</h3>
+
+<h4 id="section-6">备忘录方法</h4>
+
+<p>备忘录方法用表格保存已解决子问题的答案, 在下次需要解此子问题时, 只要简单查看该子问题的答案, 而不必重新计算. 与动态规划算法不同的是, <code class="highlighter-rouge">备忘录方法的递归方式是自顶向底的, 而动态规划算法则是自底向顶的</code>. 因此, 备忘录方法的控制结构与动态规划的控制结构相同, 区别在于备忘录方法为每个解过的子问题建立备忘录以备查询.</p>
+
+<p>备忘录方法为每个子问题建立一个记录项, 初始化时, 该记录项存入一个特殊值, 表示该子问题尚未求解. 在求解过程中, 对每个待求的子问题, 首先查看相应的记录项. 如果存储的是特殊值, 则表示该子问题是第一次遇到, 此时计算该子问题的解并保存进记录项. 如果存储的不是特殊值, 则表示该子问题已经被计算过, 此时直接查询返回即可.</p>
+
+<p>一般来讲, 当一个问题的所有子问题都至少需要解一次时, 用动态规划算法比备忘录方法好. 此时动态规划算法没有任何多余的计算. 同时, 对于许多问题, 常可利用其规则的表格存取方式, 减少动态规划算法的计算时间和空间需求. 当子问题空间中的部分字问题可不必求解时, 用备忘录方法则较有利, 因为从其控制结构可以看出, 该方法只解那些确实需要求解的子问题.</p>
 
       </article>
       <hr>
       
-      <a href="/2016/03/31/leetcode-CombinationSum(II)(III)/">上一篇博客：CombinationSum(II)(III)</a><br>
+      <a href="/2016/03/31/leetcode-Combinations/">上一篇博客：Combinations</a><br>
       
       
-      <a href="/2016/04/01/algorithm-dynamic-programming/">下一篇博客：动态规划原理学习笔记</a>
+      <a href="/2016/04/01/leetcode-BestTimeToBuyAndSellStock(II)(III)(IV)/">下一篇博客：BestTimeToBuyAndSellStock(II)(III)(IV)</a>
       
       <hr>
       <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a></div>
@@ -199,7 +189,7 @@ public static void helperCombine(
     <div class="post-area post comment">
       <!-- 多说评论框 start -->
       
-      <div class="ds-thread" data-thread-key="/2016/03/31/leetcode-Combinations" data-title="Combinations" data-url="schStudio.github.io/2016/03/31/leetcode-Combinations/"></div>
+      <div class="ds-thread" data-thread-key="/2016/04/01/algorithm-dynamic-programming" data-title="动态规划原理学习笔记" data-url="schStudio.github.io/2016/04/01/algorithm-dynamic-programming/"></div>
       
       <!-- 多说评论框 end -->
     </div>
