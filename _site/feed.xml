@@ -5,9 +5,215 @@
     <description>苏灿灏的博客 大数据爱好者</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 02 Apr 2016 21:12:50 +0800</pubDate>
-    <lastBuildDate>Sat, 02 Apr 2016 21:12:50 +0800</lastBuildDate>
+    <pubDate>Sun, 03 Apr 2016 00:12:04 +0800</pubDate>
+    <lastBuildDate>Sun, 03 Apr 2016 00:12:04 +0800</lastBuildDate>
     <generator>Jekyll v3.1.2</generator>
+    
+      <item>
+        <title>House Robber(II)(III)</title>
+        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#house-robber&quot; id=&quot;markdown-toc-house-robber&quot;&gt;House Robber&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#section&quot; id=&quot;markdown-toc-section&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-1&quot; id=&quot;markdown-toc-section-1&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#house-robber-ii&quot; id=&quot;markdown-toc-house-robber-ii&quot;&gt;House Robber II&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-2&quot; id=&quot;markdown-toc-section-2&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-3&quot; id=&quot;markdown-toc-section-3&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#house-robber-iii&quot; id=&quot;markdown-toc-house-robber-iii&quot;&gt;House Robber III&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-4&quot; id=&quot;markdown-toc-section-4&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-5&quot; id=&quot;markdown-toc-section-5&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;house-robber&quot;&gt;House Robber&lt;/h2&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;题目描述&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of them is that adjacent houses have security system connected and it will automatically contact the police if two adjacent houses were broken into on the same night.&lt;/p&gt;
+
+  &lt;p&gt;Given a list of non-negative integers representing the amount of money of each house, determine the maximum amount of money you can rob tonight without alerting the police.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;解法&lt;/h3&gt;
+
+&lt;p&gt;代码如下:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static int rob( int[] nums ) {
+	// maxBroken : 前一次抢劫状态的最大值
+    // maxUnbroken : 前一次非抢劫状态的最大值
+    int maxBroken = 0, maxUnbroken = 0;
+    for( int i = 0; i &amp;lt; nums.length; ++i ) {
+        int t = maxBroken;
+        maxBroken = Math.max( maxUnbroken+nums[i], maxBroken );
+        maxUnbroken = Math.max( maxUnbroken, t );
+    }
+    return Math.max( maxBroken, maxUnbroken );
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;思考过程: &lt;code class=&quot;highlighter-rouge&quot;&gt;动态规划&lt;/code&gt;. &lt;code class=&quot;highlighter-rouge&quot;&gt;当前最大值&lt;/code&gt;有2种情况:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;抢劫当前家庭后的最大值&lt;/code&gt; = max( &lt;code class=&quot;highlighter-rouge&quot;&gt;前一次非抢劫状态最大值&lt;/code&gt;+&lt;code class=&quot;highlighter-rouge&quot;&gt;当前值&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;前一次抢劫状态最大值&lt;/code&gt; )&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;不抢劫当前家庭的最大值&lt;/code&gt; = max( &lt;code class=&quot;highlighter-rouge&quot;&gt;前一次非抢劫状态最大值&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;前一次抢劫状态最大值&lt;/code&gt; )&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;最优子结构: &lt;code class=&quot;highlighter-rouge&quot;&gt;当前最大值&lt;/code&gt;依赖于&lt;code class=&quot;highlighter-rouge&quot;&gt;前一次最大值&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;重叠子问题: 求&lt;code class=&quot;highlighter-rouge&quot;&gt;1.&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;2.&lt;/code&gt;的时候有一个重叠的子问题&lt;code class=&quot;highlighter-rouge&quot;&gt;前一次抢劫状态最大值&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;时空复杂度: 时间复杂度是O(n), 空间复杂度是O(1)&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;house-robber-ii&quot;&gt;House Robber II&lt;/h2&gt;
+
+&lt;h3 id=&quot;section-2&quot;&gt;题目描述&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Note: This is an extension of House Robber.&lt;/p&gt;
+
+  &lt;p&gt;After robbing those houses on that street, the thief has found himself a new place for his thievery so that he will not get too much attention. This time, all houses at this place are arranged in a circle. That means the first house is the neighbor of the last one. Meanwhile, the security system for these houses remain the same as for those in the previous street.&lt;/p&gt;
+
+  &lt;p&gt;Given a list of non-negative integers representing the amount of money of each house, determine the maximum amount of money you can rob tonight without alerting the police.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;section-3&quot;&gt;解法&lt;/h3&gt;
+
+&lt;p&gt;代码如下:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static int rob( int[] nums ) {
+    if( nums.length == 0 ) return 0;
+    // 抢劫第一户家庭
+    int max1 = nums[0] + robHelper( nums, 2, nums.length-1 );
+    // 不抢劫第一户家庭
+    int max2 = robHelper( nums, 1, nums.length );
+    return Math.max( max1, max2 );
+}
+
+public static int robHelper( int[] nums, int left, int right ) {
+    // maxBroken : 前一次抢劫状态的最大值
+    // maxUnbroken : 前一次非抢劫状态的最大值
+    int maxBroken = 0, maxUnbroken = 0;
+    for( int i = left; i &amp;lt; right; ++i ) {
+        int t = maxBroken;
+        maxBroken = Math.max( maxUnbroken+nums[i], maxBroken );
+        maxUnbroken = Math.max( maxUnbroken, t );
+    }
+    return Math.max( maxBroken, maxUnbroken );
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;思考过程: 同&lt;code class=&quot;highlighter-rouge&quot;&gt;House Robber&lt;/code&gt;相同, 在此基础上多了环的问题, 那么就需要考虑环对原本解决方案带来的影响: 环的问题归于头尾之间有影响关系, 那么我们可以分情况考虑: &lt;code class=&quot;highlighter-rouge&quot;&gt;抢劫第一户家庭&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;不抢劫第一户家庭&lt;/code&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;抢劫第一户家庭&lt;/code&gt;的话, 我们就肯定不能抢劫第二户家庭和最后一户家庭, 所以抢劫第[3…n-1]户家庭&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;不抢劫第一户家庭&lt;/code&gt;的话, 我们可以抢劫第[2…n]户家庭&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;最后只要考虑这2个情况的最大值即可&lt;/p&gt;
+
+&lt;p&gt;时空复杂度: 时间复杂度是(n), 空间复杂度是(1)&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;house-robber-iii&quot;&gt;House Robber III&lt;/h2&gt;
+
+&lt;h3 id=&quot;section-4&quot;&gt;题目描述&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The thief has found himself a new place for his thievery again. There is only one entrance to this area, called the “root.” Besides the root, each house has one and only one parent house. After a tour, the smart thief realized that “all houses in this place forms a binary tree”. It will automatically contact the police if two directly-linked houses were broken into on the same night.&lt;/p&gt;
+
+  &lt;p&gt;Determine the maximum amount of money the thief can rob tonight without alerting the police.&lt;/p&gt;
+
+  &lt;p&gt;Example 1:&lt;/p&gt;
+
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;      3
+     / \
+    2   3
+     \   \ 
+      3   1
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+
+  &lt;p&gt;Maximum amount of money the thief can rob = 3 + 3 + 1 = 7.&lt;/p&gt;
+
+  &lt;p&gt;Example 2:&lt;/p&gt;
+
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;      3
+     / \
+    4   5
+   / \   \ 
+  1   3   1
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+
+  &lt;p&gt;Maximum amount of money the thief can rob = 4 + 5 = 9.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;section-5&quot;&gt;解法&lt;/h3&gt;
+
+&lt;p&gt;代码如下:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static int rob( TreeNode root ) {
+    return robHelper( root )[0];
+}
+
+public static int[] robHelper( TreeNode root ) {
+    if( root == null ) return new int[]{ 0, 0, 0 };
+    
+    int[] robLeft = robHelper( root.left );
+    int[] robRight = robHelper( root.right );
+    
+    // robRoot: 
+    //        robRoot[0]: 抢劫最大值
+    //        robRoot[1]: 左子树抢劫最大值
+    //        robRoot[2]: 右子树抢劫最大值
+    int[] robRoot = new int[3];
+    robRoot[0] = Math.max( robLeft[0]+robRight[0], 
+            robLeft[1]+robLeft[2]+robRight[1]+robRight[2]+root.val );
+    robRoot[1] = robLeft[0];
+    robRoot[2] = robRight[0];
+    
+    return robRoot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;思考过程: 一样是&lt;code class=&quot;highlighter-rouge&quot;&gt;动态规划&lt;/code&gt;, 而且其特征更加明显:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;最优子结构: &lt;code class=&quot;highlighter-rouge&quot;&gt;当前树最大值&lt;/code&gt; =  max( &lt;code class=&quot;highlighter-rouge&quot;&gt;左子树最大值&lt;/code&gt;+&lt;code class=&quot;highlighter-rouge&quot;&gt;右子树最大值&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;左左子树最大值&lt;/code&gt;+&lt;code class=&quot;highlighter-rouge&quot;&gt;左右子树最大值&lt;/code&gt;+&lt;code class=&quot;highlighter-rouge&quot;&gt;右左子树最大值&lt;/code&gt;+&lt;code class=&quot;highlighter-rouge&quot;&gt;右右子树最大值&lt;/code&gt;+&lt;code class=&quot;highlighter-rouge&quot;&gt;当前值&lt;/code&gt; )&lt;/li&gt;
+  &lt;li&gt;重叠子问题: 求解&lt;code class=&quot;highlighter-rouge&quot;&gt;左子树最大值&lt;/code&gt;的时候需要子问题&lt;code class=&quot;highlighter-rouge&quot;&gt;左左子树最大值&lt;/code&gt;+&lt;code class=&quot;highlighter-rouge&quot;&gt;左右子树最大值&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;注:&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;不抢当前节点: &lt;code class=&quot;highlighter-rouge&quot;&gt;左子树最大值&lt;/code&gt;+&lt;code class=&quot;highlighter-rouge&quot;&gt;右子树最大值&lt;/code&gt;&lt;/li&gt;
+    &lt;li&gt;抢劫当前节点: &lt;code class=&quot;highlighter-rouge&quot;&gt;左左子树最大值&lt;/code&gt;+&lt;code class=&quot;highlighter-rouge&quot;&gt;左右子树最大值&lt;/code&gt;+&lt;code class=&quot;highlighter-rouge&quot;&gt;右左子树最大值&lt;/code&gt;+&lt;code class=&quot;highlighter-rouge&quot;&gt;右右子树最大值&lt;/code&gt;+&lt;code class=&quot;highlighter-rouge&quot;&gt;当前值&lt;/code&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;时空复杂度: 时间复杂度是(2^n), 空间复杂度是(n)&lt;/p&gt;
+</description>
+        <pubDate>Sat, 02 Apr 2016 00:00:00 +0800</pubDate>
+        <link>/2016/04/02/leetcode-house-robber(II)/</link>
+        <guid isPermaLink="true">/2016/04/02/leetcode-house-robber(II)/</guid>
+        
+        
+        <category>Leetcode</category>
+        
+      </item>
     
       <item>
         <title>UniquePaths(II)</title>
@@ -148,8 +354,8 @@ There is one obstacle in the middle of a 3x3 grid as illustrated below.&lt;/p&gt
 &lt;p&gt;时空复杂度: 时间复杂度是(mn), 空间复杂度是(mn)&lt;/p&gt;
 </description>
         <pubDate>Sat, 02 Apr 2016 00:00:00 +0800</pubDate>
-        <link>/2016/04/02/leetcode-UniquePath(II)/</link>
-        <guid isPermaLink="true">/2016/04/02/leetcode-UniquePath(II)/</guid>
+        <link>/2016/04/02/leetcode-UniquePaths(II)/</link>
+        <guid isPermaLink="true">/2016/04/02/leetcode-UniquePaths(II)/</guid>
         
         
         <category>Leetcode</category>
@@ -1685,216 +1891,6 @@ private static void reverse( int[] nums, int i, int j ) {
         <pubDate>Wed, 30 Mar 2016 00:00:00 +0800</pubDate>
         <link>/2016/03/30/leetcode-next-permutation/</link>
         <guid isPermaLink="true">/2016/03/30/leetcode-next-permutation/</guid>
-        
-        
-        <category>Leetcode</category>
-        
-      </item>
-    
-      <item>
-        <title>NQueens(II)</title>
-        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#nqueens&quot; id=&quot;markdown-toc-nqueens&quot;&gt;NQueens&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#section&quot; id=&quot;markdown-toc-section&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-1&quot; id=&quot;markdown-toc-section-1&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-2&quot; id=&quot;markdown-toc-section-2&quot;&gt;总结&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#nqueens-ii&quot; id=&quot;markdown-toc-nqueens-ii&quot;&gt;NQueens II&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-3&quot; id=&quot;markdown-toc-section-3&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-4&quot; id=&quot;markdown-toc-section-4&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;nqueens&quot;&gt;NQueens&lt;/h2&gt;
-
-&lt;h3 id=&quot;section&quot;&gt;题目描述&lt;/h3&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;The n-queens puzzle is the problem of placing n queens on an n×n chessboard such &amp;gt; that no two queens attack each other.&lt;/p&gt;
-
-  &lt;p&gt;&lt;img src=&quot;http://articles.leetcode.com/wp-content/uploads/2012/03/8-queens.png&quot; alt=&quot;8-Queens&quot; /&gt;&lt;/p&gt;
-
-  &lt;p&gt;Given an integer n, return all distinct solutions to the n-queens puzzle.&lt;/p&gt;
-
-  &lt;p&gt;Each solution contains a distinct board configuration of the n-queens’ placement, where ‘Q’ and ‘.’ both indicate a queen and an empty space respectively.
-For example,
-There exist two distinct solutions to the 4-queens puzzle:&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[
- [&quot;.Q..&quot;,  // Solution 1
-  &quot;...Q&quot;,
-  &quot;Q...&quot;,
-  &quot;..Q.&quot;],
-
- [&quot;..Q.&quot;,  // Solution 2
-  &quot;Q...&quot;,
-  &quot;...Q&quot;,
-  &quot;.Q..&quot;]
-]
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;section-1&quot;&gt;解法&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;递归方式&lt;/p&gt;
-
-    &lt;p&gt;代码如下:&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  public static List&amp;lt;List&amp;lt;String&amp;gt;&amp;gt; solveNQueensRecursion( int n ) {
-      List&amp;lt;List&amp;lt;String&amp;gt;&amp;gt; res = new ArrayList&amp;lt;&amp;gt;();
-      // 创建棋盘: board[i]表示第i行第board[i]列
-      int[] board = new int[n];
-      // 初始化棋盘, -1表示没有棋子
-      Arrays.fill(board, -1);
-      // 回溯查找解
-      helperNQueens( 0, board, res );
-      return res;
-  }
-
-  private static void helperNQueens(int t, int[] board, List&amp;lt;List&amp;lt;String&amp;gt;&amp;gt; res) {
-      if( t == board.length ) {
-          res.add( newBoard(board) );
-          return;
-      }
-      for( int i = 0; i &amp;lt; board.length; ++i ) {
-          board[t] = i;
-          if( constraints( board, t ) )
-              helperNQueens( t+1, board, res );
-      }
-  }
-
-  private static boolean constraints(int[] board, int t) {
-      for( int i = 0; i &amp;lt; t; ++i ) {
-          if( (board[i] == board[t]) ||
-                  (t-i == board[t]-board[i] || t-i == board[i]-board[t]) )
-              return false;
-      }
-      return true;
-  }
-
-  /*
-   * 返回棋盘的表示形式, 类型为List&amp;lt;String&amp;gt;
-   */
-  private static List&amp;lt;String&amp;gt; newBoard(int[] board) {
-      List&amp;lt;String&amp;gt; res = new ArrayList&amp;lt;&amp;gt;();
-      int n = board.length;
-      char[][] newBoard = new char[n][n];
-      for( int i = 0; i &amp;lt; n; ++i )
-          Arrays.fill(newBoard[i], &#39;.&#39;);
-      for( int i = 0; i &amp;lt; n; ++i ) {
-          newBoard[i][board[i]] = &#39;Q&#39;;
-          StringBuilder sb = new StringBuilder();
-          for( char c : newBoard[i] ) sb.append(c);
-          res.add( sb.toString() );
-      }
-      return res;
-  }
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;思考过程: N皇后问题属于经典的题目, 用&lt;code class=&quot;highlighter-rouge&quot;&gt;回溯法&lt;/code&gt;来解决&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;疑难点: 难点主要有两个, 一个是&lt;code class=&quot;highlighter-rouge&quot;&gt;棋盘的表示&lt;/code&gt;, 另一个是皇后之间的&lt;code class=&quot;highlighter-rouge&quot;&gt;冲突判断&lt;/code&gt;&lt;/p&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;
-      &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;棋盘的表示&lt;/code&gt;要建立在对问题约束条件的理解之上. 棋盘之中皇后之间不能处于同一行, 也不能处于同一列, 那么我们可以用一个数组board来表示这个棋盘.&lt;/p&gt;
-
-      &lt;ul&gt;
-        &lt;li&gt;数组下标表示棋盘中的行值&lt;/li&gt;
-        &lt;li&gt;数组的值表示棋盘中的列值&lt;/li&gt;
-      &lt;/ul&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;冲突判断&lt;/code&gt;有3个条件:&lt;/p&gt;
-
-      &lt;ul&gt;
-        &lt;li&gt;皇后不能处于同一行: 不需要显示判断, 因为我们以行作为递归, 皇后不可能出现在同一行&lt;/li&gt;
-        &lt;li&gt;皇后不能处于同一列: 根据 board[i] == board[j] 作为判断&lt;/li&gt;
-        &lt;li&gt;皇后不能处于同一斜线: 根据 j-i == abs(board[j]-board[i]) (j&amp;gt;i)&lt;/li&gt;
-      &lt;/ul&gt;
-    &lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;p&gt;斜线的判断可能比较难以理解: 意思是行值差与列值差相等表示皇后在同一斜线上.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;时空复杂度: 时间复杂度是O(n!), 空间复杂度是O(n): 递归的空间, 排除构造出来的棋盘&lt;/p&gt;
-
-&lt;h3 id=&quot;section-2&quot;&gt;总结&lt;/h3&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;善于观察题目的限制条件, 从而构造出合适的数据结构&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;迭代方式&lt;/p&gt;
-
-    &lt;p&gt;代码如下:&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  public static List&amp;lt;List&amp;lt;String&amp;gt;&amp;gt; solveNQueensIteration( int n ) {
-      List&amp;lt;List&amp;lt;String&amp;gt;&amp;gt; res = new ArrayList&amp;lt;&amp;gt;();
-      // 创建棋盘: board[i]表示第i行第board[i]列
-      int[] board = new int[n];
-
-      // 初始化第0行的状态
-      board[0] = -1;
-      // t表示目前处于第t行
-      int t = 0;
-      while( t &amp;gt;= 0 ) {
-          // 查找第t行皇后的存放位置
-          ++board[t];
-          while( board[t] &amp;lt; n &amp;amp;&amp;amp; !constraints( board, t ) ) ++board[t];
-
-          // 找到第t行皇后的存放位置就进入下一行
-          if( board[t] &amp;lt; n ) {
-              if( t == n-1 ) {
-                  res.add( newBoard(board) );
-              } else {
-                  ++t;
-                  board[t] = -1;
-              }
-          } else {
-              --t;
-          }
-      }
-      return res;
-  }
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;nqueens-ii&quot;&gt;NQueens II&lt;/h2&gt;
-
-&lt;h3 id=&quot;section-3&quot;&gt;题目描述&lt;/h3&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Follow up for N-Queens problem.&lt;/p&gt;
-
-  &lt;p&gt;Now, instead outputting board configurations, return the total number of distinct solutions.
-&lt;img src=&quot;http://articles.leetcode.com/wp-content/uploads/2012/03/8-queens.png&quot; alt=&quot;8-Queens&quot; /&gt;&lt;/p&gt;
-
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;section-4&quot;&gt;解法&lt;/h3&gt;
-
-&lt;p&gt;该题目的算法与上一道题的一模一样, 只需要在相应的&lt;code class=&quot;highlighter-rouge&quot;&gt;递归版本&lt;/code&gt;或&lt;code class=&quot;highlighter-rouge&quot;&gt;迭代版本&lt;/code&gt;中找到可行解的时候统计数量即可&lt;/p&gt;
-</description>
-        <pubDate>Wed, 30 Mar 2016 00:00:00 +0800</pubDate>
-        <link>/2016/03/30/leetcode-NQueens(II)/</link>
-        <guid isPermaLink="true">/2016/03/30/leetcode-NQueens(II)/</guid>
         
         
         <category>Leetcode</category>
