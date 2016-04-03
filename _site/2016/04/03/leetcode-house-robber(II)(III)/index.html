@@ -5,10 +5,10 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>UniquePaths(II)</title>
+	<title>House Robber(II)(III)</title>
 	<meta name="description" content="">
 	
-	<link rel="canonical" href="/2016/04/02/leetcode-UniquePaths(II)/">
+	<link rel="canonical" href="/2016/04/03/leetcode-house-robber(II)(III)/">
 	<link rel="alternate" type="application/rss+xml" title="SCH" href="/feed.xml" />
 	
 	<!-- <link rel="stylesheet" href="/css/main.css"> -->
@@ -110,154 +110,213 @@
   <div id="myArticle" class="col-sm-9">
     <div class="post-area post">
       <header>
-        <h1>UniquePaths(II)</h1>
-        <p>Apr 2, 2016</p>
+        <h1>House Robber(II)(III)</h1>
+        <p>Apr 3, 2016</p>
       </header>
       <hr>
       <article>
         <ul id="markdown-toc">
-  <li><a href="#uniquepaths" id="markdown-toc-uniquepaths">UniquePaths</a>    <ul>
+  <li><a href="#house-robber" id="markdown-toc-house-robber">House Robber</a>    <ul>
       <li><a href="#section" id="markdown-toc-section">题目描述</a></li>
       <li><a href="#section-1" id="markdown-toc-section-1">解法</a></li>
     </ul>
   </li>
-  <li><a href="#uniquepaths-ii" id="markdown-toc-uniquepaths-ii">UniquePaths II</a>    <ul>
+  <li><a href="#house-robber-ii" id="markdown-toc-house-robber-ii">House Robber II</a>    <ul>
       <li><a href="#section-2" id="markdown-toc-section-2">题目描述</a></li>
       <li><a href="#section-3" id="markdown-toc-section-3">解法</a></li>
     </ul>
   </li>
+  <li><a href="#house-robber-iii" id="markdown-toc-house-robber-iii">House Robber III</a>    <ul>
+      <li><a href="#section-4" id="markdown-toc-section-4">题目描述</a></li>
+      <li><a href="#section-5" id="markdown-toc-section-5">解法</a></li>
+    </ul>
+  </li>
 </ul>
 
-<h2 id="uniquepaths">UniquePaths</h2>
+<h2 id="house-robber">House Robber</h2>
 
 <h3 id="section">题目描述</h3>
 
 <blockquote>
-  <p>A robot is located at the top-left corner of a m x n grid (marked ‘Start’ in the diagram below).</p>
+  <p>You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of them is that adjacent houses have security system connected and it will automatically contact the police if two adjacent houses were broken into on the same night.</p>
 
-  <p>The robot can only move either down or right at any point in time. The robot is trying to reach the bottom-right corner of the grid (marked ‘Finish’ in the diagram below).</p>
-
-  <p>How many possible unique paths are there?</p>
-
-  <p>Note: m and n will be at most 100.</p>
-
-  <p><img src="http://articles.leetcode.com/wp-content/uploads/2014/12/robot_maze.png" alt="unique-path" /></p>
+  <p>Given a list of non-negative integers representing the amount of money of each house, determine the maximum amount of money you can rob tonight without alerting the police.</p>
 </blockquote>
 
 <h3 id="section-1">解法</h3>
 
 <p>代码如下:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>public static int uniquePaths( int m, int n ) {
-    // dp[i][j]: 在[i][j]格子的所有可能Path
-    int[][] dp = new int[m][n];
-    // 起点位置, 竖线Path为1
-    for( int i = 0; i &lt; m; ++i )
-        dp[i][0] = 1;
-    // 起点位置, 横线Path为1
-    for( int j = 0; j &lt; n; ++j )
-        dp[0][j] = 1;
-
-    for( int i = 1; i &lt; m; ++i )
-        for( int j = 1; j &lt; n; ++j )
-            dp[i][j] = dp[i-1][j] + dp[i][j-1];
-
-    return dp[m-1][n-1];
+<div class="highlighter-rouge"><pre class="highlight"><code>public static int rob( int[] nums ) {
+	// maxBroken : 前一次抢劫状态的最大值
+    // maxUnbroken : 前一次非抢劫状态的最大值
+    int maxBroken = 0, maxUnbroken = 0;
+    for( int i = 0; i &lt; nums.length; ++i ) {
+        int t = maxBroken;
+        maxBroken = Math.max( maxUnbroken+nums[i], maxBroken );
+        maxUnbroken = Math.max( maxUnbroken, t );
+    }
+    return Math.max( maxBroken, maxUnbroken );
 }
 </code></pre>
 </div>
 
-<p>思考过程: <code class="highlighter-rouge">动态规划</code>. <code class="highlighter-rouge">当前格子</code>可以由<code class="highlighter-rouge">左边格子</code>和<code class="highlighter-rouge">上边格子</code>的路径数目相加, 所以定义</p>
+<p>思考过程: <code class="highlighter-rouge">动态规划</code>. <code class="highlighter-rouge">当前最大值</code>有2种情况:</p>
+
+<ol>
+  <li><code class="highlighter-rouge">抢劫当前家庭后的最大值</code> = max( <code class="highlighter-rouge">前一次非抢劫状态最大值</code>+<code class="highlighter-rouge">当前值</code>, <code class="highlighter-rouge">前一次抢劫状态最大值</code> )</li>
+  <li><code class="highlighter-rouge">不抢劫当前家庭的最大值</code> = max( <code class="highlighter-rouge">前一次非抢劫状态最大值</code>, <code class="highlighter-rouge">前一次抢劫状态最大值</code> )</li>
+</ol>
 
 <ul>
-  <li><code class="highlighter-rouge">dp[i][j]</code>: 在第<code class="highlighter-rouge">[i][j]</code>个格子的所有可能路径数</li>
-  <li>最优子结构: <code class="highlighter-rouge">dp[i][j]</code> = <code class="highlighter-rouge">dp[i-1][j]</code> + <code class="highlighter-rouge">dp[i][j-1]</code></li>
-  <li>重叠子问题: <code class="highlighter-rouge">dp[i-1][j]</code>和<code class="highlighter-rouge">dp[i][j-1]</code>都需要子问题<code class="highlighter-rouge">dp[i-1][j-1]</code>的值</li>
+  <li>最优子结构: <code class="highlighter-rouge">当前最大值</code>依赖于<code class="highlighter-rouge">前一次最大值</code></li>
+  <li>重叠子问题: 求<code class="highlighter-rouge">1.</code>和<code class="highlighter-rouge">2.</code>的时候有一个重叠的子问题<code class="highlighter-rouge">前一次抢劫状态最大值</code></li>
 </ul>
 
-<p>时空复杂度: 时间复杂度是O(mn), 空间复杂度是O(mn)</p>
+<p>时空复杂度: 时间复杂度是O(n), 空间复杂度是O(1)</p>
 
 <hr />
 
-<h2 id="uniquepaths-ii">UniquePaths II</h2>
+<h2 id="house-robber-ii">House Robber II</h2>
 
 <h3 id="section-2">题目描述</h3>
 
 <blockquote>
-  <p>Follow up for “Unique Paths”:</p>
+  <p>Note: This is an extension of House Robber.</p>
 
-  <p>Now consider if some obstacles are added to the grids. How many unique paths would there be?</p>
+  <p>After robbing those houses on that street, the thief has found himself a new place for his thievery so that he will not get too much attention. This time, all houses at this place are arranged in a circle. That means the first house is the neighbor of the last one. Meanwhile, the security system for these houses remain the same as for those in the previous street.</p>
 
-  <p>An obstacle and empty space is marked as 1 and 0 respectively in the grid.</p>
-
-  <p>For example,
-There is one obstacle in the middle of a 3x3 grid as illustrated below.</p>
-
-  <div class="highlighter-rouge"><pre class="highlight"><code>[
-	[0,0,0],
-  	[0,1,0],
-  	[0,0,0]
-]
-</code></pre>
-  </div>
-
-  <p>The total number of unique paths is 2.</p>
-
-  <p>Note: <code class="highlighter-rouge">m</code> and <code class="highlighter-rouge">n</code> will be at most 100.</p>
+  <p>Given a list of non-negative integers representing the amount of money of each house, determine the maximum amount of money you can rob tonight without alerting the police.</p>
 </blockquote>
 
 <h3 id="section-3">解法</h3>
 
 <p>代码如下:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>public static int uniquePaths( int[][] obstacleGrid ) {
-    if( obstacleGrid.length == 0 ) return 0;
+<div class="highlighter-rouge"><pre class="highlight"><code>public static int rob( int[] nums ) {
+    if( nums.length == 0 ) return 0;
+    // 抢劫第一户家庭
+    int max1 = nums[0] + robHelper( nums, 2, nums.length-1 );
+    // 不抢劫第一户家庭
+    int max2 = robHelper( nums, 1, nums.length );
+    return Math.max( max1, max2 );
+}
 
-    int m = obstacleGrid.length;
-    int n = obstacleGrid[0].length;
-    // dp[i][j]: 在[i][j]格子的所有可能Path
-    int[][] dp = new int[m][n];
-    // 起点位置, 竖线Path为1, 遇到障碍之后的为0
-    int i = 0;
-    for( ; i &lt; m &amp;&amp; obstacleGrid[i][0]==0; ++i )
-        dp[i][0] = 1;
-    for( ; i &lt; m; ++i )
-        dp[i][0] = 0;
-    // 起点位置, 横线Path为1, 遇到障碍之后的为0
-    int j = 0;
-    for( ; j &lt; n &amp;&amp; obstacleGrid[0][j]==0; ++j )
-        dp[0][j] = 1;
-    for( ; j &lt; n; ++j )
-        dp[0][j] = 0;
-
-    for( i = 1; i &lt; m; ++i )
-        for( j = 1; j &lt; n; ++j )
-            if( obstacleGrid[i][j] == 0 )
-                dp[i][j] = dp[i-1][j] + dp[i][j-1];
-            else
-                dp[i][j] = 0;
-
-    return dp[m-1][n-1];
+public static int robHelper( int[] nums, int left, int right ) {
+    // maxBroken : 前一次抢劫状态的最大值
+    // maxUnbroken : 前一次非抢劫状态的最大值
+    int maxBroken = 0, maxUnbroken = 0;
+    for( int i = left; i &lt; right; ++i ) {
+        int t = maxBroken;
+        maxBroken = Math.max( maxUnbroken+nums[i], maxBroken );
+        maxUnbroken = Math.max( maxUnbroken, t );
+    }
+    return Math.max( maxBroken, maxUnbroken );
 }
 </code></pre>
 </div>
 
-<p>思考过程: 同UniquePaths相同, 在此基础上多了障碍的设置, 那么我们只需要考虑障碍带来的影响就可以了:</p>
+<p>思考过程: 同<code class="highlighter-rouge">House Robber</code>相同, 在此基础上多了环的问题, 那么就需要考虑环对原本解决方案带来的影响: 环的问题归于头尾之间有影响关系, 那么我们可以分情况考虑: <code class="highlighter-rouge">抢劫第一户家庭</code>和<code class="highlighter-rouge">不抢劫第一户家庭</code></p>
 
 <ol>
-  <li>初始化横线和竖线的时候, 如果遇到障碍, 之后都是不可达的</li>
-  <li>在递推过程中, 如果遇到障碍, 那么该格子是不可达的, 值为0</li>
+  <li><code class="highlighter-rouge">抢劫第一户家庭</code>的话, 我们就肯定不能抢劫第二户家庭和最后一户家庭, 所以抢劫第[3…n-1]户家庭</li>
+  <li><code class="highlighter-rouge">不抢劫第一户家庭</code>的话, 我们可以抢劫第[2…n]户家庭</li>
 </ol>
 
-<p>时空复杂度: 时间复杂度是(mn), 空间复杂度是(mn)</p>
+<p>最后只要考虑这2个情况的最大值即可</p>
+
+<p>时空复杂度: 时间复杂度是(n), 空间复杂度是(1)</p>
+
+<hr />
+
+<h2 id="house-robber-iii">House Robber III</h2>
+
+<h3 id="section-4">题目描述</h3>
+
+<blockquote>
+  <p>The thief has found himself a new place for his thievery again. There is only one entrance to this area, called the “root.” Besides the root, each house has one and only one parent house. After a tour, the smart thief realized that “all houses in this place forms a binary tree”. It will automatically contact the police if two directly-linked houses were broken into on the same night.</p>
+
+  <p>Determine the maximum amount of money the thief can rob tonight without alerting the police.</p>
+
+  <p>Example 1:</p>
+
+  <div class="highlighter-rouge"><pre class="highlight"><code>      3
+     / \
+    2   3
+     \   \ 
+      3   1
+</code></pre>
+  </div>
+
+  <p>Maximum amount of money the thief can rob = 3 + 3 + 1 = 7.</p>
+
+  <p>Example 2:</p>
+
+  <div class="highlighter-rouge"><pre class="highlight"><code>      3
+     / \
+    4   5
+   / \   \ 
+  1   3   1
+</code></pre>
+  </div>
+
+  <p>Maximum amount of money the thief can rob = 4 + 5 = 9.</p>
+</blockquote>
+
+<h3 id="section-5">解法</h3>
+
+<p>代码如下:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>public static int rob( TreeNode root ) {
+    return robHelper( root )[0];
+}
+
+public static int[] robHelper( TreeNode root ) {
+    if( root == null ) return new int[]{ 0, 0, 0 };
+    
+    int[] robLeft = robHelper( root.left );
+    int[] robRight = robHelper( root.right );
+    
+    // robRoot: 
+    //        robRoot[0]: 抢劫最大值
+    //        robRoot[1]: 左子树抢劫最大值
+    //        robRoot[2]: 右子树抢劫最大值
+    int[] robRoot = new int[3];
+    robRoot[0] = Math.max( robLeft[0]+robRight[0], 
+            robLeft[1]+robLeft[2]+robRight[1]+robRight[2]+root.val );
+    robRoot[1] = robLeft[0];
+    robRoot[2] = robRight[0];
+    
+    return robRoot;
+}
+</code></pre>
+</div>
+
+<p>思考过程: 一样是<code class="highlighter-rouge">动态规划</code>, 而且其特征更加明显:</p>
+
+<ul>
+  <li>最优子结构: <code class="highlighter-rouge">当前树最大值</code> =  max( <code class="highlighter-rouge">左子树最大值</code>+<code class="highlighter-rouge">右子树最大值</code>, <code class="highlighter-rouge">左左子树最大值</code>+<code class="highlighter-rouge">左右子树最大值</code>+<code class="highlighter-rouge">右左子树最大值</code>+<code class="highlighter-rouge">右右子树最大值</code>+<code class="highlighter-rouge">当前值</code> )</li>
+  <li>重叠子问题: 求解<code class="highlighter-rouge">左子树最大值</code>的时候需要子问题<code class="highlighter-rouge">左左子树最大值</code>+<code class="highlighter-rouge">左右子树最大值</code></li>
+</ul>
+
+<blockquote>
+  <p>注:</p>
+
+  <ul>
+    <li>不抢当前节点: <code class="highlighter-rouge">左子树最大值</code>+<code class="highlighter-rouge">右子树最大值</code></li>
+    <li>抢劫当前节点: <code class="highlighter-rouge">左左子树最大值</code>+<code class="highlighter-rouge">左右子树最大值</code>+<code class="highlighter-rouge">右左子树最大值</code>+<code class="highlighter-rouge">右右子树最大值</code>+<code class="highlighter-rouge">当前值</code></li>
+  </ul>
+</blockquote>
+
+<p>时空复杂度: 时间复杂度是(2^n), 空间复杂度是(n)</p>
 
       </article>
       <hr>
       
-      <a href="/2016/04/01/software-testing-junit/">上一篇博客：JUnit</a><br>
+      <a href="/2016/04/02/leetcode-UniquePaths(II)/">上一篇博客：UniquePaths(II)</a><br>
       
       
-      <a href="/2016/04/03/leetcode-house-robber(II)(III)/">下一篇博客：House Robber(II)(III)</a>
+      <a href="/2016/04/03/leetcode-unique-binary-search-trees(II)/">下一篇博客：Unique Binary Search Trees(II)</a>
       
       <hr>
       <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a></div>
@@ -266,7 +325,7 @@ There is one obstacle in the middle of a 3x3 grid as illustrated below.</p>
     <div class="post-area post comment">
       <!-- 多说评论框 start -->
       
-      <div class="ds-thread" data-thread-key="/2016/04/02/leetcode-UniquePaths(II)" data-title="UniquePaths(II)" data-url="schStudio.github.io/2016/04/02/leetcode-UniquePaths(II)/"></div>
+      <div class="ds-thread" data-thread-key="/2016/04/03/leetcode-house-robber(II)(III)" data-title="House Robber(II)(III)" data-url="schStudio.github.io/2016/04/03/leetcode-house-robber(II)(III)/"></div>
       
       <!-- 多说评论框 end -->
     </div>

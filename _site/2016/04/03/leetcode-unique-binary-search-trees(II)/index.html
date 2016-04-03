@@ -5,10 +5,10 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>UniquePaths(II)</title>
+	<title>Unique Binary Search Trees(II)</title>
 	<meta name="description" content="">
 	
-	<link rel="canonical" href="/2016/04/02/leetcode-UniquePaths(II)/">
+	<link rel="canonical" href="/2016/04/03/leetcode-unique-binary-search-trees(II)/">
 	<link rel="alternate" type="application/rss+xml" title="SCH" href="/feed.xml" />
 	
 	<!-- <link rel="stylesheet" href="/css/main.css"> -->
@@ -110,154 +110,155 @@
   <div id="myArticle" class="col-sm-9">
     <div class="post-area post">
       <header>
-        <h1>UniquePaths(II)</h1>
-        <p>Apr 2, 2016</p>
+        <h1>Unique Binary Search Trees(II)</h1>
+        <p>Apr 3, 2016</p>
       </header>
       <hr>
       <article>
         <ul id="markdown-toc">
-  <li><a href="#uniquepaths" id="markdown-toc-uniquepaths">UniquePaths</a>    <ul>
+  <li><a href="#unique-binary-search-trees" id="markdown-toc-unique-binary-search-trees">Unique Binary Search Trees</a>    <ul>
       <li><a href="#section" id="markdown-toc-section">题目描述</a></li>
       <li><a href="#section-1" id="markdown-toc-section-1">解法</a></li>
     </ul>
   </li>
-  <li><a href="#uniquepaths-ii" id="markdown-toc-uniquepaths-ii">UniquePaths II</a>    <ul>
+  <li><a href="#unique-binary-search-trees-ii" id="markdown-toc-unique-binary-search-trees-ii">Unique Binary Search Trees II</a>    <ul>
       <li><a href="#section-2" id="markdown-toc-section-2">题目描述</a></li>
       <li><a href="#section-3" id="markdown-toc-section-3">解法</a></li>
     </ul>
   </li>
 </ul>
 
-<h2 id="uniquepaths">UniquePaths</h2>
+<h2 id="unique-binary-search-trees">Unique Binary Search Trees</h2>
 
 <h3 id="section">题目描述</h3>
 
 <blockquote>
-  <p>A robot is located at the top-left corner of a m x n grid (marked ‘Start’ in the diagram below).</p>
+  <p>Given n, how many structurally unique BST’s (binary search trees) that store values 1…n?</p>
 
-  <p>The robot can only move either down or right at any point in time. The robot is trying to reach the bottom-right corner of the grid (marked ‘Finish’ in the diagram below).</p>
+  <p>For example,</p>
 
-  <p>How many possible unique paths are there?</p>
+  <p>Given n = 3, there are a total of 5 unique BST’s.</p>
 
-  <p>Note: m and n will be at most 100.</p>
+  <div class="highlighter-rouge"><pre class="highlight"><code>   1         3     3      2      1
+    \       /     /      / \      \
+     3     2     1      1   3      2
+    /     /       \                 \
+   2     1         2                 3
+</code></pre>
+  </div>
 
-  <p><img src="http://articles.leetcode.com/wp-content/uploads/2014/12/robot_maze.png" alt="unique-path" /></p>
 </blockquote>
 
 <h3 id="section-1">解法</h3>
 
 <p>代码如下:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>public static int uniquePaths( int m, int n ) {
-    // dp[i][j]: 在[i][j]格子的所有可能Path
-    int[][] dp = new int[m][n];
-    // 起点位置, 竖线Path为1
-    for( int i = 0; i &lt; m; ++i )
-        dp[i][0] = 1;
-    // 起点位置, 横线Path为1
-    for( int j = 0; j &lt; n; ++j )
-        dp[0][j] = 1;
+<div class="highlighter-rouge"><pre class="highlight"><code>public static int numTrees( int n ) {
+    if( n &lt;= 1 ) return 1;
+    // dp[i]: 有i个不同数字的numTrees
+    int[] dp = new int[n+1];
 
-    for( int i = 1; i &lt; m; ++i )
-        for( int j = 1; j &lt; n; ++j )
-            dp[i][j] = dp[i-1][j] + dp[i][j-1];
+    dp[0] = dp[1] = 1;
 
-    return dp[m-1][n-1];
+    for( int i = 2; i &lt;= n; ++i ) {
+        for( int j = 0; j &lt; i; ++j )
+            dp[i] += dp[j] * dp[i-1-j];
+    }
+    return dp[n];
 }
 </code></pre>
 </div>
 
-<p>思考过程: <code class="highlighter-rouge">动态规划</code>. <code class="highlighter-rouge">当前格子</code>可以由<code class="highlighter-rouge">左边格子</code>和<code class="highlighter-rouge">上边格子</code>的路径数目相加, 所以定义</p>
+<p>思考过程: <code class="highlighter-rouge">动态规划</code>. 我们的目的是求出有<strong>n个不同元素时的树的个数</strong>(定义为<code class="highlighter-rouge">dp[n]</code>). 首先我们考虑一个元素能够带来的影响. 假设这个元素是<code class="highlighter-rouge">i</code>, 那么元素<code class="highlighter-rouge">i</code>可以充当<code class="highlighter-rouge">root</code>, 也可以不充当<code class="highlighter-rouge">root</code>. 如果充当<code class="highlighter-rouge">root</code>, 那么其左子树个数有<strong><code class="highlighter-rouge">i-1</code>个不同元素</strong>(<code class="highlighter-rouge">dp[i-1]</code>), 如果不充当<code class="highlighter-rouge">root</code>, 那么元素<code class="highlighter-rouge">i</code>会对<strong>其他<code class="highlighter-rouge">root</code>为<code class="highlighter-rouge">[1...i-1]</code>的树</strong>(定义为<code class="highlighter-rouge">f[k, i]</code>, <code class="highlighter-rouge">k∈[1...i-1]</code>)产生影响, 所以我们需要定义<code class="highlighter-rouge">dp[n]</code>和<code class="highlighter-rouge">f[i, n]</code>, 如下:</p>
 
 <ul>
-  <li><code class="highlighter-rouge">dp[i][j]</code>: 在第<code class="highlighter-rouge">[i][j]</code>个格子的所有可能路径数</li>
-  <li>最优子结构: <code class="highlighter-rouge">dp[i][j]</code> = <code class="highlighter-rouge">dp[i-1][j]</code> + <code class="highlighter-rouge">dp[i][j-1]</code></li>
-  <li>重叠子问题: <code class="highlighter-rouge">dp[i-1][j]</code>和<code class="highlighter-rouge">dp[i][j-1]</code>都需要子问题<code class="highlighter-rouge">dp[i-1][j-1]</code>的值</li>
+  <li><code class="highlighter-rouge">dp[n]</code>: 有<code class="highlighter-rouge">n</code>个不同元素时树的个数</li>
+  <li><code class="highlighter-rouge">f[i, n]</code>: 有<code class="highlighter-rouge">n</code>个不同元素时且root为<code class="highlighter-rouge">i</code>的树的个数</li>
 </ul>
 
-<p>时空复杂度: 时间复杂度是O(mn), 空间复杂度是O(mn)</p>
+<p><code class="highlighter-rouge">dp[n]</code>实际上等于root为<code class="highlighter-rouge">[1...n]</code>的情况总和, 而<code class="highlighter-rouge">f[i, n]</code>实际上等于<code class="highlighter-rouge">左子树总数*右子树总数</code>, 所以我们可以容易得到以下关系式:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">dp[n]</code> = <code class="highlighter-rouge">f[1, n]</code> + <code class="highlighter-rouge">f[2, n]</code> + <code class="highlighter-rouge">...</code> + <code class="highlighter-rouge">f[n, n]</code></li>
+  <li><code class="highlighter-rouge">f[i, n]</code> = <code class="highlighter-rouge">dp[i-1]</code> * <code class="highlighter-rouge">dp[n-i]</code></li>
+</ul>
+
+<p>把<code class="highlighter-rouge">f[i, n]</code>代入<code class="highlighter-rouge">dp[n]</code>我们可以得到:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">dp[n]</code> = <code class="highlighter-rouge">dp[0]*dp[n-1]</code> + <code class="highlighter-rouge">dp[1]*dp[n-2]</code> + <code class="highlighter-rouge">...</code> + <code class="highlighter-rouge">dp[n-i]*dp[0]</code></li>
+</ul>
+
+<p>时空复杂度: 时间复杂度是O(n^2), 空间复杂度是O(n)</p>
 
 <hr />
 
-<h2 id="uniquepaths-ii">UniquePaths II</h2>
+<h2 id="unique-binary-search-trees-ii">Unique Binary Search Trees II</h2>
 
 <h3 id="section-2">题目描述</h3>
 
 <blockquote>
-  <p>Follow up for “Unique Paths”:</p>
-
-  <p>Now consider if some obstacles are added to the grids. How many unique paths would there be?</p>
-
-  <p>An obstacle and empty space is marked as 1 and 0 respectively in the grid.</p>
+  <p>Given n, generate all structurally unique BST’s (binary search trees) that store values 1…n.</p>
 
   <p>For example,
-There is one obstacle in the middle of a 3x3 grid as illustrated below.</p>
+Given n = 3, your program should return all 5 unique BST’s shown below.</p>
 
-  <div class="highlighter-rouge"><pre class="highlight"><code>[
-	[0,0,0],
-  	[0,1,0],
-  	[0,0,0]
-]
+  <div class="highlighter-rouge"><pre class="highlight"><code>    1         3     3      2      1
+     \       /     /      / \      \
+      3     2     1      1   3      2
+     /     /       \                 \
+    2     1         2                 3
 </code></pre>
   </div>
-
-  <p>The total number of unique paths is 2.</p>
-
-  <p>Note: <code class="highlighter-rouge">m</code> and <code class="highlighter-rouge">n</code> will be at most 100.</p>
 </blockquote>
 
 <h3 id="section-3">解法</h3>
 
 <p>代码如下:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>public static int uniquePaths( int[][] obstacleGrid ) {
-    if( obstacleGrid.length == 0 ) return 0;
-
-    int m = obstacleGrid.length;
-    int n = obstacleGrid[0].length;
-    // dp[i][j]: 在[i][j]格子的所有可能Path
-    int[][] dp = new int[m][n];
-    // 起点位置, 竖线Path为1, 遇到障碍之后的为0
-    int i = 0;
-    for( ; i &lt; m &amp;&amp; obstacleGrid[i][0]==0; ++i )
-        dp[i][0] = 1;
-    for( ; i &lt; m; ++i )
-        dp[i][0] = 0;
-    // 起点位置, 横线Path为1, 遇到障碍之后的为0
-    int j = 0;
-    for( ; j &lt; n &amp;&amp; obstacleGrid[0][j]==0; ++j )
-        dp[0][j] = 1;
-    for( ; j &lt; n; ++j )
-        dp[0][j] = 0;
-
-    for( i = 1; i &lt; m; ++i )
-        for( j = 1; j &lt; n; ++j )
-            if( obstacleGrid[i][j] == 0 )
-                dp[i][j] = dp[i-1][j] + dp[i][j-1];
-            else
-                dp[i][j] = 0;
-
-    return dp[m-1][n-1];
+<div class="highlighter-rouge"><pre class="highlight"><code>public static List&lt;TreeNode&gt; generateTrees( int n ) {
+    if( n &lt;= 0 ) return new ArrayList&lt;TreeNode&gt;();
+    return helperGenerateTrees( 1, n );
 }
+private static List&lt;TreeNode&gt; helperGenerateTrees( int left, int right ) {
+    List&lt;TreeNode&gt; res = new ArrayList&lt;&gt;();
+    if( left &gt; right ) {
+        res.add( null );
+    } else {
+        for( int i = left; i &lt;= right; ++i ) {
+            List&lt;TreeNode&gt; rootLeft = helperGenerateTrees( left, i-1 );
+            List&lt;TreeNode&gt; rootRight = helperGenerateTrees( i+1, right );
+            for( TreeNode nodeLeft : rootLeft )
+                for( TreeNode nodeRight : rootRight ) {
+                    TreeNode node = new TreeNode( i );
+                    node.left = nodeLeft;
+                    node.right = nodeRight;
+                    res.add( node );
+                }
+        }
+    }
+    return res;
+}s
 </code></pre>
 </div>
 
-<p>思考过程: 同UniquePaths相同, 在此基础上多了障碍的设置, 那么我们只需要考虑障碍带来的影响就可以了:</p>
+<p>思考过程: 我们目标是生成所有的<code class="highlighter-rouge">Unique Binary Search Trees</code>. 一开始, 考虑一个元素对原始结果集会产生什么样的影响? 加入一个元素<code class="highlighter-rouge">n</code>, 原始结果集都需要考虑加入<code class="highlighter-rouge">n</code>的情况, 操作比较麻烦,无从下手.</p>
 
-<ol>
-  <li>初始化横线和竖线的时候, 如果遇到障碍, 之后都是不可达的</li>
-  <li>在递推过程中, 如果遇到障碍, 那么该格子是不可达的, 值为0</li>
-</ol>
+<p>那么换个角度思考, 一个元素作为树根可以产生怎样的结果集? 假设在<code class="highlighter-rouge">[1...n]</code>中有一个元素<code class="highlighter-rouge">i</code>, 以它为树根可以产生结果集: <code class="highlighter-rouge">[1...i-1]的结果集 * [i+1...n]的结果集</code>, 那么我们尝试定义一个方法:</p>
 
-<p>时空复杂度: 时间复杂度是(mn), 空间复杂度是(mn)</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>给定范围, 产生结果集
+</code></pre>
+</div>
+
+<p>到这里发现我们的目标可以转化为<code class="highlighter-rouge">求[1...n]范围的结果集</code>, 问题也就这样递归地解决了.</p>
+
+<p>时空复杂度: 时间复杂度是<code class="highlighter-rouge">目前不确定</code>, 空间复杂度是<code class="highlighter-rouge">目前不确定</code></p>
 
       </article>
       <hr>
       
-      <a href="/2016/04/01/software-testing-junit/">上一篇博客：JUnit</a><br>
+      <a href="/2016/04/03/leetcode-house-robber(II)(III)/">上一篇博客：House Robber(II)(III)</a><br>
       
-      
-      <a href="/2016/04/03/leetcode-house-robber(II)(III)/">下一篇博客：House Robber(II)(III)</a>
       
       <hr>
       <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a></div>
@@ -266,7 +267,7 @@ There is one obstacle in the middle of a 3x3 grid as illustrated below.</p>
     <div class="post-area post comment">
       <!-- 多说评论框 start -->
       
-      <div class="ds-thread" data-thread-key="/2016/04/02/leetcode-UniquePaths(II)" data-title="UniquePaths(II)" data-url="schStudio.github.io/2016/04/02/leetcode-UniquePaths(II)/"></div>
+      <div class="ds-thread" data-thread-key="/2016/04/03/leetcode-unique-binary-search-trees(II)" data-title="Unique Binary Search Trees(II)" data-url="schStudio.github.io/2016/04/03/leetcode-unique-binary-search-trees(II)/"></div>
       
       <!-- 多说评论框 end -->
     </div>
