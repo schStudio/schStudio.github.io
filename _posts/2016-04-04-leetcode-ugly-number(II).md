@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Ugly Number
+title: Ugly Number(II)
 category: Leetcode
 ---
 
