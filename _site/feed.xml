@@ -5,154 +5,85 @@
     <description>苏灿灏的博客 大数据爱好者</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 03 Apr 2016 14:43:34 +0800</pubDate>
-    <lastBuildDate>Sun, 03 Apr 2016 14:43:34 +0800</lastBuildDate>
+    <pubDate>Tue, 05 Apr 2016 19:39:19 +0800</pubDate>
+    <lastBuildDate>Tue, 05 Apr 2016 19:39:19 +0800</lastBuildDate>
     <generator>Jekyll v3.1.2</generator>
     
       <item>
-        <title>Unique Binary Search Trees(II)</title>
+        <title>Maximum Product Subarray</title>
         <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#unique-binary-search-trees&quot; id=&quot;markdown-toc-unique-binary-search-trees&quot;&gt;Unique Binary Search Trees&lt;/a&gt;    &lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#maximum-product-subarray&quot; id=&quot;markdown-toc-maximum-product-subarray&quot;&gt;Maximum Product Subarray&lt;/a&gt;    &lt;ul&gt;
       &lt;li&gt;&lt;a href=&quot;#section&quot; id=&quot;markdown-toc-section&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
       &lt;li&gt;&lt;a href=&quot;#section-1&quot; id=&quot;markdown-toc-section-1&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#unique-binary-search-trees-ii&quot; id=&quot;markdown-toc-unique-binary-search-trees-ii&quot;&gt;Unique Binary Search Trees II&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-2&quot; id=&quot;markdown-toc-section-2&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-3&quot; id=&quot;markdown-toc-section-3&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;unique-binary-search-trees&quot;&gt;Unique Binary Search Trees&lt;/h2&gt;
+&lt;h2 id=&quot;maximum-product-subarray&quot;&gt;Maximum Product Subarray&lt;/h2&gt;
 
 &lt;h3 id=&quot;section&quot;&gt;题目描述&lt;/h3&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;Given n, how many structurally unique BST’s (binary search trees) that store values 1…n?&lt;/p&gt;
+  &lt;p&gt;Find the contiguous subarray within an array (containing at least one number) which has the largest product.&lt;/p&gt;
 
-  &lt;p&gt;For example,&lt;/p&gt;
-
-  &lt;p&gt;Given n = 3, there are a total of 5 unique BST’s.&lt;/p&gt;
-
-  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;   1         3     3      2      1
-    \       /     /      / \      \
-     3     2     1      1   3      2
-    /     /       \                 \
-   2     1         2                 3
-&lt;/code&gt;&lt;/pre&gt;
-  &lt;/div&gt;
-
+  &lt;p&gt;For example, given the array &lt;code class=&quot;highlighter-rouge&quot;&gt;[2,3,-2,4]&lt;/code&gt;,
+the contiguous subarray &lt;code class=&quot;highlighter-rouge&quot;&gt;[2,3]&lt;/code&gt; has the largest product = &lt;code class=&quot;highlighter-rouge&quot;&gt;6&lt;/code&gt;.&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;h3 id=&quot;section-1&quot;&gt;解法&lt;/h3&gt;
 
 &lt;p&gt;代码如下:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static int numTrees( int n ) {
-    if( n &amp;lt;= 1 ) return 1;
-    // dp[i]: 有i个不同数字的numTrees
-    int[] dp = new int[n+1];
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static int maxProduct( int[] nums ) {
+    if( nums.length == 1 ) return nums[0];
 
-    dp[0] = dp[1] = 1;
-
-    for( int i = 2; i &amp;lt;= n; ++i ) {
-        for( int j = 0; j &amp;lt; i; ++j )
-            dp[i] += dp[j] * dp[i-1-j];
-    }
-    return dp[n];
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;思考过程: &lt;code class=&quot;highlighter-rouge&quot;&gt;动态规划&lt;/code&gt;. 我们的目的是求出有&lt;strong&gt;n个不同元素时的树的个数&lt;/strong&gt;(定义为&lt;code class=&quot;highlighter-rouge&quot;&gt;dp[n]&lt;/code&gt;). 首先我们考虑一个元素能够带来的影响. 假设这个元素是&lt;code class=&quot;highlighter-rouge&quot;&gt;i&lt;/code&gt;, 那么元素&lt;code class=&quot;highlighter-rouge&quot;&gt;i&lt;/code&gt;可以充当&lt;code class=&quot;highlighter-rouge&quot;&gt;root&lt;/code&gt;, 也可以不充当&lt;code class=&quot;highlighter-rouge&quot;&gt;root&lt;/code&gt;. 如果充当&lt;code class=&quot;highlighter-rouge&quot;&gt;root&lt;/code&gt;, 那么其左子树个数有&lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;i-1&lt;/code&gt;个不同元素&lt;/strong&gt;(&lt;code class=&quot;highlighter-rouge&quot;&gt;dp[i-1]&lt;/code&gt;), 如果不充当&lt;code class=&quot;highlighter-rouge&quot;&gt;root&lt;/code&gt;, 那么元素&lt;code class=&quot;highlighter-rouge&quot;&gt;i&lt;/code&gt;会对&lt;strong&gt;其他&lt;code class=&quot;highlighter-rouge&quot;&gt;root&lt;/code&gt;为&lt;code class=&quot;highlighter-rouge&quot;&gt;[1...i-1]&lt;/code&gt;的树&lt;/strong&gt;(定义为&lt;code class=&quot;highlighter-rouge&quot;&gt;f[k, i]&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;k∈[1...i-1]&lt;/code&gt;)产生影响, 所以我们需要定义&lt;code class=&quot;highlighter-rouge&quot;&gt;dp[n]&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;f[i, n]&lt;/code&gt;, 如下:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;dp[n]&lt;/code&gt;: 有&lt;code class=&quot;highlighter-rouge&quot;&gt;n&lt;/code&gt;个不同元素时树的个数&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;f[i, n]&lt;/code&gt;: 有&lt;code class=&quot;highlighter-rouge&quot;&gt;n&lt;/code&gt;个不同元素时且root为&lt;code class=&quot;highlighter-rouge&quot;&gt;i&lt;/code&gt;的树的个数&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;dp[n]&lt;/code&gt;实际上等于root为&lt;code class=&quot;highlighter-rouge&quot;&gt;[1...n]&lt;/code&gt;的情况总和, 而&lt;code class=&quot;highlighter-rouge&quot;&gt;f[i, n]&lt;/code&gt;实际上等于&lt;code class=&quot;highlighter-rouge&quot;&gt;左子树总数*右子树总数&lt;/code&gt;, 所以我们可以容易得到以下关系式:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;dp[n]&lt;/code&gt; = &lt;code class=&quot;highlighter-rouge&quot;&gt;f[1, n]&lt;/code&gt; + &lt;code class=&quot;highlighter-rouge&quot;&gt;f[2, n]&lt;/code&gt; + &lt;code class=&quot;highlighter-rouge&quot;&gt;...&lt;/code&gt; + &lt;code class=&quot;highlighter-rouge&quot;&gt;f[n, n]&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;f[i, n]&lt;/code&gt; = &lt;code class=&quot;highlighter-rouge&quot;&gt;dp[i-1]&lt;/code&gt; * &lt;code class=&quot;highlighter-rouge&quot;&gt;dp[n-i]&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;把&lt;code class=&quot;highlighter-rouge&quot;&gt;f[i, n]&lt;/code&gt;代入&lt;code class=&quot;highlighter-rouge&quot;&gt;dp[n]&lt;/code&gt;我们可以得到:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;dp[n]&lt;/code&gt; = &lt;code class=&quot;highlighter-rouge&quot;&gt;dp[0]*dp[n-1]&lt;/code&gt; + &lt;code class=&quot;highlighter-rouge&quot;&gt;dp[1]*dp[n-2]&lt;/code&gt; + &lt;code class=&quot;highlighter-rouge&quot;&gt;...&lt;/code&gt; + &lt;code class=&quot;highlighter-rouge&quot;&gt;dp[n-i]*dp[0]&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;时空复杂度: 时间复杂度是O(n^2), 空间复杂度是O(n)&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;unique-binary-search-trees-ii&quot;&gt;Unique Binary Search Trees II&lt;/h2&gt;
-
-&lt;h3 id=&quot;section-2&quot;&gt;题目描述&lt;/h3&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Given n, generate all structurally unique BST’s (binary search trees) that store values 1…n.&lt;/p&gt;
-
-  &lt;p&gt;For example,
-Given n = 3, your program should return all 5 unique BST’s shown below.&lt;/p&gt;
-
-  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    1         3     3      2      1
-     \       /     /      / \      \
-      3     2     1      1   3      2
-     /     /       \                 \
-    2     1         2                 3
-&lt;/code&gt;&lt;/pre&gt;
-  &lt;/div&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;section-3&quot;&gt;解法&lt;/h3&gt;
-
-&lt;p&gt;代码如下:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static List&amp;lt;TreeNode&amp;gt; generateTrees( int n ) {
-    if( n &amp;lt;= 0 ) return new ArrayList&amp;lt;TreeNode&amp;gt;();
-    return helperGenerateTrees( 1, n );
-}
-private static List&amp;lt;TreeNode&amp;gt; helperGenerateTrees( int left, int right ) {
-    List&amp;lt;TreeNode&amp;gt; res = new ArrayList&amp;lt;&amp;gt;();
-    if( left &amp;gt; right ) {
-        res.add( null );
-    } else {
-        for( int i = left; i &amp;lt;= right; ++i ) {
-            List&amp;lt;TreeNode&amp;gt; rootLeft = helperGenerateTrees( left, i-1 );
-            List&amp;lt;TreeNode&amp;gt; rootRight = helperGenerateTrees( i+1, right );
-            for( TreeNode nodeLeft : rootLeft )
-                for( TreeNode nodeRight : rootRight ) {
-                    TreeNode node = new TreeNode( i );
-                    node.left = nodeLeft;
-                    node.right = nodeRight;
-                    res.add( node );
-                }
+    int maxPositive = 0;
+    int minNegative = 0;
+    int res = 0;
+    for( int i = 0; i &amp;lt; nums.length; ++i ) {
+        if( nums[i] &amp;gt; 0 ) {
+            maxPositive = Math.max( maxPositive*nums[i], nums[i] );
+            minNegative = Math.min( minNegative*nums[i], 0 );
+        } else {
+            int t = maxPositive;
+            maxPositive = Math.max( minNegative*nums[i], 0 );
+            minNegative = Math.min( t*nums[i], nums[i] );
         }
+        res = Math.max( res, maxPositive );
     }
     return res;
-}s
+}
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;思考过程: 我们目标是生成所有的&lt;code class=&quot;highlighter-rouge&quot;&gt;Unique Binary Search Trees&lt;/code&gt;. 一开始, 考虑一个元素对原始结果集会产生什么样的影响? 加入一个元素&lt;code class=&quot;highlighter-rouge&quot;&gt;n&lt;/code&gt;, 原始结果集都需要考虑加入&lt;code class=&quot;highlighter-rouge&quot;&gt;n&lt;/code&gt;的情况, 操作比较麻烦,无从下手.&lt;/p&gt;
+&lt;p&gt;思考过程: &lt;code class=&quot;highlighter-rouge&quot;&gt;动态规划&lt;/code&gt;. 考虑新加入一个元素对结果带来的影响? 假设新加入元素&lt;code class=&quot;highlighter-rouge&quot;&gt;nums[n]&lt;/code&gt;, 那么其结果有2种可能:&lt;/p&gt;
 
-&lt;p&gt;那么换个角度思考, 一个元素作为树根可以产生怎样的结果集? 假设在&lt;code class=&quot;highlighter-rouge&quot;&gt;[1...n]&lt;/code&gt;中有一个元素&lt;code class=&quot;highlighter-rouge&quot;&gt;i&lt;/code&gt;, 以它为树根可以产生结果集: &lt;code class=&quot;highlighter-rouge&quot;&gt;[1...i-1]的结果集 * [i+1...n]的结果集&lt;/code&gt;, 那么我们尝试定义一个方法:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;对原结果不产生影响: 还是取原有结果&lt;/li&gt;
+  &lt;li&gt;对原有结果产生影响: 结果取得更大值, 而且新结果一定包含&lt;code class=&quot;highlighter-rouge&quot;&gt;num[n]&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;给定范围, 产生结果集
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;p&gt;以上2个可能可以看该问题具有&lt;code class=&quot;highlighter-rouge&quot;&gt;最优子结构&lt;/code&gt;特征.&lt;/p&gt;
 
-&lt;p&gt;到这里发现我们的目标可以转化为&lt;code class=&quot;highlighter-rouge&quot;&gt;求[1...n]范围的结果集&lt;/code&gt;, 问题也就这样递归地解决了.&lt;/p&gt;
+&lt;p&gt;从上面2种可能知道, 考虑新加入元素时需要: &lt;code class=&quot;highlighter-rouge&quot;&gt;原结果&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;左边连续子数组正数最大值&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;左边连续子数组负数最小值&lt;/code&gt;(因为新结果一定包含&lt;code class=&quot;highlighter-rouge&quot;&gt;num[n]&lt;/code&gt;). 所以定义以下三个变量即可:&lt;/p&gt;
 
-&lt;p&gt;时空复杂度: 时间复杂度是&lt;code class=&quot;highlighter-rouge&quot;&gt;目前不确定&lt;/code&gt;, 空间复杂度是&lt;code class=&quot;highlighter-rouge&quot;&gt;目前不确定&lt;/code&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;res&lt;/code&gt;: 原结果&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;maxPositive&lt;/code&gt;: 左边连续子数组正数最大值&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;minNegative&lt;/code&gt;: 左边连续子数组负数最小值&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;三个变量的状态变化情况按照当前元素&lt;code class=&quot;highlighter-rouge&quot;&gt;nums[i]&lt;/code&gt;为正负分别考虑即可.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;注: &lt;code class=&quot;highlighter-rouge&quot;&gt;maxPositive&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;minNegative&lt;/code&gt;等于&lt;code class=&quot;highlighter-rouge&quot;&gt;0&lt;/code&gt;: 左边连续子数组无正数或无负数&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;时空复杂度: 时间复杂度是&lt;code class=&quot;highlighter-rouge&quot;&gt;O(n)&lt;/code&gt;, 空间复杂度是&lt;code class=&quot;highlighter-rouge&quot;&gt;O(1)&lt;/code&gt;&lt;/p&gt;
 </description>
-        <pubDate>Sun, 03 Apr 2016 00:00:00 +0800</pubDate>
-        <link>/2016/04/03/leetcode-unique-binary-search-trees(II)/</link>
-        <guid isPermaLink="true">/2016/04/03/leetcode-unique-binary-search-trees(II)/</guid>
+        <pubDate>Tue, 05 Apr 2016 00:00:00 +0800</pubDate>
+        <link>/2016/04/05/leetcode-maximum-product-subarray/</link>
+        <guid isPermaLink="true">/2016/04/05/leetcode-maximum-product-subarray/</guid>
         
         
         <category>Leetcode</category>
@@ -160,205 +91,84 @@ private static List&amp;lt;TreeNode&amp;gt; helperGenerateTrees( int left, int r
       </item>
     
       <item>
-        <title>House Robber(II)(III)</title>
+        <title>Generate Parentheses</title>
         <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#house-robber&quot; id=&quot;markdown-toc-house-robber&quot;&gt;House Robber&lt;/a&gt;    &lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#generate-parentheses&quot; id=&quot;markdown-toc-generate-parentheses&quot;&gt;Generate Parentheses&lt;/a&gt;    &lt;ul&gt;
       &lt;li&gt;&lt;a href=&quot;#section&quot; id=&quot;markdown-toc-section&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
       &lt;li&gt;&lt;a href=&quot;#section-1&quot; id=&quot;markdown-toc-section-1&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#house-robber-ii&quot; id=&quot;markdown-toc-house-robber-ii&quot;&gt;House Robber II&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-2&quot; id=&quot;markdown-toc-section-2&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-3&quot; id=&quot;markdown-toc-section-3&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#house-robber-iii&quot; id=&quot;markdown-toc-house-robber-iii&quot;&gt;House Robber III&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-4&quot; id=&quot;markdown-toc-section-4&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-5&quot; id=&quot;markdown-toc-section-5&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;house-robber&quot;&gt;House Robber&lt;/h2&gt;
+&lt;h2 id=&quot;generate-parentheses&quot;&gt;Generate Parentheses&lt;/h2&gt;
 
 &lt;h3 id=&quot;section&quot;&gt;题目描述&lt;/h3&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of them is that adjacent houses have security system connected and it will automatically contact the police if two adjacent houses were broken into on the same night.&lt;/p&gt;
+  &lt;p&gt;Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.&lt;/p&gt;
 
-  &lt;p&gt;Given a list of non-negative integers representing the amount of money of each house, determine the maximum amount of money you can rob tonight without alerting the police.&lt;/p&gt;
+  &lt;p&gt;For example, given &lt;code class=&quot;highlighter-rouge&quot;&gt;n = 3&lt;/code&gt;, a solution set is:&lt;/p&gt;
+
+  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;&quot;((()))&quot;&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;&quot;(()())&quot;&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;&quot;(())()&quot;&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;&quot;()(())&quot;&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;&quot;()()()&quot;&lt;/code&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;h3 id=&quot;section-1&quot;&gt;解法&lt;/h3&gt;
 
 &lt;p&gt;代码如下:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static int rob( int[] nums ) {
-	// maxBroken : 前一次抢劫状态的最大值
-    // maxUnbroken : 前一次非抢劫状态的最大值
-    int maxBroken = 0, maxUnbroken = 0;
-    for( int i = 0; i &amp;lt; nums.length; ++i ) {
-        int t = maxBroken;
-        maxBroken = Math.max( maxUnbroken+nums[i], maxBroken );
-        maxUnbroken = Math.max( maxUnbroken, t );
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static List&amp;lt;String&amp;gt; generatePerenthesis( int n ) {
+    List&amp;lt;String&amp;gt; res = new ArrayList&amp;lt;&amp;gt;();
+    helper( n, n, &quot;&quot;, res );
+    return res;
+}
+
+private static void helper( int left, int right, String tmpRes, List&amp;lt;String&amp;gt; res ) {
+    // 结束条件
+    if( left &amp;lt; 0 ) return; 
+
+    // 获得结果
+    if( left == 0 &amp;amp;&amp;amp; right == 0 ) {
+        res.add( tmpRes );
+        return;
     }
-    return Math.max( maxBroken, maxUnbroken );
+    // 添加左括号
+    helper( left-1, right, tmpRes+&quot;(&quot;, res );
+    // 添加右括号: 右括号不能少于左括号
+    if( right &amp;gt; left ) {
+        helper( left, right-1, tmpRes+&quot;)&quot;, res );
+    }
 }
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;思考过程: &lt;code class=&quot;highlighter-rouge&quot;&gt;动态规划&lt;/code&gt;. &lt;code class=&quot;highlighter-rouge&quot;&gt;当前最大值&lt;/code&gt;有2种情况:&lt;/p&gt;
+&lt;p&gt;思考过程: &lt;code class=&quot;highlighter-rouge&quot;&gt;回溯法&lt;/code&gt;.&lt;/p&gt;
 
 &lt;ol&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;抢劫当前家庭后的最大值&lt;/code&gt; = max( &lt;code class=&quot;highlighter-rouge&quot;&gt;前一次非抢劫状态最大值&lt;/code&gt;+&lt;code class=&quot;highlighter-rouge&quot;&gt;当前值&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;前一次抢劫状态最大值&lt;/code&gt; )&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;不抢劫当前家庭的最大值&lt;/code&gt; = max( &lt;code class=&quot;highlighter-rouge&quot;&gt;前一次非抢劫状态最大值&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;前一次抢劫状态最大值&lt;/code&gt; )&lt;/li&gt;
+  &lt;li&gt;定义状态: &lt;code class=&quot;highlighter-rouge&quot;&gt;左括号数量, 右括号数量&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;考虑状态的解空间:
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;左括号数量 &amp;lt; 0&lt;/code&gt; 表示无解&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;左括号数量 == 0 &amp;amp;&amp;amp; 右括号数量 == 0&lt;/code&gt; 表示一个解&lt;/li&gt;
+      &lt;li&gt;添加左括号: 只要&lt;code class=&quot;highlighter-rouge&quot;&gt;左括号数量 &amp;gt; 0&lt;/code&gt;就可以&lt;/li&gt;
+      &lt;li&gt;添加右括号: 满足条件&lt;code class=&quot;highlighter-rouge&quot;&gt;右括号数量 &amp;gt; 左括号数量&lt;/code&gt;就可以, 这就是&lt;code class=&quot;highlighter-rouge&quot;&gt;剪枝&lt;/code&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
 &lt;/ol&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;最优子结构: &lt;code class=&quot;highlighter-rouge&quot;&gt;当前最大值&lt;/code&gt;依赖于&lt;code class=&quot;highlighter-rouge&quot;&gt;前一次最大值&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;重叠子问题: 求&lt;code class=&quot;highlighter-rouge&quot;&gt;1.&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;2.&lt;/code&gt;的时候有一个重叠的子问题&lt;code class=&quot;highlighter-rouge&quot;&gt;前一次抢劫状态最大值&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;时空复杂度: 时间复杂度是O(n), 空间复杂度是O(1)&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;house-robber-ii&quot;&gt;House Robber II&lt;/h2&gt;
-
-&lt;h3 id=&quot;section-2&quot;&gt;题目描述&lt;/h3&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Note: This is an extension of House Robber.&lt;/p&gt;
-
-  &lt;p&gt;After robbing those houses on that street, the thief has found himself a new place for his thievery so that he will not get too much attention. This time, all houses at this place are arranged in a circle. That means the first house is the neighbor of the last one. Meanwhile, the security system for these houses remain the same as for those in the previous street.&lt;/p&gt;
-
-  &lt;p&gt;Given a list of non-negative integers representing the amount of money of each house, determine the maximum amount of money you can rob tonight without alerting the police.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;section-3&quot;&gt;解法&lt;/h3&gt;
-
-&lt;p&gt;代码如下:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static int rob( int[] nums ) {
-    if( nums.length == 0 ) return 0;
-    // 抢劫第一户家庭
-    int max1 = nums[0] + robHelper( nums, 2, nums.length-1 );
-    // 不抢劫第一户家庭
-    int max2 = robHelper( nums, 1, nums.length );
-    return Math.max( max1, max2 );
-}
-
-public static int robHelper( int[] nums, int left, int right ) {
-    // maxBroken : 前一次抢劫状态的最大值
-    // maxUnbroken : 前一次非抢劫状态的最大值
-    int maxBroken = 0, maxUnbroken = 0;
-    for( int i = left; i &amp;lt; right; ++i ) {
-        int t = maxBroken;
-        maxBroken = Math.max( maxUnbroken+nums[i], maxBroken );
-        maxUnbroken = Math.max( maxUnbroken, t );
-    }
-    return Math.max( maxBroken, maxUnbroken );
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;思考过程: 同&lt;code class=&quot;highlighter-rouge&quot;&gt;House Robber&lt;/code&gt;相同, 在此基础上多了环的问题, 那么就需要考虑环对原本解决方案带来的影响: 环的问题归于头尾之间有影响关系, 那么我们可以分情况考虑: &lt;code class=&quot;highlighter-rouge&quot;&gt;抢劫第一户家庭&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;不抢劫第一户家庭&lt;/code&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;抢劫第一户家庭&lt;/code&gt;的话, 我们就肯定不能抢劫第二户家庭和最后一户家庭, 所以抢劫第[3…n-1]户家庭&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;不抢劫第一户家庭&lt;/code&gt;的话, 我们可以抢劫第[2…n]户家庭&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;最后只要考虑这2个情况的最大值即可&lt;/p&gt;
-
-&lt;p&gt;时空复杂度: 时间复杂度是(n), 空间复杂度是(1)&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;house-robber-iii&quot;&gt;House Robber III&lt;/h2&gt;
-
-&lt;h3 id=&quot;section-4&quot;&gt;题目描述&lt;/h3&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;The thief has found himself a new place for his thievery again. There is only one entrance to this area, called the “root.” Besides the root, each house has one and only one parent house. After a tour, the smart thief realized that “all houses in this place forms a binary tree”. It will automatically contact the police if two directly-linked houses were broken into on the same night.&lt;/p&gt;
-
-  &lt;p&gt;Determine the maximum amount of money the thief can rob tonight without alerting the police.&lt;/p&gt;
-
-  &lt;p&gt;Example 1:&lt;/p&gt;
-
-  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;      3
-     / \
-    2   3
-     \   \ 
-      3   1
-&lt;/code&gt;&lt;/pre&gt;
-  &lt;/div&gt;
-
-  &lt;p&gt;Maximum amount of money the thief can rob = 3 + 3 + 1 = 7.&lt;/p&gt;
-
-  &lt;p&gt;Example 2:&lt;/p&gt;
-
-  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;      3
-     / \
-    4   5
-   / \   \ 
-  1   3   1
-&lt;/code&gt;&lt;/pre&gt;
-  &lt;/div&gt;
-
-  &lt;p&gt;Maximum amount of money the thief can rob = 4 + 5 = 9.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;section-5&quot;&gt;解法&lt;/h3&gt;
-
-&lt;p&gt;代码如下:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static int rob( TreeNode root ) {
-    return robHelper( root )[0];
-}
-
-public static int[] robHelper( TreeNode root ) {
-    if( root == null ) return new int[]{ 0, 0, 0 };
-    
-    int[] robLeft = robHelper( root.left );
-    int[] robRight = robHelper( root.right );
-    
-    // robRoot: 
-    //        robRoot[0]: 抢劫最大值
-    //        robRoot[1]: 左子树抢劫最大值
-    //        robRoot[2]: 右子树抢劫最大值
-    int[] robRoot = new int[3];
-    robRoot[0] = Math.max( robLeft[0]+robRight[0], 
-            robLeft[1]+robLeft[2]+robRight[1]+robRight[2]+root.val );
-    robRoot[1] = robLeft[0];
-    robRoot[2] = robRight[0];
-    
-    return robRoot;
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;思考过程: 一样是&lt;code class=&quot;highlighter-rouge&quot;&gt;动态规划&lt;/code&gt;, 而且其特征更加明显:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;最优子结构: &lt;code class=&quot;highlighter-rouge&quot;&gt;当前树最大值&lt;/code&gt; =  max( &lt;code class=&quot;highlighter-rouge&quot;&gt;左子树最大值&lt;/code&gt;+&lt;code class=&quot;highlighter-rouge&quot;&gt;右子树最大值&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;左左子树最大值&lt;/code&gt;+&lt;code class=&quot;highlighter-rouge&quot;&gt;左右子树最大值&lt;/code&gt;+&lt;code class=&quot;highlighter-rouge&quot;&gt;右左子树最大值&lt;/code&gt;+&lt;code class=&quot;highlighter-rouge&quot;&gt;右右子树最大值&lt;/code&gt;+&lt;code class=&quot;highlighter-rouge&quot;&gt;当前值&lt;/code&gt; )&lt;/li&gt;
-  &lt;li&gt;重叠子问题: 求解&lt;code class=&quot;highlighter-rouge&quot;&gt;左子树最大值&lt;/code&gt;的时候需要子问题&lt;code class=&quot;highlighter-rouge&quot;&gt;左左子树最大值&lt;/code&gt;+&lt;code class=&quot;highlighter-rouge&quot;&gt;左右子树最大值&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;注:&lt;/p&gt;
 
   &lt;ul&gt;
-    &lt;li&gt;不抢当前节点: &lt;code class=&quot;highlighter-rouge&quot;&gt;左子树最大值&lt;/code&gt;+&lt;code class=&quot;highlighter-rouge&quot;&gt;右子树最大值&lt;/code&gt;&lt;/li&gt;
-    &lt;li&gt;抢劫当前节点: &lt;code class=&quot;highlighter-rouge&quot;&gt;左左子树最大值&lt;/code&gt;+&lt;code class=&quot;highlighter-rouge&quot;&gt;左右子树最大值&lt;/code&gt;+&lt;code class=&quot;highlighter-rouge&quot;&gt;右左子树最大值&lt;/code&gt;+&lt;code class=&quot;highlighter-rouge&quot;&gt;右右子树最大值&lt;/code&gt;+&lt;code class=&quot;highlighter-rouge&quot;&gt;当前值&lt;/code&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;剪枝&lt;/code&gt;动作如果放在&lt;code class=&quot;highlighter-rouge&quot;&gt;求解解空间&lt;/code&gt;, 那么在&lt;code class=&quot;highlighter-rouge&quot;&gt;结束条件&lt;/code&gt;那里就只考虑正常的结束条件&lt;/li&gt;
+    &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;剪枝&lt;/code&gt;动作如果放在&lt;code class=&quot;highlighter-rouge&quot;&gt;结束条件&lt;/code&gt;, 那么在&lt;code class=&quot;highlighter-rouge&quot;&gt;求解解空间&lt;/code&gt;那里就无条件进所有子解空间&lt;/li&gt;
   &lt;/ul&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;时空复杂度: 时间复杂度是(2^n), 空间复杂度是(n)&lt;/p&gt;
+&lt;p&gt;时空复杂度: 时间复杂度是&lt;code class=&quot;highlighter-rouge&quot;&gt;O(2^n)&lt;/code&gt;, 空间复杂度是&lt;code class=&quot;highlighter-rouge&quot;&gt;O(n)&lt;/code&gt;&lt;/p&gt;
 </description>
-        <pubDate>Sun, 03 Apr 2016 00:00:00 +0800</pubDate>
-        <link>/2016/04/03/leetcode-house-robber(II)(III)/</link>
-        <guid isPermaLink="true">/2016/04/03/leetcode-house-robber(II)(III)/</guid>
+        <pubDate>Tue, 05 Apr 2016 00:00:00 +0800</pubDate>
+        <link>/2016/04/05/leetcode-generate-perentheses/</link>
+        <guid isPermaLink="true">/2016/04/05/leetcode-generate-perentheses/</guid>
         
         
         <category>Leetcode</category>
@@ -366,1039 +176,305 @@ public static int[] robHelper( TreeNode root ) {
       </item>
     
       <item>
-        <title>UniquePaths(II)</title>
+        <title>Hadoop 概述</title>
         <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#uniquepaths&quot; id=&quot;markdown-toc-uniquepaths&quot;&gt;UniquePaths&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#section&quot; id=&quot;markdown-toc-section&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-1&quot; id=&quot;markdown-toc-section-1&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#hadoop&quot; id=&quot;markdown-toc-hadoop&quot;&gt;什么是Hadoop&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#hadoop-1&quot; id=&quot;markdown-toc-hadoop-1&quot;&gt;Hadoop的基本组件&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#hadoop-common&quot; id=&quot;markdown-toc-hadoop-common&quot;&gt;Hadoop Common&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#hadoop-distributed-file-systemhdfs&quot; id=&quot;markdown-toc-hadoop-distributed-file-systemhdfs&quot;&gt;Hadoop Distributed File System(HDFS)&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#hadoop-mapreduce&quot; id=&quot;markdown-toc-hadoop-mapreduce&quot;&gt;Hadoop MapReduce&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#hadoop-yarn&quot; id=&quot;markdown-toc-hadoop-yarn&quot;&gt;Hadoop YARN&lt;/a&gt;&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#uniquepaths-ii&quot; id=&quot;markdown-toc-uniquepaths-ii&quot;&gt;UniquePaths II&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-2&quot; id=&quot;markdown-toc-section-2&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-3&quot; id=&quot;markdown-toc-section-3&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#hadoop-zoo&quot; id=&quot;markdown-toc-hadoop-zoo&quot;&gt;Hadoop Zoo&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#hadoop-2&quot; id=&quot;markdown-toc-hadoop-2&quot;&gt;Hadoop生态系统&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;uniquepaths&quot;&gt;UniquePaths&lt;/h2&gt;
+&lt;h3 id=&quot;hadoop&quot;&gt;什么是Hadoop&lt;/h3&gt;
 
-&lt;h3 id=&quot;section&quot;&gt;题目描述&lt;/h3&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;A robot is located at the top-left corner of a m x n grid (marked ‘Start’ in the diagram below).&lt;/p&gt;
-
-  &lt;p&gt;The robot can only move either down or right at any point in time. The robot is trying to reach the bottom-right corner of the grid (marked ‘Finish’ in the diagram below).&lt;/p&gt;
-
-  &lt;p&gt;How many possible unique paths are there?&lt;/p&gt;
-
-  &lt;p&gt;Note: m and n will be at most 100.&lt;/p&gt;
-
-  &lt;p&gt;&lt;img src=&quot;http://articles.leetcode.com/wp-content/uploads/2014/12/robot_maze.png&quot; alt=&quot;unique-path&quot; /&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;section-1&quot;&gt;解法&lt;/h3&gt;
-
-&lt;p&gt;代码如下:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static int uniquePaths( int m, int n ) {
-    // dp[i][j]: 在[i][j]格子的所有可能Path
-    int[][] dp = new int[m][n];
-    // 起点位置, 竖线Path为1
-    for( int i = 0; i &amp;lt; m; ++i )
-        dp[i][0] = 1;
-    // 起点位置, 横线Path为1
-    for( int j = 0; j &amp;lt; n; ++j )
-        dp[0][j] = 1;
-
-    for( int i = 1; i &amp;lt; m; ++i )
-        for( int j = 1; j &amp;lt; n; ++j )
-            dp[i][j] = dp[i-1][j] + dp[i][j-1];
-
-    return dp[m-1][n-1];
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;思考过程: &lt;code class=&quot;highlighter-rouge&quot;&gt;动态规划&lt;/code&gt;. &lt;code class=&quot;highlighter-rouge&quot;&gt;当前格子&lt;/code&gt;可以由&lt;code class=&quot;highlighter-rouge&quot;&gt;左边格子&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;上边格子&lt;/code&gt;的路径数目相加, 所以定义&lt;/p&gt;
+&lt;p&gt;定义: Apache Hadoop是一个开源的软件框架, 用于产业集群上大数据集的存储与处理&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;dp[i][j]&lt;/code&gt;: 在第&lt;code class=&quot;highlighter-rouge&quot;&gt;[i][j]&lt;/code&gt;个格子的所有可能路径数&lt;/li&gt;
-  &lt;li&gt;最优子结构: &lt;code class=&quot;highlighter-rouge&quot;&gt;dp[i][j]&lt;/code&gt; = &lt;code class=&quot;highlighter-rouge&quot;&gt;dp[i-1][j]&lt;/code&gt; + &lt;code class=&quot;highlighter-rouge&quot;&gt;dp[i][j-1]&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;重叠子问题: &lt;code class=&quot;highlighter-rouge&quot;&gt;dp[i-1][j]&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;dp[i][j-1]&lt;/code&gt;都需要子问题&lt;code class=&quot;highlighter-rouge&quot;&gt;dp[i-1][j-1]&lt;/code&gt;的值&lt;/li&gt;
+  &lt;li&gt;Hadoop一开始只是一个简单的批处理框架&lt;/li&gt;
+  &lt;li&gt;Hadoop的原理是移动计算到数据, 而不是移动数据到计算&lt;/li&gt;
+  &lt;li&gt;Hadoop的核心是扩展性&lt;/li&gt;
+  &lt;li&gt;Hadoop必须考虑可靠性. 因为集群中的硬件软件故障事件很容易发生&lt;/li&gt;
 &lt;/ul&gt;
-
-&lt;p&gt;时空复杂度: 时间复杂度是O(mn), 空间复杂度是O(mn)&lt;/p&gt;
 
 &lt;hr /&gt;
 
-&lt;h2 id=&quot;uniquepaths-ii&quot;&gt;UniquePaths II&lt;/h2&gt;
+&lt;h3 id=&quot;hadoop-1&quot;&gt;Hadoop的基本组件&lt;/h3&gt;
 
-&lt;h3 id=&quot;section-2&quot;&gt;题目描述&lt;/h3&gt;
+&lt;h4 id=&quot;hadoop-common&quot;&gt;Hadoop Common&lt;/h4&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;Follow up for “Unique Paths”:&lt;/p&gt;
+&lt;p&gt;Hadoop Common提供了其他Hadoop模块需要的基本库和工具&lt;/p&gt;
 
-  &lt;p&gt;Now consider if some obstacles are added to the grids. How many unique paths would there be?&lt;/p&gt;
+&lt;h4 id=&quot;hadoop-distributed-file-systemhdfs&quot;&gt;Hadoop Distributed File System(HDFS)&lt;/h4&gt;
 
-  &lt;p&gt;An obstacle and empty space is marked as 1 and 0 respectively in the grid.&lt;/p&gt;
+&lt;p&gt;HDFS是一个用Java编写的分布式文件系统&lt;/p&gt;
 
-  &lt;p&gt;For example,
-There is one obstacle in the middle of a 3x3 grid as illustrated below.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;HDFS组件: 一个NameNode, 多个DataNode&lt;/li&gt;
+  &lt;li&gt;HDFS的可靠性是通过在多个主机之间拷贝数据副本实现的&lt;/li&gt;
+  &lt;li&gt;Secondary NameNode的工作不是在Primary NameNode崩溃的时候替换, 而是记录Primary NameNode的某一时刻的信息&lt;/li&gt;
+&lt;/ul&gt;
 
-  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[
-	[0,0,0],
-  	[0,1,0],
-  	[0,0,0]
-]
-&lt;/code&gt;&lt;/pre&gt;
-  &lt;/div&gt;
+&lt;h4 id=&quot;hadoop-mapreduce&quot;&gt;Hadoop MapReduce&lt;/h4&gt;
 
-  &lt;p&gt;The total number of unique paths is 2.&lt;/p&gt;
+&lt;p&gt;MapReduce是一个编程模型, 目的是在集群上通过并行的, 分布式的算法处理大数据集&lt;/p&gt;
 
-  &lt;p&gt;Note: &lt;code class=&quot;highlighter-rouge&quot;&gt;m&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;n&lt;/code&gt; will be at most 100.&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;ul&gt;
+  &lt;li&gt;MapReduce引擎组件: JobTracker, TaskTracker&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;h3 id=&quot;section-3&quot;&gt;解法&lt;/h3&gt;
+&lt;h4 id=&quot;hadoop-yarn&quot;&gt;Hadoop YARN&lt;/h4&gt;
 
-&lt;p&gt;代码如下:&lt;/p&gt;
+&lt;p&gt;Hadoop YARN是一个资源管理平台, 负责管理计算资源, 便于用户应用调度执行&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static int uniquePaths( int[][] obstacleGrid ) {
-    if( obstacleGrid.length == 0 ) return 0;
+&lt;ul&gt;
+  &lt;li&gt;YARN是下一代的MapReduce, 具有更强大的计算处理能力&lt;/li&gt;
+  &lt;li&gt;YARN与MapReduce等框架相比, 具有更加广阔的交互模式&lt;/li&gt;
+  &lt;li&gt;YARN与MapReduce完全兼容&lt;/li&gt;
+&lt;/ul&gt;
 
-    int m = obstacleGrid.length;
-    int n = obstacleGrid[0].length;
-    // dp[i][j]: 在[i][j]格子的所有可能Path
-    int[][] dp = new int[m][n];
-    // 起点位置, 竖线Path为1, 遇到障碍之后的为0
-    int i = 0;
-    for( ; i &amp;lt; m &amp;amp;&amp;amp; obstacleGrid[i][0]==0; ++i )
-        dp[i][0] = 1;
-    for( ; i &amp;lt; m; ++i )
-        dp[i][0] = 0;
-    // 起点位置, 横线Path为1, 遇到障碍之后的为0
-    int j = 0;
-    for( ; j &amp;lt; n &amp;amp;&amp;amp; obstacleGrid[0][j]==0; ++j )
-        dp[0][j] = 1;
-    for( ; j &amp;lt; n; ++j )
-        dp[0][j] = 0;
+&lt;h3 id=&quot;hadoop-zoo&quot;&gt;Hadoop Zoo&lt;/h3&gt;
 
-    for( i = 1; i &amp;lt; m; ++i )
-        for( j = 1; j &amp;lt; n; ++j )
-            if( obstacleGrid[i][j] == 0 )
-                dp[i][j] = dp[i-1][j] + dp[i][j-1];
-            else
-                dp[i][j] = 0;
+&lt;p&gt;&lt;img src=&quot;/assets/hadoop/hadoop-cloudera-stack.png&quot; alt=&quot;hadoop-cloudera-stack&quot; /&gt;&lt;/p&gt;
 
-    return dp[m-1][n-1];
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;h3 id=&quot;hadoop-2&quot;&gt;Hadoop生态系统&lt;/h3&gt;
 
-&lt;p&gt;思考过程: 同UniquePaths相同, 在此基础上多了障碍的设置, 那么我们只需要考虑障碍带来的影响就可以了:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/hadoop/hadoop-ecosystem.jpg&quot; alt=&quot;hadoop-ecosystem&quot; /&gt;&lt;/p&gt;
 
-&lt;ol&gt;
-  &lt;li&gt;初始化横线和竖线的时候, 如果遇到障碍, 之后都是不可达的&lt;/li&gt;
-  &lt;li&gt;在递推过程中, 如果遇到障碍, 那么该格子是不可达的, 值为0&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;时空复杂度: 时间复杂度是(mn), 空间复杂度是(mn)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/hadoop/hadoop-ecosystem-describtion.png&quot; alt=&quot;hadoop-ecosystem-describtion&quot; /&gt;&lt;/p&gt;
 </description>
-        <pubDate>Sat, 02 Apr 2016 00:00:00 +0800</pubDate>
-        <link>/2016/04/02/leetcode-UniquePaths(II)/</link>
-        <guid isPermaLink="true">/2016/04/02/leetcode-UniquePaths(II)/</guid>
+        <pubDate>Tue, 05 Apr 2016 00:00:00 +0800</pubDate>
+        <link>/2016/04/05/hadoop-overview/</link>
+        <guid isPermaLink="true">/2016/04/05/hadoop-overview/</guid>
         
         
-        <category>Leetcode</category>
+        <category>Hadoop</category>
         
       </item>
     
       <item>
-        <title>JUnit</title>
+        <title>Hadoop HDFS</title>
         <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#junit&quot; id=&quot;markdown-toc-junit&quot;&gt;JUnit简介&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#junit-1&quot; id=&quot;markdown-toc-junit-1&quot;&gt;JUnit的原理&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#junit-2&quot; id=&quot;markdown-toc-junit-2&quot;&gt;JUnit结构&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#junit-3&quot; id=&quot;markdown-toc-junit-3&quot;&gt;JUnit核心类&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#junit-4&quot; id=&quot;markdown-toc-junit-4&quot;&gt;JUnit生命周期&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#junit-5&quot; id=&quot;markdown-toc-junit-5&quot;&gt;JUnit中的设计模式&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#hdfs&quot; id=&quot;markdown-toc-hdfs&quot;&gt;HDFS简介&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#section&quot; id=&quot;markdown-toc-section&quot;&gt;设计的期望与目标&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#namenodedatanode&quot; id=&quot;markdown-toc-namenodedatanode&quot;&gt;NameNode与DataNode&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#section-1&quot; id=&quot;markdown-toc-section-1&quot;&gt;文件系统命名空间&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#section-2&quot; id=&quot;markdown-toc-section-2&quot;&gt;数据的重复因子&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#metadata&quot; id=&quot;markdown-toc-metadata&quot;&gt;metadata持久化&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#section-3&quot; id=&quot;markdown-toc-section-3&quot;&gt;通信协议&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#section-4&quot; id=&quot;markdown-toc-section-4&quot;&gt;健壮性&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#section-5&quot; id=&quot;markdown-toc-section-5&quot;&gt;数据的组织&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#section-6&quot; id=&quot;markdown-toc-section-6&quot;&gt;访问方式&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#section-7&quot; id=&quot;markdown-toc-section-7&quot;&gt;空间回收&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&quot;junit&quot;&gt;JUnit简介&lt;/h3&gt;
+&lt;h3 id=&quot;hdfs&quot;&gt;HDFS简介&lt;/h3&gt;
 
-&lt;p&gt;JUnit就是为Java程序开发者实现单元测试提供一种框架，使得Java单元测试更规范有效，并且更有利于测试的集成&lt;/p&gt;
-
-&lt;h3 id=&quot;junit-1&quot;&gt;JUnit的原理&lt;/h3&gt;
-
-&lt;h4 id=&quot;junit-2&quot;&gt;JUnit结构&lt;/h4&gt;
-
-&lt;p&gt;JUnit中有7个包, 每个包的简要说明如下表:&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;包名&lt;/th&gt;
-      &lt;th&gt;说明&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;junit.awtui&lt;/td&gt;
-      &lt;td&gt;以awt界面组件来显示junit测试过程结果&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;junit.swingui&lt;/td&gt;
-      &lt;td&gt;以swing界面组件来显示junit测试过程结果&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;junit.textui&lt;/td&gt;
-      &lt;td&gt;以控制台输出来显示junit测试过程结果&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;junit.framework&lt;/td&gt;
-      &lt;td&gt;junit的核心功能包, 包括Test/TestCase/TestSuite/TestResult/TestListener等类&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;junit.runner&lt;/td&gt;
-      &lt;td&gt;junit核心功能包, 主要运行Test类&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;junit.extensions&lt;/td&gt;
-      &lt;td&gt;junit扩展功能包&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h4 id=&quot;junit-3&quot;&gt;JUnit核心类&lt;/h4&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/software-testing/junit-main-class.jpg&quot; alt=&quot;junit-main-class&quot; /&gt;&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;类名&lt;/th&gt;
-      &lt;th&gt;说明&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Test&lt;/td&gt;
-      &lt;td&gt;用于运行测试和收集测试结果, 还可以获取测试用例个数&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;TestCase&lt;/td&gt;
-      &lt;td&gt;Test接口的一个实现类, 给出了测试的基本实现&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;TestSuite&lt;/td&gt;
-      &lt;td&gt;Test接口的另一个实现类, 可以包含多个TestCase&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;TestResult&lt;/td&gt;
-      &lt;td&gt;包含收集到的测试结果&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;TestListener&lt;/td&gt;
-      &lt;td&gt;测试流程的监听接口, 可以开始/结束测试, 可以添加failures/errors&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h4 id=&quot;junit-4&quot;&gt;JUnit生命周期&lt;/h4&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/software-testing/junit-life.png&quot; alt=&quot;junit-life&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;junit-5&quot;&gt;JUnit中的设计模式&lt;/h4&gt;
+&lt;p&gt;HDFS是一个分布式文件系统, 用于商业硬件平台. HDFS跟其他分布式文件系统有很多共性, 但是不同的是HDFS有以下重要特性:&lt;/p&gt;
 
 &lt;ul&gt;
+  &lt;li&gt;高容错性&lt;/li&gt;
+  &lt;li&gt;可部署于低端硬件&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;HDFS提供了&lt;strong&gt;高吞吐量的数据访问方式&lt;/strong&gt;, 而且非常适合具有&lt;strong&gt;大数据集&lt;/strong&gt;的应用使用.&lt;/p&gt;
+
+&lt;p&gt;HDFS放宽了POSIX的规范要求, 目的是为了&lt;strong&gt;数据的流式访问&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;HDFS一开始是为了Nutch Web搜索引擎项目而创建的, 现在是Apache Hadoop的核心项目&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;设计的期望与目标&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;硬件故障 : HDFS是应用于集群的, 所以硬件故障的发生概率是很高的, 设计时是必须提前考虑&lt;/li&gt;
+  &lt;li&gt;数据流式访问 : 流式访问可以提高数据传输的吞吐量&lt;/li&gt;
+  &lt;li&gt;大数据集 : 基于HDFS的应用一般都是拥有大数据集的, 否则分布式没有意义&lt;/li&gt;
+  &lt;li&gt;简单的一致性模型 : HDFS期望应用对数据的使用情况是写一次, 读多次的, 而且对数据的修改不是立刻发生的, 这样有利于提高吞吐量&lt;/li&gt;
+  &lt;li&gt;移动计算到数据 : 基于大数据集的情况, 移动数据很耗性能, 所以要支持移动计算到数据&lt;/li&gt;
+  &lt;li&gt;可移植性 : 可移植性提高了HDFS的使用范围&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;namenodedatanode&quot;&gt;NameNode与DataNode&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;NameNode : 管理文件系统命名空间, 管理文件访问操作&lt;/li&gt;
+  &lt;li&gt;DataNode : 保存数据&lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;Template Method&lt;/p&gt;
+    &lt;p&gt;HDFS架构模型&lt;/p&gt;
 
-    &lt;p&gt;实质就是首先建立方法的骨架，而尽可能地将方法的具体实现向后推移.&lt;/p&gt;
-
-    &lt;p&gt;TestCase.runBare()就采用了这种模式，客户类均可以重载它的三个方法，这样使得测试的可伸缩性得到提高.&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  public void runBare() throws Throwable{ 
-      setUp(); 
-      try {
-          runTest();
-      } finally {
-          tearDown();
-      }
-  }
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Command&lt;/p&gt;
-
-    &lt;p&gt;实质就是将动作封装为一个对象，而不关心动作的接收者。这样动作的接收者可以一直到动作具体执行时才需确定.&lt;/p&gt;
-
-    &lt;p&gt;接口Test就是一个Command集，使得不同类的不同测试方法可以通过同一种接口Test构造其框架结构。这样对测试的集成带来了很多方便.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Fri, 01 Apr 2016 00:00:00 +0800</pubDate>
-        <link>/2016/04/01/software-testing-junit/</link>
-        <guid isPermaLink="true">/2016/04/01/software-testing-junit/</guid>
-        
-        
-        <category>软件测试</category>
-        
-      </item>
-    
-      <item>
-        <title>BestTimeToBuyAndSellStock(II)(III)(IV)</title>
-        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#besttimetobuyandsellstock&quot; id=&quot;markdown-toc-besttimetobuyandsellstock&quot;&gt;BestTimeToBuyAndSellStock&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#section&quot; id=&quot;markdown-toc-section&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-1&quot; id=&quot;markdown-toc-section-1&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#besttimetobuyandsellstock-ii&quot; id=&quot;markdown-toc-besttimetobuyandsellstock-ii&quot;&gt;BestTimeToBuyAndSellStock II&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-2&quot; id=&quot;markdown-toc-section-2&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-3&quot; id=&quot;markdown-toc-section-3&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#besttimetobuyandsellstock-iv&quot; id=&quot;markdown-toc-besttimetobuyandsellstock-iv&quot;&gt;BestTimeToBuyAndSellStock IV&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-4&quot; id=&quot;markdown-toc-section-4&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-5&quot; id=&quot;markdown-toc-section-5&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#besttimetobuyandsellstock-iii&quot; id=&quot;markdown-toc-besttimetobuyandsellstock-iii&quot;&gt;BestTimeToBuyAndSellStock III&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-6&quot; id=&quot;markdown-toc-section-6&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-7&quot; id=&quot;markdown-toc-section-7&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
+    &lt;p&gt;&lt;img src=&quot;/assets/hadoop/hadoop-hdfs-architecture.png&quot; alt=&quot;hadoop-hdfs-architecture&quot; /&gt;&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;besttimetobuyandsellstock&quot;&gt;BestTimeToBuyAndSellStock&lt;/h2&gt;
+&lt;hr /&gt;
 
-&lt;h3 id=&quot;section&quot;&gt;题目描述&lt;/h3&gt;
+&lt;h3 id=&quot;section-1&quot;&gt;文件系统命名空间&lt;/h3&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;Say you have an array for which the ith element is the price of a given stock on day i.&lt;/p&gt;
+&lt;p&gt;HDFS的命名空间支持传统的文件组织结构(也就是树形层次结构)&lt;/p&gt;
 
-  &lt;p&gt;If you were only permitted to complete at most one transaction (ie, buy one and sell one share of the stock), design an algorithm to find the maximum profit.&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;HDFS的命名空间是由NameNode管理的&lt;/p&gt;
 
-&lt;h3 id=&quot;section-1&quot;&gt;解法&lt;/h3&gt;
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;section-2&quot;&gt;数据的重复因子&lt;/h3&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;暴力法&lt;/p&gt;
-
-    &lt;p&gt;代码如下:&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  public static int maxProfitBruteForce( int[] prices ) {
-      int maxProfit = 0;
-      for( int i = 0; i &amp;lt; prices.length-1; ++i ) {
-          for( int j = i+1; j &amp;lt; prices.length; ++j ) {
-              if( prices[j] - prices[i] &amp;gt; maxProfit )
-                  maxProfit = prices[j] - prices[i];
-          }
-      }
-      return maxProfit;
-  }
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-
-    &lt;p&gt;思考过程: 对于每一天, 我们都计算出这一天卖出可以获得的maxProfit&lt;/p&gt;
-
-    &lt;p&gt;时空复杂度: 时间复杂度是O(n^2), 空间复杂度是O(1)&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;分治法&lt;/p&gt;
-
-    &lt;p&gt;代码如下:&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  public static int maxProfitDivideAndConquer( 
-          int[] prices, int left, int right ) {
-      if( left &amp;gt;= right ) return 0;
-      int mid = left + (right-left)/2;
-      int leftMaxProfit = maxProfitDivideAndConquer( prices, left, mid );
-      int rightMaxProfit = maxProfitDivideAndConquer( prices, mid+1, right );
-      // 求出左半部分最低价
-      int leftMin = mid;
-      for( int i = mid; i &amp;gt;= left; --i )
-          if( prices[i] &amp;lt; prices[leftMin] )
-              leftMin = i;
-
-      // 求出右半部分最高价
-      int rightMax = mid;
-      for( int i = mid; i &amp;lt;= right; ++i )
-          if( prices[i] &amp;gt; prices[rightMax] )
-              rightMax = i;
-
-      return Math.max( 
-              Math.max( leftMaxProfit, rightMaxProfit ), 
-              prices[rightMax]-prices[leftMin] );
-  }
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-
-    &lt;p&gt;思考过程: 对于给定的一段时间&lt;code class=&quot;highlighter-rouge&quot;&gt;[left...right]&lt;/code&gt;, 我们从中间mid把时间段切割为&lt;code class=&quot;highlighter-rouge&quot;&gt;[left...mid]&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;[mid+1...right]&lt;/code&gt;, 那么在&lt;code class=&quot;highlighter-rouge&quot;&gt;[left...right]&lt;/code&gt;这段时间的解为以下的情况之一:&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;[left…mid] 的maxProfit&lt;/li&gt;
-      &lt;li&gt;[mid+1…right] 的maxProfit&lt;/li&gt;
-      &lt;li&gt;右半部分最高价 - 左半部分最低价&lt;/li&gt;
-    &lt;/ul&gt;
-
-    &lt;p&gt;时空复杂度: 时间复杂度是O(nlogn), 空间复杂度是O(logn)&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;动态规划&lt;/p&gt;
-
-    &lt;p&gt;代码如下:&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  public static int maxProfitDP( int[] prices ) {
-      int leftMin = 0, maxProfit = 0;
-      for( int i = 1; i &amp;lt; prices.length; ++i ) {
-          if( prices[i] - prices[leftMin] &amp;gt; maxProfit )
-              maxProfit = prices[i] - prices[leftMin];
-          if( prices[i] &amp;lt; prices[leftMin] )
-              leftMin = i;
-      }
-      return maxProfit;
-  }
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-
-    &lt;p&gt;思考过程: 由前面的暴力法可知, 我们对每一天都求出这一天卖出的maxProfit, 而这个maxProfit实际上是&lt;code class=&quot;highlighter-rouge&quot;&gt;当天价格-历史价格最低价&lt;/code&gt;. 暴力法中我们遍历查询历史价格, 其实我们可以用一个变量来记录历史价格最低价, 也就是代码中的&lt;code class=&quot;highlighter-rouge&quot;&gt;leftMin&lt;/code&gt;. 这样可以把查询时间从O(n)降到O(1).&lt;/p&gt;
-
-    &lt;p&gt;这种解法看似与DP没什么关系, 只是在原来的基础上做出了优化而已, 其实这个优化就是动态规划的思想了. 其体现如下:&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;最优子结构: maxProfit[i] = max( maxProrit[i-1], prices[i]-prices[leftMin] )&lt;/li&gt;
-      &lt;li&gt;重叠子问题: leftMin的查找&lt;/li&gt;
-    &lt;/ul&gt;
-
-    &lt;p&gt;时空复杂度: 时间复杂度是O(n), 空间复杂度是O(1)&lt;/p&gt;
-  &lt;/li&gt;
+  &lt;li&gt;副本放置 : 理想条件下, 我们会把副本放在相互远离的地方; 但是考虑到性能问题, 一般情况下把2个副本放在同一个&lt;code class=&quot;highlighter-rouge&quot;&gt;rack&lt;/code&gt;, 1个副本放在另一个&lt;code class=&quot;highlighter-rouge&quot;&gt;rack&lt;/code&gt;(假设重复因子为3)&lt;/li&gt;
+  &lt;li&gt;副本读取 : 从性能角度出发, HDFS会优先选择离Client最近的副本为Client提供服务&lt;/li&gt;
+  &lt;li&gt;Safemode模式 : 该模式是NameNode刚开启时的模式, 这个模式下的NameNode会接受Heartbeat和Blockreport, 收集完Blockreport之后就会退出该模式. 退出该模式之后如果发现有数据块的重复因子小于设定的下限, 那么NameNode就负责复制数据块直到满足条件为止.&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;safemode模式下是没有副本相关信息的&lt;/p&gt;
+&lt;/blockquote&gt;
 
 &lt;hr /&gt;
 
-&lt;h2 id=&quot;besttimetobuyandsellstock-ii&quot;&gt;BestTimeToBuyAndSellStock II&lt;/h2&gt;
+&lt;h3 id=&quot;metadata&quot;&gt;metadata持久化&lt;/h3&gt;
 
-&lt;h3 id=&quot;section-2&quot;&gt;题目描述&lt;/h3&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Say you have an array for which the ith element is the price of a given stock on day i.&lt;/p&gt;
-
-  &lt;p&gt;Design an algorithm to find the maximum profit. You may complete as many transactions as you like (ie, buy one and sell one share of the stock multiple times). However, you may not engage in multiple transactions at the same time (ie, you must sell the stock before you buy again).&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;section-3&quot;&gt;解法&lt;/h3&gt;
-
-&lt;p&gt;代码如下:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static int maxProfit( int[] prices ) {
-    // S表示前一次卖的日期, B表示前一次买的日期
-    int S = 0, B = 0, maxProfit = 0;
-    for( int i = 1; i &amp;lt; prices.length; ++i ) {
-        if( B &amp;gt;= S ) {        // 最近一次交易是买
-            if( prices[i] &amp;lt; prices[B] ) {
-                B = i;
-            } else if( prices[i] &amp;gt; prices[B] ) {
-                maxProfit += prices[i] - prices[B];
-                S = i;
-            } 
-        } else {            // 最近一次交易是卖
-            if( prices[i] &amp;gt; prices[S] ) {
-                maxProfit += prices[i] - prices[S];
-                S = i;
-            } else if( prices[i] &amp;lt; prices[S] ) {
-                B = i;
-            }
-        }
-    }
-    return maxProfit;
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;思考过程: 因为交易次数无限, 所以只要赚钱就卖出去, 低价就买回来 – &lt;code class=&quot;highlighter-rouge&quot;&gt;贪心算法&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;我们使用两个变量: &lt;code class=&quot;highlighter-rouge&quot;&gt;S&lt;/code&gt;表示前一次卖出的日期, &lt;code class=&quot;highlighter-rouge&quot;&gt;B&lt;/code&gt;表示前一次买进的日期. 对于每一天, 先判断最近一次交易是买还是卖.&lt;/p&gt;
+&lt;p&gt;HDFS的metadata持久化通过2种文件(都是本地保存)来实现:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;最近一次交易是买, 如果今天价格更低就当作今天才买进, 如果今天价格更高就卖出去.&lt;/li&gt;
-  &lt;li&gt;最近一次交易是卖, 如果今天价格更高就当作今天才卖出, 如果今天价格更低就买进来.&lt;/li&gt;
+  &lt;li&gt;FsImage : 保存了数据块的映射信息, 文件系统的属性&lt;/li&gt;
+  &lt;li&gt;EditLog : 事务日志, 记录了所有的HDFS操作记录&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;时空复杂度: 时间复杂度是O(n), 空间复杂度是O(1)&lt;/p&gt;
+&lt;p&gt;checkpoint机制: 当NameNode启动的时候, 首先读取FsImage和EditLog进内存, 然后根据EditLog修改FsImage, 再把FsImage更新到磁盘上, 最后对EditLog进行缩减&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;checkpoint机制只有在NameNode启动时才会触发(目前)&lt;/p&gt;
+&lt;/blockquote&gt;
 
 &lt;hr /&gt;
 
-&lt;h2 id=&quot;besttimetobuyandsellstock-iv&quot;&gt;BestTimeToBuyAndSellStock IV&lt;/h2&gt;
+&lt;h3 id=&quot;section-3&quot;&gt;通信协议&lt;/h3&gt;
 
-&lt;h3 id=&quot;section-4&quot;&gt;题目描述&lt;/h3&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Say you have an array for which the ith element is the price of a given stock on day i.&lt;/p&gt;
-
-  &lt;p&gt;Design an algorithm to find the maximum profit. You may complete at most k transactions.&lt;/p&gt;
-
-  &lt;p&gt;Note:&lt;/p&gt;
-
-  &lt;p&gt;You may not engage in multiple transactions at the same time (ie, you must sell the stock before you buy again).&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;section-5&quot;&gt;解法&lt;/h3&gt;
-
-&lt;p&gt;代码如下:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static int maxProfitDP( int k, int[] prices ) {
-    int len = prices.length;
-
-    // 如果交易次数超过最大交易次数, 获取最大利润
-    if( k &amp;gt; len/2 ) return quickSolve( prices );
-
-    // dp[i][j]: 在第j天之前交易i次可以获得的最大利润
-    int[][] dp = new int[k+1][len];
-    for( int i = 1; i &amp;lt;= k; ++i ) {
-        // holds: 买进状态下, 目前持有的最大利润
-        int holds = -prices[0];
-        for( int j = 1; j &amp;lt; len; ++j ) {
-            dp[i][j] = Math.max( dp[i][j-1], holds+prices[j] );
-            holds = Math.max( holds, dp[i-1][j-1]-prices[j] );
-        }
-    }
-    return dp[k][len-1];
-}
-
-private static int quickSolve( int[] prices ) {
-    int profit = 0;
-    for( int i = 1; i &amp;lt; prices.length; ++i )
-        if( prices[i] &amp;gt; prices[i-1] )
-            profit += prices[i] - prices[i-1];
-    return profit;
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;思考过程: 我们的目的是找到n天之内进行最多k次交易的最大利润, 那么我们给出以下定义:&lt;/p&gt;
+&lt;p&gt;HDFS的通信协议都是基于TCP/IP协议的. 主要有2种协议:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;dp[i][j]&lt;/code&gt;: j天之内进行最多i次交易的最大利润&lt;/li&gt;
+  &lt;li&gt;ClientProtocol : 用于Client和NameNode之间的通信&lt;/li&gt;
+  &lt;li&gt;DataNodeProtocol : 用于DataNode和NameNode之间的通信&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;我们发现dp[i][j]可能与价格prices[j]有关, 也可能无关.&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;这2种协议都通过&lt;code class=&quot;highlighter-rouge&quot;&gt;RPC&lt;/code&gt;进行了抽象封装&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;section-4&quot;&gt;健壮性&lt;/h3&gt;
+
+&lt;p&gt;健壮性是HDFS的一个重要特性. HDFS为了健壮性作出了下面这些保证:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;如果无关, 容易知道&lt;code class=&quot;highlighter-rouge&quot;&gt;dp[i][j]&lt;/code&gt;等于&lt;code class=&quot;highlighter-rouge&quot;&gt;dp[i][j-1]&lt;/code&gt; (最优子结构性质)&lt;/li&gt;
-  &lt;li&gt;如果有关, &lt;code class=&quot;highlighter-rouge&quot;&gt;prices[j]&lt;/code&gt;是如何影响&lt;code class=&quot;highlighter-rouge&quot;&gt;dp[i][j]&lt;/code&gt;的取值的呢? 如果&lt;code class=&quot;highlighter-rouge&quot;&gt;prices[j]&lt;/code&gt;能够影响&lt;code class=&quot;highlighter-rouge&quot;&gt;dp[i][j]&lt;/code&gt;, 那么就只能是&lt;code class=&quot;highlighter-rouge&quot;&gt;prices[j]&lt;/code&gt;这个价格卖出获得更大的利润. 所以就需要记录一个变量&lt;code class=&quot;highlighter-rouge&quot;&gt;holds: 买进状态下, 持有的最大利润&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;重新复制副本 : NameNode会时常检查各个数据块的重复因子, 保证重复因子达到预设状态&lt;/li&gt;
+  &lt;li&gt;集群负载重平衡 : HDFS兼通数据重平衡方案&lt;/li&gt;
+  &lt;li&gt;数据完整性 : Client端通过DataNode获取文件之后会通过checksum检查数据的完整性&lt;/li&gt;
+  &lt;li&gt;metadata失效恢复 : NameNode保留了多份FsImage和EditLog以便恢复数据&lt;/li&gt;
+  &lt;li&gt;数据快照 : 数据快照就是某一时刻数据的副本, 可用于回滚操作&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;分析到这里就会发现&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dp[i][j] = max( dp[i][j-1], holds+prices[j] )
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;那么&lt;code class=&quot;highlighter-rouge&quot;&gt;holds&lt;/code&gt;是如何受&lt;code class=&quot;highlighter-rouge&quot;&gt;prices[j]&lt;/code&gt;的影响的呢? 因为holds表示买进状态, 所以如果&lt;code class=&quot;highlighter-rouge&quot;&gt;prices[j]&lt;/code&gt;能够影响&lt;code class=&quot;highlighter-rouge&quot;&gt;holds&lt;/code&gt;, 那么就只能是买进&lt;code class=&quot;highlighter-rouge&quot;&gt;prices[j]&lt;/code&gt;, 而且买进之前的最大利润是&lt;code class=&quot;highlighter-rouge&quot;&gt;dp[i-1][j-1]&lt;/code&gt;, 所以&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;holds = max( holds, dp[i-1][j-1]-prices[j] )
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;时空复杂度: 时间复杂度是O(kn), 空间复杂度是O(kn)&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;besttimetobuyandsellstock-iii&quot;&gt;BestTimeToBuyAndSellStock III&lt;/h2&gt;
-
-&lt;h3 id=&quot;section-6&quot;&gt;题目描述&lt;/h3&gt;
-
 &lt;blockquote&gt;
-  &lt;p&gt;Say you have an array for which the ith element is the price of a given stock on day i.&lt;/p&gt;
-
-  &lt;p&gt;Design an algorithm to find the maximum profit. You may complete at most two transactions.&lt;/p&gt;
-
-  &lt;p&gt;Note:&lt;/p&gt;
-
-  &lt;p&gt;You may not engage in multiple transactions at the same time (ie, you must sell the stock before you buy again).&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;section-7&quot;&gt;解法&lt;/h3&gt;
-
-&lt;p&gt;代码如下:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static int maxProfitDP( int[] prices ) {
-    int len = prices.length;
-    int k = 2;
-    // 如果交易次数超过最大交易次数, 获取最大利润
-    if( k &amp;gt; len/2 ) return quickSolve( prices );
-
-    // dp[i][j]: 在第j天之前交易i次可以获得的最大利润
-    int[][] dp = new int[k+1][len];
-    for( int i = 1; i &amp;lt;= k; ++i ) {
-        // holds: 买进状态下, 目前持有的最大利润
-        int holds = -prices[0];
-        for( int j = 1; j &amp;lt; len; ++j ) {
-            dp[i][j] = Math.max( dp[i][j-1], holds+prices[j] );
-            holds = Math.max( holds, dp[i-1][j-1]-prices[j] );
-        }
-    }
-    return dp[k][len-1];
-}
-
-private static int quickSolve( int[] prices ) {
-    int profit = 0;
-    for( int i = 1; i &amp;lt; prices.length; ++i )
-        if( prices[i] &amp;gt; prices[i-1] )
-            profit += prices[i] - prices[i-1];
-    return profit;
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;思考过程: 这是上一题中k=2的特殊情况&lt;/p&gt;
-
-&lt;p&gt;时空复杂度: 时间复杂度是O(n), 空间复杂度是O(n)&lt;/p&gt;
-</description>
-        <pubDate>Fri, 01 Apr 2016 00:00:00 +0800</pubDate>
-        <link>/2016/04/01/leetcode-BestTimeToBuyAndSellStock(II)(III)(IV)/</link>
-        <guid isPermaLink="true">/2016/04/01/leetcode-BestTimeToBuyAndSellStock(II)(III)(IV)/</guid>
-        
-        
-        <category>Leetcode</category>
-        
-      </item>
-    
-      <item>
-        <title>动态规划原理学习笔记</title>
-        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#section&quot; id=&quot;markdown-toc-section&quot;&gt;动态规划定义&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#section-1&quot; id=&quot;markdown-toc-section-1&quot;&gt;动态规划原理&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#section-2&quot; id=&quot;markdown-toc-section-2&quot;&gt;动态规划的基本要素&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-3&quot; id=&quot;markdown-toc-section-3&quot;&gt;最优子结构&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-4&quot; id=&quot;markdown-toc-section-4&quot;&gt;重叠子问题&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#section-5&quot; id=&quot;markdown-toc-section-5&quot;&gt;动态规划的变形&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-6&quot; id=&quot;markdown-toc-section-6&quot;&gt;备忘录方法&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;section&quot;&gt;动态规划定义&lt;/h3&gt;
-
-&lt;p&gt;动态规划算法是一种&lt;code class=&quot;highlighter-rouge&quot;&gt;计算算法&lt;/code&gt;, 可以在多项式时间计算出问题的解&lt;/p&gt;
-
-&lt;h3 id=&quot;section-1&quot;&gt;动态规划原理&lt;/h3&gt;
-
-&lt;p&gt;动态规划的计算原理是&lt;code class=&quot;highlighter-rouge&quot;&gt;问题分解&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;原理: 动态规划算法与分治法类似, 基本思想是&lt;code class=&quot;highlighter-rouge&quot;&gt;将待求解问题分解为若干个子问题, 先求解子问题, 然后从子问题的解得到原始问题的解&lt;/code&gt;. 与分治法不同的是, 动态规划划分出来的&lt;code class=&quot;highlighter-rouge&quot;&gt;子问题往往不是相互独立的&lt;/code&gt;. 若用分治法来解这类问题, 则分解得到的子问题数目太多, 以至于需要耗费指数时间解决问题, 而子问题的数目常常只有多项式量级. 在用分治法求解时, 有些子问题被重复计算了很多次. 如果我们能够保存已解决的子问题答案, 在需要的时候查一下, 这样就可以避免大量的重复计算, 从而得到多项式时间算法. 为了达到此目的, 可以用一个表来记录已解决的子问题答案. 不管该子问题以后是否被用到, 只要它被计算过, 就将其结果填入表中. 这就是动态规划的基本思想.&lt;/p&gt;
-
-&lt;p&gt;动态规划算法适用于解&lt;code class=&quot;highlighter-rouge&quot;&gt;最优化问题&lt;/code&gt;.&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;算法的步骤如下:&lt;/p&gt;
-
-  &lt;ol&gt;
-    &lt;li&gt;找出最优解的性质, 并刻画其结构特征&lt;/li&gt;
-    &lt;li&gt;递归定义最优值&lt;/li&gt;
-    &lt;li&gt;以自底向顶的方式计算出最优值&lt;/li&gt;
-    &lt;li&gt;根据计算最优值时得到的信息, 构造最优解&lt;/li&gt;
-  &lt;/ol&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;section-2&quot;&gt;动态规划的基本要素&lt;/h3&gt;
-
-&lt;h4 id=&quot;section-3&quot;&gt;最优子结构&lt;/h4&gt;
-
-&lt;p&gt;设计动态规划算法的第一步通常是刻画最优解的结构. &lt;code class=&quot;highlighter-rouge&quot;&gt;当问题的最优解包含了其子问题的最优解是, 称该问题具有最优子结构性质&lt;/code&gt;. 问题具有最优子结构性质提供了可用动态规划算法求解的重要线索.&lt;/p&gt;
-
-&lt;p&gt;分析问题的最优子结构性质时, 所用的方法具有普遍性, 就是&lt;code class=&quot;highlighter-rouge&quot;&gt;反证法&lt;/code&gt;. 首先假设问题的最优解导出的子问题的解不是最优的, 然后再分析说明在这个假设下, 可以构造出比原有问题最优解更好的解, 从而导致矛盾.&lt;/p&gt;
-
-&lt;h4 id=&quot;section-4&quot;&gt;重叠子问题&lt;/h4&gt;
-
-&lt;p&gt;在用递归算法自顶向底解问题时, 每次产生的子问题并不总是新问题, 有些子问题被反复计算多次. 动态规划算法正是利用了这种子问题的重叠性质, 对每一个子问题只解一次, 而后将其解保存在一个表格中, 当需要再次解此子问题时, 只是以简单地查询一下. 通常, 不同的子问题个数随问题的大小呈多项式增长. 因此, 用动态规划算法通常只需要多项式时间, 从而获得较高的解题效率.&lt;/p&gt;
-
-&lt;h3 id=&quot;section-5&quot;&gt;动态规划的变形&lt;/h3&gt;
-
-&lt;h4 id=&quot;section-6&quot;&gt;备忘录方法&lt;/h4&gt;
-
-&lt;p&gt;备忘录方法用表格保存已解决子问题的答案, 在下次需要解此子问题时, 只要简单查看该子问题的答案, 而不必重新计算. 与动态规划算法不同的是, &lt;code class=&quot;highlighter-rouge&quot;&gt;备忘录方法的递归方式是自顶向底的, 而动态规划算法则是自底向顶的&lt;/code&gt;. 因此, 备忘录方法的控制结构与动态规划的控制结构相同, 区别在于备忘录方法为每个解过的子问题建立备忘录以备查询.&lt;/p&gt;
-
-&lt;p&gt;备忘录方法为每个子问题建立一个记录项, 初始化时, 该记录项存入一个特殊值, 表示该子问题尚未求解. 在求解过程中, 对每个待求的子问题, 首先查看相应的记录项. 如果存储的是特殊值, 则表示该子问题是第一次遇到, 此时计算该子问题的解并保存进记录项. 如果存储的不是特殊值, 则表示该子问题已经被计算过, 此时直接查询返回即可.&lt;/p&gt;
-
-&lt;p&gt;一般来讲, 当一个问题的所有子问题都至少需要解一次时, 用动态规划算法比备忘录方法好. 此时动态规划算法没有任何多余的计算. 同时, 对于许多问题, 常可利用其规则的表格存取方式, 减少动态规划算法的计算时间和空间需求. 当子问题空间中的部分字问题可不必求解时, 用备忘录方法则较有利, 因为从其控制结构可以看出, 该方法只解那些确实需要求解的子问题.&lt;/p&gt;
-</description>
-        <pubDate>Fri, 01 Apr 2016 00:00:00 +0800</pubDate>
-        <link>/2016/04/01/algorithm-dynamic-programming/</link>
-        <guid isPermaLink="true">/2016/04/01/algorithm-dynamic-programming/</guid>
-        
-        
-        <category>算法</category>
-        
-      </item>
-    
-      <item>
-        <title>Combinations</title>
-        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#combinations&quot; id=&quot;markdown-toc-combinations&quot;&gt;Combinations&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#section&quot; id=&quot;markdown-toc-section&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-1&quot; id=&quot;markdown-toc-section-1&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-2&quot; id=&quot;markdown-toc-section-2&quot;&gt;总结&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;combinations&quot;&gt;Combinations&lt;/h2&gt;
-
-&lt;h3 id=&quot;section&quot;&gt;题目描述&lt;/h3&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Given two integers n and k, return all possible combinations of k numbers out of 1 … n.&lt;/p&gt;
-
-  &lt;p&gt;For example,&lt;/p&gt;
-
-  &lt;p&gt;If n = 4 and k = 2, a solution is:
-[
-  [2,4],
-  [3,4],
-  [2,3],
-  [1,2],
-  [1,3],
-  [1,4],
-]&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;section-1&quot;&gt;解法&lt;/h3&gt;
-
-&lt;p&gt;代码如下:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static List&amp;lt;List&amp;lt;Integer&amp;gt;&amp;gt; combine( int n, int k ) {
-    List&amp;lt;List&amp;lt;Integer&amp;gt;&amp;gt; res = new ArrayList&amp;lt;&amp;gt;();
-    helperCombine( n, 1, k, new ArrayList&amp;lt;Integer&amp;gt;(), res );
-    return res;
-}
-public static void helperCombine( 
-        int n, int t, int k, List&amp;lt;Integer&amp;gt; tmpRes, List&amp;lt;List&amp;lt;Integer&amp;gt;&amp;gt; res ) {
-    // 约束条件
-    if( t &amp;gt; n ) {
-        return;
-    }
-    // 不选取当前值
-    helperCombine( n, t+1, k, tmpRes, res );
-    
-    // 选取当前值
-    tmpRes.add( t );
-    if( k-1 == 0 ) {    // 获得一个结果
-        res.add( new ArrayList&amp;lt;Integer&amp;gt;(tmpRes) );
-    } else {            // 进入下一层
-        helperCombine( n, t+1, k-1, tmpRes, res );
-    }
-    tmpRes.remove( tmpRes.size()-1 );
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;思考过程: &lt;code class=&quot;highlighter-rouge&quot;&gt;回溯法&lt;/code&gt;. 对于[1…n]中的每一个元素, 可取可不取&lt;/p&gt;
-
-&lt;p&gt;时空复杂度: 时间复杂度是O(2^n), 空间复杂度是O(n): 递归的空间, 排除构造出来的结果集&lt;/p&gt;
-
-&lt;h3 id=&quot;section-2&quot;&gt;总结&lt;/h3&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;把&lt;code class=&quot;highlighter-rouge&quot;&gt;约束条件&lt;/code&gt;放在方法头部更容易理解&lt;/p&gt;
-&lt;/blockquote&gt;
-</description>
-        <pubDate>Thu, 31 Mar 2016 00:00:00 +0800</pubDate>
-        <link>/2016/03/31/leetcode-Combinations/</link>
-        <guid isPermaLink="true">/2016/03/31/leetcode-Combinations/</guid>
-        
-        
-        <category>Leetcode</category>
-        
-      </item>
-    
-      <item>
-        <title>CombinationSum(II)(III)</title>
-        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#combinationsum&quot; id=&quot;markdown-toc-combinationsum&quot;&gt;CombinationSum&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#section&quot; id=&quot;markdown-toc-section&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-1&quot; id=&quot;markdown-toc-section-1&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#combinationsum-ii&quot; id=&quot;markdown-toc-combinationsum-ii&quot;&gt;CombinationSum II&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-2&quot; id=&quot;markdown-toc-section-2&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-3&quot; id=&quot;markdown-toc-section-3&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-4&quot; id=&quot;markdown-toc-section-4&quot;&gt;总结&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#combinationsum-iii&quot; id=&quot;markdown-toc-combinationsum-iii&quot;&gt;CombinationSum III&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-5&quot; id=&quot;markdown-toc-section-5&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-6&quot; id=&quot;markdown-toc-section-6&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;combinationsum&quot;&gt;CombinationSum&lt;/h2&gt;
-
-&lt;h3 id=&quot;section&quot;&gt;题目描述&lt;/h3&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Given a set of candidate numbers (C) and a target number (T), find all unique combinations in C where the candidate numbers sums to T.&lt;/p&gt;
-
-  &lt;p&gt;The same repeated number may be chosen from C unlimited number of times.&lt;/p&gt;
-
-  &lt;p&gt;Note:&lt;/p&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;All numbers (including target) will be positive integers.&lt;/li&gt;
-    &lt;li&gt;Elements in a combination (a1, a2, … , ak) must be in non-descending order. (ie, &amp;gt; a1 ≤ a2 ≤ … ≤ ak).&lt;/li&gt;
-    &lt;li&gt;The solution set must not contain duplicate combinations.&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;p&gt;For example, given candidate set 2,3,6,7 and target 7,
-A solution set is:&lt;/p&gt;
-
-  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;[7]&lt;/code&gt;&lt;/p&gt;
-
-  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;[2, 2, 3]&lt;/code&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;section-1&quot;&gt;解法&lt;/h3&gt;
-
-&lt;p&gt;代码如下:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static List&amp;lt;List&amp;lt;Integer&amp;gt;&amp;gt; combinationSum( 
-        int[] candidates, int target ) {
-    // 排序, 后面才可以进行剪枝
-    Arrays.sort( candidates );
-    List&amp;lt;List&amp;lt;Integer&amp;gt;&amp;gt; res = new ArrayList&amp;lt;&amp;gt;();
-    helperCombinationSum2( 
-            candidates, target, 0, new ArrayList&amp;lt;Integer&amp;gt;(), res );
-    return res;
-}
-
-private static void helperCombinationSum2(
-        int[] candidates, int target, int t, List&amp;lt;Integer&amp;gt; tmpRes, 
-        List&amp;lt;List&amp;lt;Integer&amp;gt;&amp;gt; res) {
-    // 约束条件
-    if( t == candidates.length ) {
-        return;
-    }
-    // 剪枝
-    if( candidates[t] &amp;gt; target ) {
-        return;
-    }
-    
-    // 遍历解空间
-    int i = 0;
-    for( ; i*candidates[t] &amp;lt;= target; ++i ) {
-        if( i != 0 ) tmpRes.add( candidates[t] );
-        if( i*candidates[t] == target ) {
-            res.add( new ArrayList&amp;lt;Integer&amp;gt;( tmpRes) );
-        } else {
-            helperCombinationSum2( candidates, 
-            	target-i*candidates[t], t+1, tmpRes, res );
-        }
-    }
-    while( i-- &amp;gt; 1 )
-        tmpRes.remove( tmpRes.size()-1 );
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;思考过程: &lt;code class=&quot;highlighter-rouge&quot;&gt;回溯法&lt;/code&gt;. 对于candidates数组中的每一个值, 可以无限重复取, 但是实际上只要取到一定程度就就可以结束了, 结束条件: i*candidates[t] &amp;gt; target, 也就是取[0…i]的情况, [i+1…∞]不取.&lt;/p&gt;
-
-&lt;p&gt;时空复杂度: 时间复杂度是&lt;code class=&quot;highlighter-rouge&quot;&gt;不确定&lt;/code&gt;, 空间复杂度是O(n): 递归的空间, 排除构造出来的结果集&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;combinationsum-ii&quot;&gt;CombinationSum II&lt;/h2&gt;
-
-&lt;h3 id=&quot;section-2&quot;&gt;题目描述&lt;/h3&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Given a collection of candidate numbers (C) and a target number (T), find all unique combinations in C where the candidate numbers sums to T.&lt;/p&gt;
-
-  &lt;p&gt;Each number in C may only be used once in the combination.&lt;/p&gt;
-
-  &lt;p&gt;Note:&lt;/p&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;All numbers (including target) will be positive integers.&lt;/li&gt;
-    &lt;li&gt;Elements in a combination (a1, a2, … , ak) must be in non-descending order. (ie, a1 ≤ a2 ≤ … ≤ ak).&lt;/li&gt;
-    &lt;li&gt;The solution set must not contain duplicate combinations.&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;p&gt;For example, given candidate set 10,1,2,7,6,1,5 and target 8,&lt;/p&gt;
-
-  &lt;p&gt;A solution set is:&lt;/p&gt;
-
-  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;[1, 7]&lt;/code&gt;&lt;/p&gt;
-
-  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;[1, 2, 5]&lt;/code&gt;&lt;/p&gt;
-
-  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;[2, 6]&lt;/code&gt;&lt;/p&gt;
-
-  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;[1, 1, 6]&lt;/code&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;section-3&quot;&gt;解法&lt;/h3&gt;
-
-&lt;p&gt;代码如下:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static List&amp;lt;List&amp;lt;Integer&amp;gt;&amp;gt; combinationSum2( 
-		int[] candidates, int target ) {
-	// 排序, 后面才可以进行剪枝
-	Arrays.sort( candidates );
-	List&amp;lt;List&amp;lt;Integer&amp;gt;&amp;gt; res = new ArrayList&amp;lt;&amp;gt;();
-	helperCombinationSum( 
-			candidates, target, 0, new ArrayList&amp;lt;Integer&amp;gt;(), res );
-	return res;
-}
-
-private static void helperCombinationSum(
-		int[] candidates, int target, int t, List&amp;lt;Integer&amp;gt; tmpRes, 
-		List&amp;lt;List&amp;lt;Integer&amp;gt;&amp;gt; res) {
-	if( t == candidates.length ) {
-		return;
-	}
-	// 剪枝
-	if( candidates[t] &amp;gt; target ) {
-		return;
-	}
-	
-	// 统计重复元素个数
-	int repeatCount = 0;
-	while( repeatCount+t &amp;lt; candidates.length &amp;amp;&amp;amp; 
-			candidates[t] == candidates[t+repeatCount])
-		++repeatCount;
-	
-	// 遍历解空间
-	int i = 0;
-	for( ; i &amp;lt;= repeatCount &amp;amp;&amp;amp; i*candidates[t] &amp;lt;= target; ++i ) {
-		if( i != 0 ) tmpRes.add( candidates[t] );
-		if( i*candidates[t] == target ) {
-			res.add( new ArrayList&amp;lt;Integer&amp;gt;( tmpRes) );
-		} else {
-			helperCombinationSum( candidates, 
-			    target-i*candidates[t], t+repeatCount, tmpRes, res );
-		}
-	}
-	while( i-- &amp;gt; 1 )
-		tmpRes.remove( tmpRes.size()-1 );
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;思考过程: 同CombinationSum一样. 不一样的地方: CombinationSum中的每个元素取[0,∞]个, 这里每个元素取[0…R]个, R表示元素的重复个数, 所以代码里面就多了限制条件: &lt;code class=&quot;highlighter-rouge&quot;&gt;i &amp;lt;= repeatCount&lt;/code&gt; 而且进入下一层要跨越重复元素: &lt;code class=&quot;highlighter-rouge&quot;&gt;t+repeatCount&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;时空复杂度: 时间复杂度是&lt;code class=&quot;highlighter-rouge&quot;&gt;不确定&lt;/code&gt;, 空间复杂度是O(n): 递归的空间, 排除构造出来的结果集&lt;/p&gt;
-
-&lt;h3 id=&quot;section-4&quot;&gt;总结&lt;/h3&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;借助已有的处理模型, 思考新问题中&lt;code class=&quot;highlighter-rouge&quot;&gt;影响因素&lt;/code&gt;对结果产生的影响, 并且从原有模型中调整得到解决方案&lt;/p&gt;
+  &lt;p&gt;重复因子变化的原因多种多样 : DataNode无效, 副本失效, 硬盘故障, 重复因子变大&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;hr /&gt;
 
-&lt;h2 id=&quot;combinationsum-iii&quot;&gt;CombinationSum III&lt;/h2&gt;
+&lt;h3 id=&quot;section-5&quot;&gt;数据的组织&lt;/h3&gt;
 
-&lt;h3 id=&quot;section-5&quot;&gt;题目描述&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;数据块 : 基于HDFS的应用一般都是拥有大数据集的, 并且通常对数据的操作是写一次, 读多次的. 所以为了提高数据传输的吞吐量, 数据以数据块的方式保留, 而且以流式方式传输.&lt;/li&gt;
+  &lt;li&gt;分段运输 : Client如果要写入数据到DataNode. Client首先会把数据写入自己的缓冲区中, 如果缓冲区的数据达到数据块的大小, 那么Client就会向NameNode发送写入数据的请求, NameNode进行metadata的修改之后返回DataNode的id, 让Client与对应的DataNode连接并传输数据. 数据传输完成后Client通知NameNode关闭文件, 最后NameNode进行事务日志的写入, 到此操作完成. 如果日志写入失败, 那么此次操作也是失效的.&lt;/li&gt;
+  &lt;li&gt;副本管道流 : 因为副本的原因, Client在写入数据到DataNode的时候是要写入很多份的, HDFS的处理机制则是以副本管道流的形式. Client每传输一部分数据, 第一个DataNode就会写入数据并把数据传递给第二个DataNode, 第二个DataNode也是和第一个DataNode一样, 如此推进就形成了管道流.&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;Find all possible combinations of k numbers that add up to a number n, given that only numbers from 1 to 9 can be used and each combination should be a unique set of numbers.&lt;/p&gt;
-
-  &lt;p&gt;Ensure that numbers within the set are sorted in ascending order.&lt;/p&gt;
-
-  &lt;p&gt;Example 1:&lt;/p&gt;
-
-  &lt;p&gt;Input: k = 3, n = 7&lt;/p&gt;
-
-  &lt;p&gt;Output:&lt;/p&gt;
-
-  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;[[1,2,4]]&lt;/code&gt;&lt;/p&gt;
-
-  &lt;p&gt;Example 2:&lt;/p&gt;
-
-  &lt;p&gt;Input: k = 3, n = 9&lt;/p&gt;
-
-  &lt;p&gt;Output:&lt;/p&gt;
-
-  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;[[1,2,6], [1,3,5], [2,3,4]]&lt;/code&gt;&lt;/p&gt;
+  &lt;p&gt;HDFS的数据块大小一般是64MB, 而且NameNode尽量把数据块放在不同的DataNode&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;h3 id=&quot;section-6&quot;&gt;解法&lt;/h3&gt;
+&lt;hr /&gt;
 
-&lt;p&gt;代码如下:&lt;/p&gt;
+&lt;h3 id=&quot;section-6&quot;&gt;访问方式&lt;/h3&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static List&amp;lt;List&amp;lt;Integer&amp;gt;&amp;gt; combinationSum3( int n, int k ) {
-    List&amp;lt;List&amp;lt;Integer&amp;gt;&amp;gt; res = new ArrayList&amp;lt;&amp;gt;();
-    helperCombinationSum3( n, k, new ArrayList&amp;lt;Integer&amp;gt;(), res );
-    return res;
-}
+&lt;p&gt;HDFS的访问方式有以下3种:&lt;/p&gt;
 
-private static void helperCombinationSum3( int n, int k, List&amp;lt;Integer&amp;gt; tmpRes, 
-        List&amp;lt;List&amp;lt;Integer&amp;gt;&amp;gt; res) {
-    // 约束条件
-    if( k &amp;lt;= 0 || n &amp;lt;= 0 ) {
-        return;
-    }
-    
-    // 保证结果子集中不可能出现重复元素
-    int i = tmpRes.size()==0 ? 1 : tmpRes.get(tmpRes.size()-1)+1;
-    for( ; i &amp;lt;= 9; ++i ) {
-        tmpRes.add( i );
-        if( n-i == 0 &amp;amp;&amp;amp; k-1 == 0 ) {
-            res.add( new ArrayList&amp;lt;Integer&amp;gt;(tmpRes) );
-        } else {
-            helperCombinationSum3( n-i, k-1, tmpRes, res );
-        }
-        tmpRes.remove( tmpRes.size()-1 );
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;FS Shell : 类似于bash的命令行方式&lt;/li&gt;
+  &lt;li&gt;DFSAdmin : 给HDFS的administrator使用的命令行方式&lt;/li&gt;
+  &lt;li&gt;Browser Interface : 借助浏览器的http协议进行访问&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;p&gt;思考过程: &lt;code class=&quot;highlighter-rouge&quot;&gt;回溯法&lt;/code&gt;. 本质上跟上面两题都是一样的. 不同的地方就是: &lt;code class=&quot;highlighter-rouge&quot;&gt;约束条件&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;解空间的遍历方式&lt;/code&gt;&lt;/p&gt;
+&lt;hr /&gt;
 
-&lt;p&gt;时空复杂度: 时间复杂度是&lt;code class=&quot;highlighter-rouge&quot;&gt;不确定&lt;/code&gt;, 空间复杂度是O(n): 递归的空间, 排除构造出来的结果集&lt;/p&gt;
+&lt;h3 id=&quot;section-7&quot;&gt;空间回收&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;文件删除 : Client在删除文件的命令发出后, HDFS的释放空间动作并没有同步执行, 具有一定的时间差. 被删除的文件会保存在&lt;code class=&quot;highlighter-rouge&quot;&gt;/user/&amp;lt;username&amp;gt;/.Trash&lt;/code&gt;目录中. 在这段时间差内, 数据是可恢复的. 真正释放空间的时机是由checkpoint决定的.&lt;/li&gt;
+  &lt;li&gt;副本因子降低 : 如果数据块的副本因子变小了, 那么NameNode就会发送心跳包给对应的DataNode, 告诉它把副本删除. 同样, 删除过程也是会有时间差.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;默认情况下Trash机制是关闭的, 需要配置才能开启&lt;/p&gt;
+&lt;/blockquote&gt;
 </description>
-        <pubDate>Thu, 31 Mar 2016 00:00:00 +0800</pubDate>
-        <link>/2016/03/31/leetcode-CombinationSum(II)(III)/</link>
-        <guid isPermaLink="true">/2016/03/31/leetcode-CombinationSum(II)(III)/</guid>
+        <pubDate>Tue, 05 Apr 2016 00:00:00 +0800</pubDate>
+        <link>/2016/04/05/hadoop-HDFS/</link>
+        <guid isPermaLink="true">/2016/04/05/hadoop-HDFS/</guid>
         
         
-        <category>Leetcode</category>
+        <category>Hadoop</category>
         
       </item>
     
       <item>
-        <title>进程的查看</title>
+        <title>系统资源的查看</title>
         <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#ps&quot; id=&quot;markdown-toc-ps&quot;&gt;ps指令&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#ps-1&quot; id=&quot;markdown-toc-ps-1&quot;&gt;ps参数说明&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#ps-2&quot; id=&quot;markdown-toc-ps-2&quot;&gt;ps使用实例&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#free-&quot; id=&quot;markdown-toc-free-&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;free&lt;/code&gt;: 查看内存使用情况&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#free&quot; id=&quot;markdown-toc-free&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;free&lt;/code&gt;参数说明&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#free-1&quot; id=&quot;markdown-toc-free-1&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;free&lt;/code&gt;使用实例&lt;/a&gt;&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#t-o-p&quot; id=&quot;markdown-toc-t-o-p&quot;&gt;t-o-p指令&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#t-o-p-1&quot; id=&quot;markdown-toc-t-o-p-1&quot;&gt;t-o-p参数说明&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#t-o-p-2&quot; id=&quot;markdown-toc-t-o-p-2&quot;&gt;t-o-p程序指令&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#t-o-p-3&quot; id=&quot;markdown-toc-t-o-p-3&quot;&gt;t-o-p使用实例&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#uname-&quot; id=&quot;markdown-toc-uname-&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;uname&lt;/code&gt;: 查看系统内核相关信息&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#uname&quot; id=&quot;markdown-toc-uname&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;uname&lt;/code&gt;参数说明&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#uname-1&quot; id=&quot;markdown-toc-uname-1&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;uname&lt;/code&gt;使用实例&lt;/a&gt;&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#pstree&quot; id=&quot;markdown-toc-pstree&quot;&gt;pstree指令&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#pstree-1&quot; id=&quot;markdown-toc-pstree-1&quot;&gt;pstree参数说明&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#pstree-2&quot; id=&quot;markdown-toc-pstree-2&quot;&gt;pstree使用实例&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#uptime-&quot; id=&quot;markdown-toc-uptime-&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;uptime&lt;/code&gt;: 查看系统启动时间与工作负载&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#uptime&quot; id=&quot;markdown-toc-uptime&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;uptime&lt;/code&gt;参数说明&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#uptime-1&quot; id=&quot;markdown-toc-uptime-1&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;uptime&lt;/code&gt;使用实例&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#netstat-&quot; id=&quot;markdown-toc-netstat-&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;netstat&lt;/code&gt;: 查看跟踪网络&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#netstat&quot; id=&quot;markdown-toc-netstat&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;netstat&lt;/code&gt;参数说明&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#netstat-1&quot; id=&quot;markdown-toc-netstat-1&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;netstat&lt;/code&gt;使用实例&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#dmesg-&quot; id=&quot;markdown-toc-dmesg-&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;dmesg&lt;/code&gt;: 查看内核产生的信息&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#dmesg&quot; id=&quot;markdown-toc-dmesg&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;dmesg&lt;/code&gt;使用实例&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#vmstat-&quot; id=&quot;markdown-toc-vmstat-&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;vmstat&lt;/code&gt;: 检测系统资源变化&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#vmstat&quot; id=&quot;markdown-toc-vmstat&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;vmstat&lt;/code&gt;参数说明&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#vmstat-1&quot; id=&quot;markdown-toc-vmstat-1&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;vmstat&lt;/code&gt;使用实例&lt;/a&gt;&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&quot;ps&quot;&gt;ps指令&lt;/h3&gt;
+&lt;h3 id=&quot;free-&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;free&lt;/code&gt;: 查看内存使用情况&lt;/h3&gt;
 
-&lt;h4 id=&quot;ps-1&quot;&gt;ps参数说明&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;free [options]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;free&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;free&lt;/code&gt;参数说明&lt;/h4&gt;
 
 &lt;table&gt;
   &lt;thead&gt;
@@ -1409,374 +485,387 @@ private static void helperCombinationSum3( int n, int k, List&amp;lt;Integer&amp
   &lt;/thead&gt;
   &lt;tbody&gt;
     &lt;tr&gt;
-      &lt;td&gt;-A&lt;/td&gt;
-      &lt;td&gt;显示所有的进程&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-b&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;B&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;td&gt;-a&lt;/td&gt;
-      &lt;td&gt;排除与终端有关的进程&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-k&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;KB&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;td&gt;-u&lt;/td&gt;
-      &lt;td&gt;指定特定用户的进程&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-m&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;MB&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;td&gt;x&lt;/td&gt;
-      &lt;td&gt;显示更完整的信息, 与a参数一起使用&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-g&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;GB&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;td&gt;l&lt;/td&gt;
-      &lt;td&gt;长格式&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;j&lt;/td&gt;
-      &lt;td&gt;工作格式&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;-f&lt;/td&gt;
-      &lt;td&gt;完整格式&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-t&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;显示总量统计&lt;/td&gt;
     &lt;/tr&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;
 
-&lt;h4 id=&quot;ps-2&quot;&gt;ps使用实例&lt;/h4&gt;
+&lt;h4 id=&quot;free-1&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;free&lt;/code&gt;使用实例&lt;/h4&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
-    &lt;p&gt;查看与bash相关的进程&lt;/p&gt;
+    &lt;p&gt;显示目前系统的内存容量&lt;/p&gt;
 
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  ps -l
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;free -m -t
 &lt;/code&gt;&lt;/pre&gt;
     &lt;/div&gt;
 
-    &lt;p&gt;&lt;img src=&quot;/assets/linux/linux-ps-ps-l.png&quot; alt=&quot;ps-l&quot; /&gt;&lt;/p&gt;
-
-    &lt;table&gt;
-      &lt;thead&gt;
-        &lt;tr&gt;
-          &lt;th&gt;参数&lt;/th&gt;
-          &lt;th&gt;说明&lt;/th&gt;
-        &lt;/tr&gt;
-      &lt;/thead&gt;
-      &lt;tbody&gt;
-        &lt;tr&gt;
-          &lt;td&gt;F&lt;/td&gt;
-          &lt;td&gt;4表示进程权限为root, 1表示进程只能fork, 不能执行&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;S&lt;/td&gt;
-          &lt;td&gt;进程的STATE, R-&amp;gt;运行, S-&amp;gt;睡眠, D-&amp;gt;阻塞, T-&amp;gt;停止, Z-&amp;gt;僵尸&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;UID&lt;/td&gt;
-          &lt;td&gt;用户ID&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;PID&lt;/td&gt;
-          &lt;td&gt;进程ID&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;PPID&lt;/td&gt;
-          &lt;td&gt;父进程ID&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;C&lt;/td&gt;
-          &lt;td&gt;CPU使用率&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;PRI/NI&lt;/td&gt;
-          &lt;td&gt;进程优先级相关, 越小优先级越高&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;ADDR&lt;/td&gt;
-          &lt;td&gt;进程内存地址&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;SZ&lt;/td&gt;
-          &lt;td&gt;消耗的内存&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;WCHAN&lt;/td&gt;
-          &lt;td&gt;运行状态&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;TTY&lt;/td&gt;
-          &lt;td&gt;终端接口&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;TIME&lt;/td&gt;
-          &lt;td&gt;进程运行累计时间&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;CMD&lt;/td&gt;
-          &lt;td&gt;进程指令&lt;/td&gt;
-        &lt;/tr&gt;
-      &lt;/tbody&gt;
-    &lt;/table&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;查看系统所有的进程&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  ps aux
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/assets/linux/linux-ps-ps-aux.png&quot; alt=&quot;ps-aux&quot; /&gt;&lt;/p&gt;
-
-    &lt;table&gt;
-      &lt;thead&gt;
-        &lt;tr&gt;
-          &lt;th&gt;参数&lt;/th&gt;
-          &lt;th&gt;说明&lt;/th&gt;
-        &lt;/tr&gt;
-      &lt;/thead&gt;
-      &lt;tbody&gt;
-        &lt;tr&gt;
-          &lt;td&gt;USER&lt;/td&gt;
-          &lt;td&gt;用户&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;PID&lt;/td&gt;
-          &lt;td&gt;进程ID&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;%CPU&lt;/td&gt;
-          &lt;td&gt;CPU使用率&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;%MEM&lt;/td&gt;
-          &lt;td&gt;内存使用率&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;VSZ&lt;/td&gt;
-          &lt;td&gt;虚拟内存占用量&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;RSS&lt;/td&gt;
-          &lt;td&gt;内存占用量&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;TTY&lt;/td&gt;
-          &lt;td&gt;终端接口&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;STAT&lt;/td&gt;
-          &lt;td&gt;进程状态&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;START&lt;/td&gt;
-          &lt;td&gt;进程启动时间&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;TIME&lt;/td&gt;
-          &lt;td&gt;进程运行累计时间&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;COMMAND&lt;/td&gt;
-          &lt;td&gt;进程指令&lt;/td&gt;
-        &lt;/tr&gt;
-      &lt;/tbody&gt;
-    &lt;/table&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;查看系统某进程&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  ps aux | egrep &#39;xrgsu&#39;
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/assets/linux/linux-ps-ps-egrep.png&quot; alt=&quot;ps-egrep&quot; /&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;img src=&quot;/assets/linux/linux-free-m-t.png&quot; alt=&quot;linux-free-m-t&quot; /&gt;&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;t-o-p&quot;&gt;t-o-p指令&lt;/h3&gt;
-
-&lt;h4 id=&quot;t-o-p-1&quot;&gt;t-o-p参数说明&lt;/h4&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;参数&lt;/th&gt;
-      &lt;th&gt;说明&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;-d&lt;/td&gt;
-      &lt;td&gt;更新频率, 以秒为单位&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;-b&lt;/td&gt;
-      &lt;td&gt;批处理, 通常配合数据流重定向&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;-n&lt;/td&gt;
-      &lt;td&gt;与-b配合, 指定批处理总次数&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;-p&lt;/td&gt;
-      &lt;td&gt;检测指定进程PID&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h4 id=&quot;t-o-p-2&quot;&gt;t-o-p程序指令&lt;/h4&gt;
-
-&lt;table&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;?&lt;/td&gt;
-      &lt;td&gt;查看top程序指令帮助&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;C&lt;/td&gt;
-      &lt;td&gt;按照CPU使用率大小排序&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;M&lt;/td&gt;
-      &lt;td&gt;按照内存使用率大小排序&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;N&lt;/td&gt;
-      &lt;td&gt;按照PID排序&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;T&lt;/td&gt;
-      &lt;td&gt;按照CPU运行总时长排序&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;k&lt;/td&gt;
-      &lt;td&gt;kill进程&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;r&lt;/td&gt;
-      &lt;td&gt;重新给进程nice值&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;q&lt;/td&gt;
-      &lt;td&gt;退出top&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h4 id=&quot;t-o-p-3&quot;&gt;t-o-p使用实例&lt;/h4&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;每隔2秒更新一次资源状态&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  top -d 2
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/assets/linux/linux-top-d2.png&quot; alt=&quot;top-d2&quot; /&gt;&lt;/p&gt;
-
-    &lt;table&gt;
-      &lt;thead&gt;
-        &lt;tr&gt;
-          &lt;th&gt;参数&lt;/th&gt;
-          &lt;th&gt;说明&lt;/th&gt;
-        &lt;/tr&gt;
-      &lt;/thead&gt;
-      &lt;tbody&gt;
-        &lt;tr&gt;
-          &lt;td&gt;PID&lt;/td&gt;
-          &lt;td&gt;进程ID&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;USER&lt;/td&gt;
-          &lt;td&gt;用户&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;PR/NI&lt;/td&gt;
-          &lt;td&gt;优先级&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;VIRT&lt;/td&gt;
-          &lt;td&gt;虚拟内存使用量&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;RES&lt;/td&gt;
-          &lt;td&gt;内存使用量&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;SHR&lt;/td&gt;
-          &lt;td&gt;共享内存使用量&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;%CPU&lt;/td&gt;
-          &lt;td&gt;CPU使用率&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;%MEM&lt;/td&gt;
-          &lt;td&gt;内存使用率&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;TIME+&lt;/td&gt;
-          &lt;td&gt;CPU使用累积时间&lt;/td&gt;
-        &lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;COMMAND&lt;/td&gt;
-          &lt;td&gt;进程指令&lt;/td&gt;
-        &lt;/tr&gt;
-      &lt;/tbody&gt;
-    &lt;/table&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;把资源状态结果输出到文件&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  top -b -n 2 &amp;gt; /tmp/top.txt
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;系统中内存的使用量非常高, 而且&lt;code class=&quot;highlighter-rouge&quot;&gt;buffers&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;cached&lt;/code&gt;也非常大, 这是linux善于利用内存的表现, 它把&lt;code class=&quot;highlighter-rouge&quot;&gt;最常使用到的数据&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;最近使用到的数据&lt;/code&gt;都缓存下来了, 下次访问就直接从内存读取, 而不需要再去访问磁盘, 提高了访问速度.&lt;/p&gt;
+&lt;/blockquote&gt;
 
 &lt;hr /&gt;
 
-&lt;h3 id=&quot;pstree&quot;&gt;pstree指令&lt;/h3&gt;
+&lt;h3 id=&quot;uname-&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;uname&lt;/code&gt;: 查看系统内核相关信息&lt;/h3&gt;
 
-&lt;h4 id=&quot;pstree-1&quot;&gt;pstree参数说明&lt;/h4&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;参数&lt;/th&gt;
-      &lt;th&gt;说明&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;-A&lt;/td&gt;
-      &lt;td&gt;以ASCII字符显示进程树&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;-U&lt;/td&gt;
-      &lt;td&gt;以UTF8字符显示进程树&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;-u&lt;/td&gt;
-      &lt;td&gt;显示进程所属用户&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;-p&lt;/td&gt;
-      &lt;td&gt;显示进程PID&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h4 id=&quot;pstree-2&quot;&gt;pstree使用实例&lt;/h4&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pstree -Uup
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;## 默认是 uname -s
+uname [options]
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/linux/linux-pstree-Uup.png&quot; alt=&quot;pstree-Uup&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;uname&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;uname&lt;/code&gt;参数说明&lt;/h4&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;参数&lt;/th&gt;
+      &lt;th&gt;说明&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-a&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;所有系统内核信息&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-s&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;系统内核名称&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-r&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;内核版本&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-m&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;硬件名称&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-p&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;CPU类型&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-i&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;硬件平台&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h4 id=&quot;uname-1&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;uname&lt;/code&gt;使用实例&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;显示系统内核所有信息&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;uname -a
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/assets/linux/linux-uname-a.png&quot; alt=&quot;linux-uname-a&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;uptime-&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;uptime&lt;/code&gt;: 查看系统启动时间与工作负载&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;uptime [options]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;uptime&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;uptime&lt;/code&gt;参数说明&lt;/h4&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;参数&lt;/th&gt;
+      &lt;th&gt;说明&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-p&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;以完整形式显示&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-s&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;从&lt;code class=&quot;highlighter-rouge&quot;&gt;yyyy-mm-dd HH:MM:SS&lt;/code&gt;开始统计&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h4 id=&quot;uptime-1&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;uptime&lt;/code&gt;使用实例&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;显示系统启动时间与工作负载&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;uptime
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/assets/linux/linux-uptime.png&quot; alt=&quot;linux-uptime&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;工作负载分别表示: 1分钟内 / 5分钟内 / 15分钟内 的平均工作负载&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;netstat-&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;netstat&lt;/code&gt;: 查看跟踪网络&lt;/h3&gt;
+
+&lt;h4 id=&quot;netstat&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;netstat&lt;/code&gt;参数说明&lt;/h4&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;参数&lt;/th&gt;
+      &lt;th&gt;说明&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-a&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;显示系统所有连接&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-t&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;列出tcp网络数据包的数据&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-u&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;列出udp网络数据包的数据&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-n&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;以端口号替换服务名称&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-l&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;显示正在网络监听的服务&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-p&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;显示服务PID&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h4 id=&quot;netstat-1&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;netstat&lt;/code&gt;使用实例&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;显示所有打开的网络连接与&lt;code class=&quot;highlighter-rouge&quot;&gt;unix socket&lt;/code&gt;状态&lt;/p&gt;
+
+    &lt;p&gt;netstat -a&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/assets/linux/linux-netstat-a.png&quot; alt=&quot;linux-netstat-a&quot; /&gt;
+  &lt;img src=&quot;/assets/linux/linux-netstat-a2.png&quot; alt=&quot;linux-netstat-a2&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;dmesg-&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;dmesg&lt;/code&gt;: 查看内核产生的信息&lt;/h3&gt;
+
+&lt;h4 id=&quot;dmesg&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;dmesg&lt;/code&gt;使用实例&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;输出所有内核开机时的信息&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dmesg | more
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/assets/linux/linux-dmesg.png&quot; alt=&quot;linux-dmesg&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;查找开机时硬盘相关的信息&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dmesg | grep -i hd
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/assets/linux/linux-dmesg-grep-sd.png&quot; alt=&quot;linux-dmesg-grep-sd&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;vmstat-&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;vmstat&lt;/code&gt;: 检测系统资源变化&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;vmstat [options] [delay [count]]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;delay&lt;/code&gt;: 更新延迟&lt;/p&gt;
+
+  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;count&lt;/code&gt;: 更新次数&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;vmstat&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;vmstat&lt;/code&gt;参数说明&lt;/h4&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;参数&lt;/th&gt;
+      &lt;th&gt;说明&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-a&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;显示活跃与非活跃状态的内存量&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-f&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;显示系统启动至今的fork数量&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-s&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;显示事件导致的内存变化列表&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-S&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;统计单位k/m(10进制), K/M(2进制)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-d&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;列出磁盘读写总量&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-p&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;分区磁盘读写总量&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h4 id=&quot;vmstat-1&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;vmstat&lt;/code&gt;使用实例&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;显示系统资源状态, 更新频率1秒, 更新次数3次&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;vmstat 1 3
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/assets/linux/linux-vmstat-1-3.png&quot; alt=&quot;linux-vmstat-1-3&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;参数说明:&lt;/p&gt;
+
+    &lt;table&gt;
+      &lt;thead&gt;
+        &lt;tr&gt;
+          &lt;th&gt;参数&lt;/th&gt;
+          &lt;th&gt;说明&lt;/th&gt;
+        &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;r&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;等待运行的进程数量&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;b&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;阻塞的进程数量&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;swpd&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;虚拟内存使用总量&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;free&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;空闲内存总量&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;buff&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;缓冲内存总量&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;cache&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;缓存内存重量&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;si&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;磁盘换进内存的总量&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;so&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;内存换出磁盘的总量&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bi&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;从磁盘读取的块数量&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bo&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;写入到磁盘的块数量&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;in&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;每秒的中断数量&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;cs&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;每秒的上下文切换数量&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;us&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;非内核状态CPU使用百分比&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;sy&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;内核状态CPU使用百分比&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;id&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;闲置状态CPU使用百分比&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;wa&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;IO等待CPU使用百分比&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;st&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;虚拟机占用CPU使用百分比&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;有关参数详细说明可以通过&lt;code class=&quot;highlighter-rouge&quot;&gt;man vmstat&lt;/code&gt;查询&lt;/p&gt;
+&lt;/blockquote&gt;
 </description>
-        <pubDate>Wed, 30 Mar 2016 00:00:00 +0800</pubDate>
-        <link>/2016/03/30/linux-process-check/</link>
-        <guid isPermaLink="true">/2016/03/30/linux-process-check/</guid>
+        <pubDate>Mon, 04 Apr 2016 00:00:00 +0800</pubDate>
+        <link>/2016/04/04/linux-system-resources-check/</link>
+        <guid isPermaLink="true">/2016/04/04/linux-system-resources-check/</guid>
         
         
         <category>Linux</category>
@@ -1784,161 +873,591 @@ private static void helperCombinationSum3( int n, int k, List&amp;lt;Integer&amp
       </item>
     
       <item>
-        <title>Permutations(II)</title>
+        <title>进程的管理</title>
         <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#permutations&quot; id=&quot;markdown-toc-permutations&quot;&gt;Permutations&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#section&quot; id=&quot;markdown-toc-section&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-1&quot; id=&quot;markdown-toc-section-1&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-2&quot; id=&quot;markdown-toc-section-2&quot;&gt;总结&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#section&quot; id=&quot;markdown-toc-section&quot;&gt;信号表&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#kill&quot; id=&quot;markdown-toc-kill&quot;&gt;kill指令&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#kill-1&quot; id=&quot;markdown-toc-kill-1&quot;&gt;kill参数说明&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#kill-2&quot; id=&quot;markdown-toc-kill-2&quot;&gt;kill使用实例&lt;/a&gt;&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#permutations-ii&quot; id=&quot;markdown-toc-permutations-ii&quot;&gt;Permutations II&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-3&quot; id=&quot;markdown-toc-section-3&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-4&quot; id=&quot;markdown-toc-section-4&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#section-5&quot; id=&quot;markdown-toc-section-5&quot;&gt;总结&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#killall&quot; id=&quot;markdown-toc-killall&quot;&gt;killall指令&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#killall-1&quot; id=&quot;markdown-toc-killall-1&quot;&gt;killall参数说明&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#killall-2&quot; id=&quot;markdown-toc-killall-2&quot;&gt;killall使用实例&lt;/a&gt;&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;permutations&quot;&gt;Permutations&lt;/h2&gt;
+&lt;p&gt;进程的管理是通过&lt;code class=&quot;highlighter-rouge&quot;&gt;信号机制&lt;/code&gt;来实现的. 把一个信号传递给进程, 进程就会做出相应的动作, 这就是进程管理&lt;/p&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;信号表&lt;/h3&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;代号&lt;/th&gt;
+      &lt;th&gt;名称&lt;/th&gt;
+      &lt;th&gt;说明&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;SIGHUP&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;启动终止的进程, 如果已经启动则重新读取配置, 相当于重启&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;SIGINT&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;中断一个进程的执行, 也就是&lt;code class=&quot;highlighter-rouge&quot;&gt;ctrl+c&lt;/code&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;9&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;SIGKILL&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;强制中断一个进程的执行, 但是会产生历史缓存&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;15&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;SIGTERM&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;正常结束一个进程的执行, 如果进程已经异常, 那么信号无效&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;17&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;SIGSTOP&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;暂停一个进程的执行, 也就是&lt;code class=&quot;highlighter-rouge&quot;&gt;ctrl+z&lt;/code&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;以上信号表是常用的信号说明, 更加详细的可以通过指令: &lt;code class=&quot;highlighter-rouge&quot;&gt;kill -l&lt;/code&gt;查询&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;kill&quot;&gt;kill指令&lt;/h3&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kill&lt;/code&gt;指令从名字上看就是杀死进程的样子, 实际上不是. &lt;code class=&quot;highlighter-rouge&quot;&gt;kill&lt;/code&gt;指令是用于传送指定的信号给指定的进程.&lt;/p&gt;
+
+&lt;h4 id=&quot;kill-1&quot;&gt;kill参数说明&lt;/h4&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;参数&lt;/th&gt;
+      &lt;th&gt;说明&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-l&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;列出所有的信号&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-L&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;表格形式列出所有的信号&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-&amp;lt;signal&amp;gt;&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;指定信号&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h4 id=&quot;kill-2&quot;&gt;kill使用实例&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;启动或重启syslog进程&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kill -SIGHUP $(ps aux|grep &#39;syslog&#39;|grep -v &#39;grep&#39;|awk &#39;{print $2}&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;终止所有可以终止的进程&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kill -9 -1
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;killall&quot;&gt;killall指令&lt;/h3&gt;
+
+&lt;p&gt;在使用&lt;code class=&quot;highlighter-rouge&quot;&gt;kill&lt;/code&gt;指令的时候发现每次都需要指定&lt;code class=&quot;highlighter-rouge&quot;&gt;PID&lt;/code&gt;, 这样非常麻烦. &lt;code class=&quot;highlighter-rouge&quot;&gt;killall&lt;/code&gt;指令帮助我们解决了问题, 它通过指定命令名称来发送信号.&lt;/p&gt;
+
+&lt;h4 id=&quot;killall-1&quot;&gt;killall参数说明&lt;/h4&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;参数&lt;/th&gt;
+      &lt;th&gt;说明&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-i&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;交互式执行&lt;code class=&quot;highlighter-rouge&quot;&gt;killall&lt;/code&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-I&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;命令名称忽略大小写&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-e&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;指定命令名称要完全一致, 但是最多15个字符, 超过15以15个匹配&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h4 id=&quot;killall-2&quot;&gt;killall使用实例&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;启动或重启以&lt;code class=&quot;highlighter-rouge&quot;&gt;syslogd&lt;/code&gt;命令启动的进程&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;killall -1 syslogd
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;终止所有以&lt;code class=&quot;highlighter-rouge&quot;&gt;httpd&lt;/code&gt;命令启动的进程, 并且交互式进行&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;killall -i -9 httpd
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Mon, 04 Apr 2016 00:00:00 +0800</pubDate>
+        <link>/2016/04/04/linux-process-management/</link>
+        <guid isPermaLink="true">/2016/04/04/linux-process-management/</guid>
+        
+        
+        <category>Linux</category>
+        
+      </item>
+    
+      <item>
+        <title>Ugly Number(II)</title>
+        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#ugly-number&quot; id=&quot;markdown-toc-ugly-number&quot;&gt;Ugly Number&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#section&quot; id=&quot;markdown-toc-section&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-1&quot; id=&quot;markdown-toc-section-1&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#ugly-number-ii&quot; id=&quot;markdown-toc-ugly-number-ii&quot;&gt;Ugly Number II&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-2&quot; id=&quot;markdown-toc-section-2&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-3&quot; id=&quot;markdown-toc-section-3&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;ugly-number&quot;&gt;Ugly Number&lt;/h2&gt;
 
 &lt;h3 id=&quot;section&quot;&gt;题目描述&lt;/h3&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;Given a collection of distinct numbers, return all possible permutations.&lt;/p&gt;
+  &lt;p&gt;Write a program to check whether a given number is an ugly number.&lt;/p&gt;
 
-  &lt;p&gt;For example,&lt;/p&gt;
+  &lt;p&gt;Ugly numbers are positive numbers whose prime factors only include 2, 3, 5. For example, 6, 8 are ugly while 14 is not ugly since it includes another prime factor 7.&lt;/p&gt;
 
-  &lt;p&gt;[1,2,3] have the following permutations:&lt;/p&gt;
-
-  &lt;p&gt;[1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], and [3,2,1].&lt;/p&gt;
+  &lt;p&gt;Note that 1 is typically treated as an ugly number.&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;h3 id=&quot;section-1&quot;&gt;解法&lt;/h3&gt;
 
 &lt;p&gt;代码如下:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;static List&amp;lt;List&amp;lt;Integer&amp;gt;&amp;gt; res = new ArrayList&amp;lt;&amp;gt;();
-
-public static List&amp;lt;List&amp;lt;Integer&amp;gt;&amp;gt; permute( int[] nums ) {
-    helperPermute( nums, 0 );
-    return res;
-}
-private static void helperPermute( int[] nums, int t ) {
-    if( t == nums.length ) {
-        // 构造一个结果
-        List&amp;lt;Integer&amp;gt; tmpRes = new ArrayList&amp;lt;&amp;gt;(nums.length);
-        for( int num : nums ) tmpRes.add( num );
-        
-        // 加入结果集
-        res.add( tmpRes );
-    } else {
-        for( int i = t; i &amp;lt; nums.length; ++i ) {
-            swap( nums, t, i);
-            helperPermute( nums, t+1 );
-            swap( nums, t, i);
-        }
-    }
-}
-
-private static void swap( int[] nums, int i, int j ) {
-    int t = nums[i];
-    nums[i] = nums[j];
-    nums[j] = t;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static boolean isUgly( int num ) {
+    if( num == 0 ) return false;
+    while( num % 2 == 0 )
+        num /= 2;
+    while( num % 3 == 0 )
+        num /= 3;
+    while( num % 5 == 0 )
+        num /= 5;
+    return num == 1;
 }
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;思考过程: 求一个集合的全排列, 这个问题可以归类为&lt;code class=&quot;highlighter-rouge&quot;&gt;回溯法&lt;/code&gt;中的&lt;code class=&quot;highlighter-rouge&quot;&gt;排列树&lt;/code&gt;问题.&lt;/p&gt;
+&lt;p&gt;思考过程: &lt;code class=&quot;highlighter-rouge&quot;&gt;数学问题&lt;/code&gt;. 一个数字&lt;code class=&quot;highlighter-rouge&quot;&gt;num&lt;/code&gt;如果是&lt;code class=&quot;highlighter-rouge&quot;&gt;Ugly Number&lt;/code&gt;, 那么这个&lt;code class=&quot;highlighter-rouge&quot;&gt;num&lt;/code&gt;就一定能够被&lt;code class=&quot;highlighter-rouge&quot;&gt;2,3,5&lt;/code&gt;整除, 所以只要一路整除下来, 最后判断结果就行了&lt;/p&gt;
 
-&lt;p&gt;代码可以这样理解, 集合S的全排列由以下的结果组成:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;S[1]+全排列( S[2…n] )&lt;/li&gt;
-  &lt;li&gt;S[2]+全排列( S[1, 3…n] )&lt;/li&gt;
-  &lt;li&gt;S[3]+全排列( S[2, 1, 4…n] )&lt;/li&gt;
-  &lt;li&gt;…&lt;/li&gt;
-  &lt;li&gt;S[n]+全排列( S[1…n-1] )&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;也就是把S的中每一个元素都提取到第一位, 剩下的元素做全排列&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;疑难点: 为什么要swap2次? 因为我们要保证在处理完一次结果之后, 要恢复数组的原始状态, 这样下一次处理的时候才能正确把下一个元素交换到第一个位置来.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;时空复杂度: 时间复杂度是O(n!), 空间复杂度是O(n): 递归的空间, 排除构造出来的全排列&lt;/p&gt;
-
-&lt;h3 id=&quot;section-2&quot;&gt;总结&lt;/h3&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;如果一个处理过程是迭代形式的, 而且迭代过程有严格的状态要求, 那么就十分需要注意子处理过程所带来的影响.&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;时空复杂度: 时间复杂度是O(logn): n表示树的所有节点数, 空间复杂度是O(1)&lt;/p&gt;
 
 &lt;hr /&gt;
 
-&lt;h2 id=&quot;permutations-ii&quot;&gt;Permutations II&lt;/h2&gt;
+&lt;h2 id=&quot;ugly-number-ii&quot;&gt;Ugly Number II&lt;/h2&gt;
 
-&lt;h3 id=&quot;section-3&quot;&gt;题目描述&lt;/h3&gt;
+&lt;h3 id=&quot;section-2&quot;&gt;题目描述&lt;/h3&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;Given a collection of numbers that might contain duplicates, return all possible unique permutations.&lt;/p&gt;
+  &lt;p&gt;Write a program to find the n-th ugly number.&lt;/p&gt;
 
-  &lt;p&gt;For example,&lt;/p&gt;
+  &lt;p&gt;Ugly numbers are positive numbers whose prime factors only include &lt;code class=&quot;highlighter-rouge&quot;&gt;2, 3, 5&lt;/code&gt;. For example, &lt;code class=&quot;highlighter-rouge&quot;&gt;1, 2, 3, 4, 5, 6, 8, 9, 10, 12&lt;/code&gt; is the sequence of the first &lt;code class=&quot;highlighter-rouge&quot;&gt;10&lt;/code&gt; ugly numbers.&lt;/p&gt;
 
-  &lt;p&gt;[1,1,2] have the following unique permutations:&lt;/p&gt;
-
-  &lt;p&gt;[1,1,2], [1,2,1], and [2,1,1].&lt;/p&gt;
+  &lt;p&gt;Note that 1 is typically treated as an ugly number.&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;h3 id=&quot;section-4&quot;&gt;解法&lt;/h3&gt;
+&lt;h3 id=&quot;section-3&quot;&gt;解法&lt;/h3&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;static List&amp;lt;List&amp;lt;Integer&amp;gt;&amp;gt; res = new ArrayList&amp;lt;&amp;gt;();
+&lt;p&gt;代码如下:&lt;/p&gt;
 
-public static List&amp;lt;List&amp;lt;Integer&amp;gt;&amp;gt; permuteUnique( int[] nums ) {
-    Arrays.sort( nums );
-    helperPermuteUnique( nums, 0, nums.length-1 );
-    return res;
-}
-private static void helperPermuteUnique( int[] nums, int i, int j ) {
-    if( i == j ) {
-        List&amp;lt;Integer&amp;gt; tmpRes = new ArrayList&amp;lt;&amp;gt;(nums.length);
-        for( int num : nums ) tmpRes.add( num );
-        res.add( tmpRes );
-    } 
-    for( int k = i; k &amp;lt;= j; ++k ) {
-        if( findSame(nums, i, k) ) continue;
-        swap( nums, i, k );
-        helperPermuteUnique( nums, i+1, j );
-        swap( nums, i, k );
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static int nthUglyNumber( int n ) {
+
+    int[] nums = new int[n];
+    int index = 1;
+    nums[0] = 1; 
+
+    int count2 = 0, count3 = 0, count5 = 0;
+
+    while( index &amp;lt; n ) {
+        int num = Math.min(nums[count5]*5,
+                Math.min(nums[count2]*2, nums[count3]*3));
+        nums[index++] = num;
+        if( num % 2 == 0 ) count2++;
+        if( num % 3 == 0 ) count3++;
+        if( num % 5  == 0 ) count5++;
     }
-}
-
-private static boolean findSame( int[] nums, int i, int j ) {
-    for( int k = i; k &amp;lt; j; ++k )
-        if( nums[j] == nums[k] ) return true;
-    return false;
-}
-
-private static void swap( int[] nums, int i, int j ) {
-    int t = nums[i];
-    nums[i] = nums[j];
-    nums[j] = t;
+    return nums[n-1];
 }
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;思考过程: 对于有重复元素集合的全排列, 可以用上面无重复元素的全排列来解决, 区别就是我们在这个基础上还要排除一些重复的全排列, 那么我们需要思考的问题是: 按照无重复元素的全排列处理过程, 如何消除重复元素带来的影响? 我们知道全排列的一次处理过程就是把每一个元素都搬到第一个位置, 然后做剩余元素的全排列, 所以我们只需要判断当前元素跟前面的元素有没有重复, 有重复的话就是已经处理过的, 直接跳过.&lt;/p&gt;
+&lt;p&gt;思考过程: 一个&lt;code class=&quot;highlighter-rouge&quot;&gt;Ugly Number&lt;/code&gt;只能被&lt;code class=&quot;highlighter-rouge&quot;&gt;2,3,5&lt;/code&gt;整除, 而且我们需要找出第&lt;code class=&quot;highlighter-rouge&quot;&gt;n&lt;/code&gt;个&lt;code class=&quot;highlighter-rouge&quot;&gt;Ugly Number&lt;/code&gt;, 那么我们就可以用&lt;code class=&quot;highlighter-rouge&quot;&gt;2,3,5&lt;/code&gt;来动态构造&lt;code class=&quot;highlighter-rouge&quot;&gt;Ugly Number&lt;/code&gt;.&lt;/p&gt;
 
-&lt;h3 id=&quot;section-5&quot;&gt;总结&lt;/h3&gt;
+&lt;p&gt;我们使用&lt;code class=&quot;highlighter-rouge&quot;&gt;count2, count3, count5&lt;/code&gt;分别表示&lt;code class=&quot;highlighter-rouge&quot;&gt;2,3,5使用的次数&lt;/code&gt;. 每次构造&lt;code class=&quot;highlighter-rouge&quot;&gt;一个最小值&lt;/code&gt;并且加入数组中(数组是排序的&lt;code class=&quot;highlighter-rouge&quot;&gt;Ugly Number&lt;/code&gt;), 然后把用到的因数分别&lt;code class=&quot;highlighter-rouge&quot;&gt;+1&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;时空复杂度: 时间复杂度是O(n), 空间复杂度是O(n)&lt;/p&gt;
+</description>
+        <pubDate>Mon, 04 Apr 2016 00:00:00 +0800</pubDate>
+        <link>/2016/04/04/leetcode-ugly-number(II)/</link>
+        <guid isPermaLink="true">/2016/04/04/leetcode-ugly-number(II)/</guid>
+        
+        
+        <category>Leetcode</category>
+        
+      </item>
+    
+      <item>
+        <title>Path Sum</title>
+        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#path-sum&quot; id=&quot;markdown-toc-path-sum&quot;&gt;Path Sum&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#section&quot; id=&quot;markdown-toc-section&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-1&quot; id=&quot;markdown-toc-section-1&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#path-sum-ii&quot; id=&quot;markdown-toc-path-sum-ii&quot;&gt;Path Sum II&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-2&quot; id=&quot;markdown-toc-section-2&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-3&quot; id=&quot;markdown-toc-section-3&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-4&quot; id=&quot;markdown-toc-section-4&quot;&gt;总结&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;path-sum&quot;&gt;Path Sum&lt;/h2&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;题目描述&lt;/h3&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;借助已有的处理模型去思考问题的解决方案&lt;/p&gt;
+  &lt;p&gt;Given a binary tree and a sum, determine if the tree has a root-to-leaf path such that adding up all the values along the path equals the given sum.&lt;/p&gt;
+
+  &lt;p&gt;For example:&lt;/p&gt;
+
+  &lt;p&gt;Given the below binary tree and sum = 22,&lt;/p&gt;
+
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;           5
+          / \
+         4   8
+        /   / \
+       11  13  4
+      /  \      \
+     7    2      1
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+
+  &lt;p&gt;return true, as there exist a root-to-leaf path 5-&amp;gt;4-&amp;gt;11-&amp;gt;2 which sum is 22.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;解法&lt;/h3&gt;
+
+&lt;p&gt;代码如下:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static boolean hasPathSum( TreeNode root, int sum ) {
+    if( root == null ) return false;
+    if( root.val == sum &amp;amp;&amp;amp; 
+            root.left == null &amp;amp;&amp;amp; 
+            root.right == null ) return true;
+    return hasPathSum( root.left, sum-root.val ) || 
+            hasPathSum( root.right, sum-root.val);
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;思考过程: &lt;code class=&quot;highlighter-rouge&quot;&gt;DFS&lt;/code&gt;. &lt;strong&gt;有关树的问题一般都是以递归的思想解决的, 因为树的定义本身就是递归的.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;时空复杂度: 时间复杂度是O(n): n表示树的所有节点数, 空间复杂度是O(h): h表示树的高度&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;path-sum-ii&quot;&gt;Path Sum II&lt;/h2&gt;
+
+&lt;h3 id=&quot;section-2&quot;&gt;题目描述&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Given a binary tree and a sum, find all root-to-leaf paths where each path’s sum equals the given sum.&lt;/p&gt;
+
+  &lt;p&gt;For example:
+Given the below binary tree and sum = 22,&lt;/p&gt;
+
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;           5
+          / \
+         4   8
+        /   / \
+       11  13  4
+      /  \    / \
+     7    2  5   1
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+
+  &lt;p&gt;return&lt;/p&gt;
+
+  &lt;h3 id=&quot;section-3&quot;&gt;解法&lt;/h3&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;代码如下:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static List&amp;lt;List&amp;lt;Integer&amp;gt;&amp;gt; PathSum( TreeNode root, int sum ) {
+    List&amp;lt;List&amp;lt;Integer&amp;gt;&amp;gt; res = new ArrayList&amp;lt;&amp;gt;();
+    helperPathSum( root, sum, new ArrayList&amp;lt;Integer&amp;gt;(), res );
+    return res;
+}
+
+private static void helperPathSum( TreeNode root, int sum,
+        List&amp;lt;Integer&amp;gt; tmpRes, List&amp;lt;List&amp;lt;Integer&amp;gt;&amp;gt; res ) {
+    if( root == null ) return;
+
+    if( sum == root.val &amp;amp;&amp;amp; root.left == null &amp;amp;&amp;amp; root.right == null ) {
+        tmpRes.add( root.val );
+        res.add( new ArrayList&amp;lt;Integer&amp;gt;(tmpRes) );
+        tmpRes.remove( tmpRes.size()-1 );
+        return;
+    }
+
+    tmpRes.add( root.val );
+    helperPathSum( root.left, sum-root.val, tmpRes, res );
+    helperPathSum( root.right, sum-root.val, tmpRes, res );
+    tmpRes.remove( tmpRes.size()-1 );
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;思考过程: &lt;code class=&quot;highlighter-rouge&quot;&gt;DFS&lt;/code&gt;. 相比于&lt;code class=&quot;highlighter-rouge&quot;&gt;Path Sum&lt;/code&gt;, 区别就是要记录所有的路径, 那么只需要多添加一些参数就可以了: &lt;code class=&quot;highlighter-rouge&quot;&gt;tmpRes&lt;/code&gt;用于记录当前路径, &lt;code class=&quot;highlighter-rouge&quot;&gt;res&lt;/code&gt;表示结果路径集.&lt;/p&gt;
+
+&lt;p&gt;时空复杂度: 时间复杂度是O(n): n表示树的所有节点数, 空间复杂度是O(h): h表示树的高度&lt;/p&gt;
+
+&lt;h3 id=&quot;section-4&quot;&gt;总结&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;本题提醒了我: 在包含有递归的算法中, 一定要保证进入递归前的条件状态一致. 例如在调用&lt;code class=&quot;highlighter-rouge&quot;&gt;helperPathSum&lt;/code&gt;的时候, &lt;code class=&quot;highlighter-rouge&quot;&gt;root&lt;/code&gt;的值是未选取的, 那么递归里面就需要去选取处理, 并且保证进入下一轮递归之前条件状态一致.&lt;/p&gt;
 &lt;/blockquote&gt;
 </description>
-        <pubDate>Wed, 30 Mar 2016 00:00:00 +0800</pubDate>
-        <link>/2016/03/30/leetcode-permutations(II)/</link>
-        <guid isPermaLink="true">/2016/03/30/leetcode-permutations(II)/</guid>
+        <pubDate>Mon, 04 Apr 2016 00:00:00 +0800</pubDate>
+        <link>/2016/04/04/leetcode-path-sum(II)/</link>
+        <guid isPermaLink="true">/2016/04/04/leetcode-path-sum(II)/</guid>
+        
+        
+        <category>Leetcode</category>
+        
+      </item>
+    
+      <item>
+        <title>Maximum Subarray</title>
+        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#maximum-subarray&quot; id=&quot;markdown-toc-maximum-subarray&quot;&gt;Maximum Subarray&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#section&quot; id=&quot;markdown-toc-section&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-1&quot; id=&quot;markdown-toc-section-1&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;maximum-subarray&quot;&gt;Maximum Subarray&lt;/h2&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;题目描述&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Find the contiguous subarray within an array (containing at least one number) which has the largest sum.&lt;/p&gt;
+
+  &lt;p&gt;For example, given the array &lt;code class=&quot;highlighter-rouge&quot;&gt;[−2,1,−3,4,−1,2,1,−5,4]&lt;/code&gt;,
+the contiguous subarray &lt;code class=&quot;highlighter-rouge&quot;&gt;[4,−1,2,1]&lt;/code&gt; has the largest &lt;code class=&quot;highlighter-rouge&quot;&gt;sum = 6&lt;/code&gt;.&lt;/p&gt;
+
+  &lt;p&gt;More practice:&lt;/p&gt;
+
+  &lt;p&gt;If you have figured out the O(n) solution, try coding another solution using the divide and conquer approach, which is more subtle.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;解法&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;分治法&lt;/p&gt;
+
+    &lt;p&gt;代码如下:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  public static int maxSubArrayDivideAndConquer( int[] nums ) {
+      return helper( nums, 0, nums.length-1 );
+  }
+  private static int helper( int[] nums, int left, int right ) {
+      if( left &amp;gt;= right ) return nums[left];
+
+      int mid = left + (right-left)/2;
+      int leftMax = helper( nums, left, mid-1 );
+      int rightMax = helper( nums, mid+1, right );
+
+      // midLeftMax: mid左边连续部分最大值
+      // midRightMax: mid右边连续部分最大值
+      int t = 0, midLeftMax = 0, midRightMax = 0;
+
+      for( int i = mid-1; i &amp;gt;= left; --i ) {
+          t += nums[i];
+          if( t &amp;gt; midLeftMax ) midLeftMax = t;
+      }
+      t = 0;
+      for( int i = mid+1; i &amp;lt;= right; ++i ) {
+          t += nums[i];
+          if( t &amp;gt; midRightMax ) midRightMax = t;
+      }
+
+      int midMax = midLeftMax + nums[mid] + midRightMax;
+      return Math.max( Math.max( leftMax, rightMax ), midMax );
+  }
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;思考过程: &lt;code class=&quot;highlighter-rouge&quot;&gt;分治法&lt;/code&gt;. 求某一个范围的&lt;code class=&quot;highlighter-rouge&quot;&gt;Max Subarray&lt;/code&gt;, 从范围中间切成2部分, 其结果有三种可能&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Max Subarray&lt;/code&gt;在左半部分的&lt;code class=&quot;highlighter-rouge&quot;&gt;Max Subarray&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Max Subarray&lt;/code&gt;在右半部分的&lt;code class=&quot;highlighter-rouge&quot;&gt;Max Subarray&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Max Subarray&lt;/code&gt;在&lt;code class=&quot;highlighter-rouge&quot;&gt;中间元素&lt;/code&gt;联合&lt;code class=&quot;highlighter-rouge&quot;&gt;左右半部分&lt;/code&gt;的&lt;code class=&quot;highlighter-rouge&quot;&gt;Max Subarray&lt;/code&gt;&lt;/li&gt;
+    &lt;/ol&gt;
+
+    &lt;p&gt;时空复杂度: 时间复杂度是&lt;code class=&quot;highlighter-rouge&quot;&gt;O(nlogn)&lt;/code&gt;, 空间复杂度是&lt;code class=&quot;highlighter-rouge&quot;&gt;O(logn)&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;动态规划&lt;/p&gt;
+
+    &lt;p&gt;代码如下:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  public static int maxSubArray( int[] nums ) {
+      if( nums.length == 1 ) return nums[0];
+
+      int max = nums[0], preSum = nums[0];
+      for( int i = 1; i &amp;lt; nums.length; ++i ) {
+          preSum = Math.max( preSum+nums[i], nums[i] );
+          max = Math.max( max, preSum );
+      }
+      return max;
+  }
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;思考过程: &lt;code class=&quot;highlighter-rouge&quot;&gt;动态规划&lt;/code&gt;. 考虑新加入一个元素对结果带来的影响? 假设新加入元素&lt;code class=&quot;highlighter-rouge&quot;&gt;num[n]&lt;/code&gt;, 那么其结果有2种可能:&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;对原结果不产生影响: 还是取原有结果&lt;/li&gt;
+      &lt;li&gt;对原有结果产生影响: 结果取得更大值, 而且新结果一定包含&lt;code class=&quot;highlighter-rouge&quot;&gt;num[n]&lt;/code&gt;&lt;/li&gt;
+    &lt;/ol&gt;
+
+    &lt;p&gt;以上2个可能可以看该问题具有&lt;code class=&quot;highlighter-rouge&quot;&gt;最优子结构&lt;/code&gt;特征.&lt;/p&gt;
+
+    &lt;p&gt;从上面2种可能知道, 考虑新加入元素时需要: &lt;code class=&quot;highlighter-rouge&quot;&gt;原结果&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;左边连续子数组最大值&lt;/code&gt;(因为新结果一定包含&lt;code class=&quot;highlighter-rouge&quot;&gt;num[n]&lt;/code&gt;). 所以定义以下两个变量即可:&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;max&lt;/code&gt;: 原结果&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;preSum&lt;/code&gt;: 左边连续子数组最大值&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;接下来考虑这两个变量的变化:&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;下一个preSum&lt;/code&gt;: 因为&lt;code class=&quot;highlighter-rouge&quot;&gt;preSum&lt;/code&gt;是连续的, 那么一定有&lt;code class=&quot;highlighter-rouge&quot;&gt;num[i]&lt;/code&gt;, 如果加上&lt;code class=&quot;highlighter-rouge&quot;&gt;preSum&lt;/code&gt;可以取得更大值, 那么就取&lt;code class=&quot;highlighter-rouge&quot;&gt;preSum&lt;/code&gt;, 否则不取&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;下一个max&lt;/code&gt;: 保留&lt;code class=&quot;highlighter-rouge&quot;&gt;原结果&lt;/code&gt;或更换为&lt;code class=&quot;highlighter-rouge&quot;&gt;新结果preSum&lt;/code&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;时空复杂度: 时间复杂度是&lt;code class=&quot;highlighter-rouge&quot;&gt;O(n)&lt;/code&gt;, 空间复杂度是&lt;code class=&quot;highlighter-rouge&quot;&gt;O(1)&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Mon, 04 Apr 2016 00:00:00 +0800</pubDate>
+        <link>/2016/04/04/leetcode-maximum-subarray/</link>
+        <guid isPermaLink="true">/2016/04/04/leetcode-maximum-subarray/</guid>
+        
+        
+        <category>Leetcode</category>
+        
+      </item>
+    
+      <item>
+        <title>Minimum Path Sum</title>
+        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#minimum-path-sum&quot; id=&quot;markdown-toc-minimum-path-sum&quot;&gt;Minimum Path Sum&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#section&quot; id=&quot;markdown-toc-section&quot;&gt;题目描述&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-1&quot; id=&quot;markdown-toc-section-1&quot;&gt;解法&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;minimum-path-sum&quot;&gt;Minimum Path Sum&lt;/h2&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;题目描述&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Given a m x n grid filled with non-negative numbers, find a path from top left to bottom right which minimizes the sum of all numbers along its path.&lt;/p&gt;
+
+  &lt;p&gt;Note: You can only move either down or right at any point in time.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;解法&lt;/h3&gt;
+
+&lt;p&gt;代码如下:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static int minPathSum( int[][] grid ) {
+
+    int m = grid.length, n = grid[0].length;
+    int[][] dp = new int[m][n];
+    dp[0][0] = grid[0][0];
+    for( int i = 1; i &amp;lt; m; ++i )
+        dp[i][0] = grid[i][0]+dp[i-1][0];
+
+    for( int j = 1; j &amp;lt; n; ++j )
+        dp[0][j] = grid[0][j]+dp[0][j-1];
+
+    for( int i = 1; i &amp;lt; m; ++i )
+        for( int j = 1; j &amp;lt; n; ++j )
+            dp[i][j] = Math.min( dp[i-1][j], dp[i][j-1] ) + grid[i][j];
+
+    return dp[m-1][n-1];
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;思考过程: &lt;code class=&quot;highlighter-rouge&quot;&gt;动态规划&lt;/code&gt;. &lt;code class=&quot;highlighter-rouge&quot;&gt;当前格子&lt;/code&gt;的最小值是由&lt;code class=&quot;highlighter-rouge&quot;&gt;左边一格&lt;/code&gt;或&lt;code class=&quot;highlighter-rouge&quot;&gt;上边一格&lt;/code&gt;加上当前的值组成的. 也就是&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;dp[i][j]&lt;/code&gt;: 在第&lt;code class=&quot;highlighter-rouge&quot;&gt;[i][j]&lt;/code&gt;个格子的最小值&lt;/li&gt;
+  &lt;li&gt;最优子结构: &lt;code class=&quot;highlighter-rouge&quot;&gt;dp[i][j] = Math.min( dp[i-1][j], dp[i][j-1] ) + grid[i][j]&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;重复子问题: &lt;code class=&quot;highlighter-rouge&quot;&gt;dp[i-1][j]&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;dp[i][j-1]&lt;/code&gt;中有共同的子问题&lt;code class=&quot;highlighter-rouge&quot;&gt;dp[i-1][j-1]&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;时空复杂度: 时间复杂度是O(n^2), 空间复杂度是O(n^2)&lt;/p&gt;
+</description>
+        <pubDate>Mon, 04 Apr 2016 00:00:00 +0800</pubDate>
+        <link>/2016/04/04/leetcode-letter-minimum-path-sum/</link>
+        <guid isPermaLink="true">/2016/04/04/leetcode-letter-minimum-path-sum/</guid>
         
         
         <category>Leetcode</category>
