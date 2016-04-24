@@ -7,7 +7,7 @@ category: Leetcode
 * content
 {:toc}
 
-## Set Matrix Zeroes
+## Game of Life
 
 ### 题目描述
 
