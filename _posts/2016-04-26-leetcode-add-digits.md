@@ -7,7 +7,7 @@ category: Leetcode
 * content
 {:toc}
 
-## Missing Number
+## Add Digits
 
 ### 题目描述
 
